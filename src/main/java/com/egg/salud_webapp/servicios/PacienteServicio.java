@@ -1,5 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.Rol;
 import com.egg.salud_webapp.excepciones.MiException;
@@ -22,6 +23,8 @@ public class PacienteServicio {
     //Crear paciente
     @Transactional
     public void registrar(String nombre, String email, String password, String password2) throws MiException {
+        
+        
 
         //Falta validador
         
@@ -33,6 +36,9 @@ public class PacienteServicio {
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
 
         paciente.setRol(Rol.USER);
+        // Creacion de historia clinica
+        HistoriaClinica historiaClinica = new HistoriaClinica();
+        paciente.setHistoriaClinica(historiaClinica);
 
         pacienteRepositorio.save(paciente);
     }

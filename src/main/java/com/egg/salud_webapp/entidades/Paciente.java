@@ -16,6 +16,7 @@ public class Paciente extends Usuario{
   @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Boolean activo;
   
    @Enumerated(EnumType.STRING)
     private Rol rol;
@@ -50,6 +51,14 @@ public class Paciente extends Usuario{
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public Boolean getActive() {
+        return activo;
+    }
+
+    public void setActive(Boolean active) {
+        this.activo = activo;
     }
     
     
