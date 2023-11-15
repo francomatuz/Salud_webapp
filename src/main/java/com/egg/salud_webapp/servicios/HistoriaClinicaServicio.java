@@ -25,9 +25,10 @@ public class HistoriaClinicaServicio {
 
     //Registro de eventos
     // hacer que unicamente el profesional pueda actualizar
-    public void actualizarHistoriaClinica(HistoriaClinica historiaClinica){
-        historiaClinica.setUltimaModificacion(new Date());
-        historiaClinicaRepositorio.save(historiaClinica);              
+   public void actualizarHistoriaClinica(HistoriaClinica historiaClinica) {
+        // Lógica de actualización
+        historiaClinica.setFechaUltimaModificacion(new Date());
+        historiaClinicaRepositorio.save(historiaClinica);
     }
       
     }
