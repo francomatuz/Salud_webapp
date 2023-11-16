@@ -3,14 +3,17 @@ package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.Rol;
 import java.time.LocalDate;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
 import javax.persistence.OneToOne;
 
-
+@Entity
+@Inheritance
 public class Usuario {
     
     @Id
@@ -33,6 +36,18 @@ public class Usuario {
     public Usuario() {
     }
 
+    public Usuario(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, Rol rol) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.fecha_nac = fecha_nac;
+        this.email = email;
+        this.password = password;
+        this.rol = rol;
+    }
+
+    
     public Long getId() {
         return id;
     }
