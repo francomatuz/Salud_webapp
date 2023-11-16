@@ -30,8 +30,7 @@ public class HistoriaClinicaServicio {
         historiaClinica.setFechaUltimaModificacion(new Date());
         historiaClinicaRepositorio.save(historiaClinica);
     }
-      
-    }
+      }
     
     
     //hacer acceso controlado

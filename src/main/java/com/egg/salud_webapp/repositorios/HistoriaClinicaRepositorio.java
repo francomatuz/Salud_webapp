@@ -14,8 +14,10 @@ public interface HistoriaClinicaRepositorio extends JpaRepository<HistoriaClinic
     // busca por nombre del paciente
     @Query("SELECT hc FROM HistoriaClinica hc JOIN hc.paciente p WHERE p.nombre = :nombre")
     List<HistoriaClinica> buscarPorNombrePaciente(@Param("nombre") String nombre);
-    // busca por id del paciente
+    // busca por id del paciente  jhay que hacerlo por dni
     @Query("SELECT hc FROM HistoriaClinica hc WHERE hc.paciente.id = :pacienteId")
     List<HistoriaClinica> buscarPorIdPaciente(@Param("pacienteId") String pacienteId);
+    
+    
    
 }
