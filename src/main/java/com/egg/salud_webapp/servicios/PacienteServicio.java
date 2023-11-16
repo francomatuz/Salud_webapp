@@ -2,7 +2,7 @@ package com.egg.salud_webapp.servicios;
 
 import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Paciente;
-import com.egg.salud_webapp.enumeraciones.Rol;
+import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.PacienteRepositorio;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class PacienteServicio {
         paciente.setFecha_nac(fecha_nac);
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
 
-        paciente.setRol(Rol.USER);
+        paciente.setRol(UsuarioEnum.USER);
         // Creacion de historia clinica
         HistoriaClinica historiaClinica = new HistoriaClinica();
         paciente.setHistoriaClinica(historiaClinica);
@@ -63,7 +63,7 @@ public class PacienteServicio {
             paciente.setFecha_nac(fecha_nac);
             paciente.setPassword(new BCryptPasswordEncoder().encode(password));
 
-            paciente.setRol(Rol.USER);
+            paciente.setRol(UsuarioEnum.USER);
             pacienteRepositorio.save(paciente);
         }
     }

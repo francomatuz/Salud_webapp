@@ -4,17 +4,34 @@
  */
 package com.egg.salud_webapp.controladores;
 
+import com.egg.salud_webapp.entidades.Paciente;
+import com.egg.salud_webapp.servicios.PacienteServicio;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 @Controller
 @RequestMapping("/paciente") // localhost:8080/paciente
 public class PacienteControlador {
     
- @GetMapping("/registrar") // localhost:8080/paciente/registrar
- public String registrar(){
-     return "login";
- }
-    
+    @Autowired
+    private PacienteServicio pacienteServicio;
+
+    @GetMapping
+    public ResponseEntity<List<Paciente>> listarPacientes() {
+        List<Paciente> pacientes = pacienteServicio.listarPacientes();
+        return new ResponseEntity<>(pacientes, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Paciente> obtenerPacientePorId(@PathVariable Long id) {
+        Paciente paciente = pacienteServicio.getOne(id);
+        return new ResponseEntity<>(paciente, HttpStatus.OK);
+    }      
 }

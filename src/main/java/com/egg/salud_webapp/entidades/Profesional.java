@@ -1,7 +1,7 @@
 package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.Especialidades;
-import com.egg.salud_webapp.enumeraciones.Rol;
+import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -28,7 +28,7 @@ public class Profesional extends Usuario{
     private String[] obraSocial;
 
 
-    public Profesional(String matricula, Especialidades especialidad, LocalDateTime agendaTurnos, Integer duracionTurno, Double precio, Integer calificacion, String direccion, Boolean atencionVirtual, String bio, String[] obraSocial, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, Rol rol) {
+    public Profesional(String matricula, Especialidades especialidad, LocalDateTime agendaTurnos, Integer duracionTurno, Double precio, Integer calificacion, String direccion, Boolean atencionVirtual, String bio, String[] obraSocial, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, UsuarioEnum rol) {
         super(id, nombre, apellido, dni, fecha_nac, email, password, rol);
         this.matricula = matricula;
         this.especialidad = especialidad;

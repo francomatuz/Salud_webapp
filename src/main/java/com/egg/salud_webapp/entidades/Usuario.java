@@ -1,7 +1,7 @@
 
 package com.egg.salud_webapp.entidades;
 
-import com.egg.salud_webapp.enumeraciones.Rol;
+import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -31,12 +31,12 @@ public class Usuario {
     //private Imagen imagen;
     
     @Enumerated(EnumType.STRING)
-    protected Rol rol;
+    protected UsuarioEnum rol;
 
     public Usuario() {
     }
 
-    public Usuario(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, Rol rol) {
+    public Usuario(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, UsuarioEnum rol) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -104,11 +104,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public Rol getRol() {
+    public UsuarioEnum getRol() {
         return rol;
     }
 
-    public void setRol(Rol rol) {
+    public void setRol(UsuarioEnum rol) {
         this.rol = rol;
     }
 
