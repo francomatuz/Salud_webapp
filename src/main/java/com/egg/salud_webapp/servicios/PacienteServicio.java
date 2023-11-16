@@ -6,7 +6,7 @@ import com.egg.salud_webapp.enumeraciones.Rol;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.PacienteRepositorio;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class PacienteServicio {
     
     //Crear paciente
     @Transactional
-    public void registrar( String nombre, String apellido,  String email, String dni, Date fechaNacimiento, String password, String password2) throws MiException {
+    public void registrar( String nombre, String apellido,  String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
         
         //Falta validador
         
@@ -36,7 +36,7 @@ public class PacienteServicio {
         paciente.setApellido(apellido);
         paciente.setEmail(email);
         paciente.setDni(dni);
-        paciente.setFechaNacimiento(fechaNacimiento);
+        paciente.setFecha_nac(fecha_nac);
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
 
         paciente.setRol(Rol.USER);
@@ -48,18 +48,21 @@ public class PacienteServicio {
     }
     //Actualizar paciente
     @Transactional
-    public void actualizar(String idPaciente, String nombre, String apellido, String email, String dni, String password, String password2) throws MiException {
+    public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
 
         //falta validador
 
-        Optional<Paciente> respuesta = pacienteRepositorio.findById(idPaciente);
+        Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
+        
         if (respuesta.isPresent()) {
-
+            
             Paciente paciente = respuesta.get();
+
             paciente.setNombre(nombre);
             paciente.setApellido(apellido);
             paciente.setEmail(email);
             paciente.setDni(dni);
+            paciente.setFecha_nac(fecha_nac);
             paciente.setPassword(new BCryptPasswordEncoder().encode(password));
 
             paciente.setRol(Rol.USER);
@@ -81,6 +84,30 @@ public class PacienteServicio {
         
     }
     
+  private void validarAtributos(String nombre,String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException{
+      
+        if(nombre.isEmpty() || nombre==null){
+            throw new MiException("El nombre no puede estar vacío o ser nulo");
+        }
+            if(apellido.isEmpty() || apellido==null){
+            throw new MiException("El apellido no puede estar vacío o ser nulo");
+        }
+            if(email==null || email.isEmpty()){
+            throw new MiException("El email no puede estar vacío o ser nulo");
+        }
+            if(dni.isEmpty() || dni==null){
+            throw new MiException("El dni no puede estar vacío o ser nulo");
+        }
+                if(fecha_nac==null){
+            throw new MiException("La fecha de nacimiento no puede estar vacía ");
+        }
+        if(password.isEmpty() || password==null || password.length()<=5){
+            throw new MiException("La contraseña no puede estar vacia y debe tener más de 5 dígitos");
+        }
+        if(!password.equals(password2)){
+            throw new MiException("La contraseñas ingresadas deben ser iguales");
+        }
+    }
     
 
 }

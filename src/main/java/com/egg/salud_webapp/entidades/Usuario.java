@@ -21,12 +21,12 @@ public class Usuario {
     protected String apellido;
     protected String dni;
     protected LocalDate fecha_nac;
+    protected String email;
+    protected String password;
+    
     
     //@OneToOne
     //private Imagen imagen;
-    
-    protected String email;
-    protected String password;
     
     @Enumerated(EnumType.STRING)
     protected Rol rol;
