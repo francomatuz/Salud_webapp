@@ -80,7 +80,7 @@ public class PacienteServicio {
     }
     
 
-    public Paciente getOne(String id) {
+    public Paciente getOne(Long id) {
         return pacienteRepositorio.getOne(id);
     }
 

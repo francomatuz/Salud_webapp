@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PacienteRepositorio extends JpaRepository<Paciente, String> {
+public interface PacienteRepositorio extends JpaRepository<Paciente, Long> {
     
     @Query ("SELECT p FROM Paciente p WHERE p.email = :email")
     public Optional<Paciente> buscarPorEmail(@Param("email") String email);
