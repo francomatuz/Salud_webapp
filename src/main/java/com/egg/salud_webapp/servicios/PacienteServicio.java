@@ -48,7 +48,8 @@ public class PacienteServicio {
     @Transactional
     public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
 
-        //falta validador
+            validarAtributos(nombre,apellido,email,dni,fecha_nac,password,password2);
+     
         Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
 
         if (respuesta.isPresent()) {
@@ -66,11 +67,25 @@ public class PacienteServicio {
             pacienteRepositorio.save(paciente);
         }
     }
+    
+    @Transactional
+    public void eliminar(Long id) throws MiException {
+        
+        Optional <Paciente> pacienteExistente = pacienteRepositorio.buscarPorId(id);
+        
+        if(pacienteExistente.isPresent()) {
+            pacienteRepositorio.delete(pacienteExistente.get());
+        } else
+        throw new MiException("No se encontro un paciente con los datos ingresados");
+    }
+    
 
     public Paciente getOne(String id) {
         return pacienteRepositorio.getOne(id);
     }
 
+    // Metodo leer pacientes de la base de datos
+    
     public List<Paciente> listarPacientes() {
 
         List<Paciente> pacientes = new ArrayList();
