@@ -3,6 +3,7 @@ package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.Rol;
 import java.time.LocalDate;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -10,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-
+@Entity
 public class Usuario {
     
     @Id
