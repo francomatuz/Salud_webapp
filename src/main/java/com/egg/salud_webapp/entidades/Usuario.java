@@ -1,13 +1,59 @@
 
 package com.egg.salud_webapp.entidades;
 
+import com.egg.salud_webapp.enumeraciones.Rol;
+import java.time.LocalDate;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.OneToOne;
 
+@Entity
+@Inheritance
 public class Usuario {
-    private String nombre;
-    private String email;
-    private String password;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
+    protected String nombre;
+    protected String apellido;
+    protected String dni;
+    protected LocalDate fecha_nac;
+    protected String email;
+    protected String password;
+    
+    
+    //@OneToOne
+    //private Imagen imagen;
+    
+    @Enumerated(EnumType.STRING)
+    protected Rol rol;
 
     public Usuario() {
+    }
+
+    public Usuario(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, Rol rol) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.fecha_nac = fecha_nac;
+        this.email = email;
+        this.password = password;
+        this.rol = rol;
+    }
+
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -16,6 +62,30 @@ public class Usuario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public LocalDate getFecha_nac() {
+        return fecha_nac;
+    }
+
+    public void setFecha_nac(LocalDate fecha_nac) {
+        this.fecha_nac = fecha_nac;
     }
 
     public String getEmail() {
@@ -33,6 +103,14 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
-    
 
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+      
 }
