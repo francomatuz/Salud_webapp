@@ -15,10 +15,10 @@ public interface PacienteRepositorio extends JpaRepository<Paciente, String> {
     @Query ("SELECT p FROM Paciente p WHERE p.email = :email")
     public Optional<Paciente> buscarPorEmail(@Param("email") String email);
     
-    /*@Query ("SELECT p FROM Paciente WHERE p.dni = :dni")
+   @Query ("SELECT p FROM Paciente WHERE p.dni = :dni")
     public Optional<Paciente> buscarPorDni(@Param("dni") String dni);
     
-    @Query ("SELECT p FROM Paciente p WHERE p.apellido = :apellido")
+   /* @Query ("SELECT p FROM Paciente p WHERE p.apellido = :apellido")
     public Optional<Paciente> buscarPorApellido(@Param("apellido") String apellido);*/
     
     @Query ("SELECT p FROM Paciente p WHERE p.id = :id")

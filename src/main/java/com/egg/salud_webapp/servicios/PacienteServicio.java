@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @Service
 public class PacienteServicio {
 
@@ -23,13 +22,11 @@ public class PacienteServicio {
     private PacienteRepositorio pacienteRepositorio;
 
     //Metodos Crud
-    
     //Crear paciente
     @Transactional
-    public void registrar( String nombre, String apellido,  String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
-        
+    public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
+
         //Falta validador
-        
         Paciente paciente = new Paciente();
 
         paciente.setNombre(nombre);
@@ -46,16 +43,16 @@ public class PacienteServicio {
 
         pacienteRepositorio.save(paciente);
     }
+
     //Actualizar paciente
     @Transactional
     public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
 
         //falta validador
-
         Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
-        
+
         if (respuesta.isPresent()) {
-            
+
             Paciente paciente = respuesta.get();
 
             paciente.setNombre(nombre);
@@ -69,45 +66,55 @@ public class PacienteServicio {
             pacienteRepositorio.save(paciente);
         }
     }
-    
-    public Paciente getOne(String id){
+
+    public Paciente getOne(String id) {
         return pacienteRepositorio.getOne(id);
     }
-    
-    public List<Paciente> listarPacientes(){
-        
+
+    public List<Paciente> listarPacientes() {
+
         List<Paciente> pacientes = new ArrayList();
-        
+
         pacientes = pacienteRepositorio.findAll();
-        
+
         return pacientes;
-        
+
     }
-    
-  private void validarAtributos(String nombre,String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException{
-      
-        if(nombre.isEmpty() || nombre==null){
+
+    private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
+
+        Optional<Paciente> dniExistente = pacienteRepositorio.buscarPorDni(dni);
+        Optional<Paciente> emailExistente = pacienteRepositorio.buscarPorEmail(email);
+        
+        if (nombre.isEmpty() || nombre == null) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
-            if(apellido.isEmpty() || apellido==null){
+        if (apellido.isEmpty() || apellido == null) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
-            if(email==null || email.isEmpty()){
+        if (emailExistente.isPresent()) {
+            throw new MiException("Ya hay un usuario existente con el Email ingresado");
+        }
+
+        if (email == null || email.isEmpty()) {
             throw new MiException("El email no puede estar vacío o ser nulo");
         }
-            if(dni.isEmpty() || dni==null){
+        if (dniExistente.isPresent()) {
+            throw new MiException("Ya hay un usuario existente con el Dni ingresado");
+        }
+
+        if (dni.isEmpty() || dni == null) {
             throw new MiException("El dni no puede estar vacío o ser nulo");
         }
-                if(fecha_nac==null){
+        if (fecha_nac == null) {
             throw new MiException("La fecha de nacimiento no puede estar vacía ");
         }
-        if(password.isEmpty() || password==null || password.length()<=5){
+        if (password.isEmpty() || password == null || password.length() <= 5) {
             throw new MiException("La contraseña no puede estar vacia y debe tener más de 5 dígitos");
         }
-        if(!password.equals(password2)){
+        if (!password.equals(password2)) {
             throw new MiException("La contraseñas ingresadas deben ser iguales");
         }
     }
-    
 
 }
