@@ -13,16 +13,16 @@ import org.springframework.stereotype.Repository;
 public interface PacienteRepositorio extends JpaRepository<Paciente, Long> {
     
     @Query ("SELECT p FROM Paciente p WHERE p.email = :email")
-    public Optional<Paciente> buscarPorEmail(@Param("email") String email);
+     Optional<Paciente> buscarPorEmail(@Param("email") String email);
     
-   @Query ("SELECT p FROM Paciente WHERE p.dni = :dni")
-    public Optional<Paciente> buscarPorDni(@Param("dni") String dni);
+   @Query ("SELECT p FROM Paciente p WHERE p.dni = :dni")
+     Optional<Paciente> buscarPorDni(@Param("dni") String dni);
     
    /* @Query ("SELECT p FROM Paciente p WHERE p.apellido = :apellido")
     public Optional<Paciente> buscarPorApellido(@Param("apellido") String apellido);*/
     
     @Query ("SELECT p FROM Paciente p WHERE p.id = :id")
     // para que no tire error en pacienteservicio, tuve que agregar el "Optional" en la linea 26
-    public Optional<Paciente> buscarPorId(@Param("id") Long id);
+     Optional<Paciente> buscarPorId(@Param("id") Long id);
     
 }
