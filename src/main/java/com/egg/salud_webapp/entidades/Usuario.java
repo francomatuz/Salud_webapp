@@ -10,6 +10,8 @@ public class Usuario {
     private String dni;
     private String whatsapp;
     
+    
+    
 
     public Usuario() {
     }

@@ -1,29 +1,32 @@
 
 package com.egg.salud_webapp.entidades;
 
+import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.Rol;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
 public class Paciente extends Usuario{
-  @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
     private Boolean activo;
+ 
   
    @Enumerated(EnumType.STRING)
     private Rol rol;
 
+   @Enumerated(EnumType.STRING)
+   private ObraSocial obraSocial;
+   
   @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
   private HistoriaClinica historiaClinica;
   
+ /*   @OneToOne
+    private Imagen imagen;
+  */
   
     public Paciente() {
         this.historiaClinica = new HistoriaClinica(this);
@@ -37,14 +40,6 @@ public class Paciente extends Usuario{
         this.historiaClinica = historiaClinica;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Rol getRol() {
         return rol;
     }
@@ -53,12 +48,21 @@ public class Paciente extends Usuario{
         this.rol = rol;
     }
 
-    public Boolean getActive() {
+    public Boolean getActivo() {
         return activo;
     }
 
-    public void setActive(Boolean active) {
+    public void setActivo(Boolean activo) {
         this.activo = activo;
+    }
+
+ 
+    public ObraSocial getObraSocial() {
+        return obraSocial;
+    }
+
+    public void setObraSocial(ObraSocial obraSocial) {
+        this.obraSocial = obraSocial;
     }
     
     
