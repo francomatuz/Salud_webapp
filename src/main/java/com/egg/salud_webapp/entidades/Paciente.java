@@ -2,7 +2,7 @@
 package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
-import com.egg.salud_webapp.enumeraciones.Rol;
+import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,7 +16,7 @@ public class Paciente extends Usuario{
  
   
    @Enumerated(EnumType.STRING)
-    private Rol rol;
+    private UsuarioEnum rol;
 
    @Enumerated(EnumType.STRING)
    private ObraSocial obraSocial;
@@ -40,11 +40,11 @@ public class Paciente extends Usuario{
         this.historiaClinica = historiaClinica;
     }
 
-    public Rol getRol() {
+    public UsuarioEnum getRol() {
         return rol;
     }
 
-    public void setRol(Rol rol) {
+    public void setRol(UsuarioEnum rol) {
         this.rol = rol;
     }
 
