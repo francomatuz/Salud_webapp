@@ -2,6 +2,9 @@
 package com.egg.salud_webapp.entidades;
 
 
+import java.util.Date;
+
+
 public class Usuario {
     private String nombre;
     private String apellido;
@@ -9,7 +12,7 @@ public class Usuario {
     private String password;
     private String dni;
     private String whatsapp;
-    
+    private Date fechaNacimiento;
     
     
 
@@ -62,6 +65,14 @@ public class Usuario {
 
     public void setWhatsapp(String whatsapp) {
         this.whatsapp = whatsapp;
+    }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
     
 
