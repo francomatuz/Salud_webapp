@@ -131,5 +131,4 @@ public class PacienteServicio {
             throw new MiException("La contraseñas ingresadas deben ser iguales");
         }
     }
-
 }

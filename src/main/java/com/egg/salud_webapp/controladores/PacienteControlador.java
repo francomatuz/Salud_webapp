@@ -14,7 +14,7 @@ public class PacienteControlador {
     
  @GetMapping("/registrar") // localhost:8080/paciente/registrar
  public String registrar(){
-     return "paciente_form.html";
+     return "login";
  }
     
 }
