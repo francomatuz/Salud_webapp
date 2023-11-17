@@ -42,7 +42,8 @@ public class PortalControlador {
 
     @PostMapping("/registrar/paciente")
     public String registrarpaciente(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String email, @RequestParam String dni, @RequestParam(name = "fecha_nac") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac, @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password, @RequestParam String password2, ModelMap modelo) throws MiException {
-
+       
+        
         try {
             pacienteServicio.registrar(nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password, password2);
 
@@ -66,7 +67,18 @@ public class PortalControlador {
             return "login.html";
 
         }
+    }
+    
+        @GetMapping("/login")
+        public String login(@RequestParam(required = false) String error, ModelMap modelo){
+        
+        if (error != null) {
+            modelo.put("error", "Usuario o contraseña invalidos");
+        }
+        
+        return "login.html";
+    } 
 
     }
 
-}
+
