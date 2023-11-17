@@ -1,6 +1,7 @@
 package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.Especialidades;
+import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,11 +26,10 @@ public class Profesional extends Usuario{
     private String direccion;
     private Boolean atencionVirtual;
     private String bio;
-    private String[] obraSocial;
+    private String[] prestadores;
 
-
-    public Profesional(String matricula, Especialidades especialidad, LocalDateTime agendaTurnos, Integer duracionTurno, Double precio, Integer calificacion, String direccion, Boolean atencionVirtual, String bio, String[] obraSocial, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, UsuarioEnum rol) {
-        super(id, nombre, apellido, dni, fecha_nac, email, password, rol);
+    public Profesional(String matricula, Especialidades especialidad, LocalDateTime agendaTurnos, Integer duracionTurno, Double precio, Integer calificacion, String direccion, Boolean atencionVirtual, String bio, String[] prestadores, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
+        super(id, nombre, apellido, dni, fecha_nac, email, password, genero, rol);
         this.matricula = matricula;
         this.especialidad = especialidad;
         this.agendaTurnos = agendaTurnos;
@@ -39,8 +39,12 @@ public class Profesional extends Usuario{
         this.direccion = direccion;
         this.atencionVirtual = atencionVirtual;
         this.bio = bio;
-        this.obraSocial = obraSocial;
+        this.prestadores = prestadores;
     }
+
+    public Profesional() {
+    }
+
 
     public String getMatricula() {
         return matricula;
@@ -114,12 +118,12 @@ public class Profesional extends Usuario{
         this.bio = bio;
     }
 
-    public String[] getObraSocial() {
-        return obraSocial;
+    public String[] getPrestadores() {
+        return prestadores;
     }
 
-    public void setObraSocial(String[] obraSocial) {
-        this.obraSocial = obraSocial;
+    public void setPrestadores(String[] prestadores) {
+        this.prestadores = prestadores;
     }
 
 }

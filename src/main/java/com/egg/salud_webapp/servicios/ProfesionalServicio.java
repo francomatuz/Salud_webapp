@@ -3,7 +3,9 @@ package com.egg.salud_webapp.servicios;
 
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
+import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.Rol;
+import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
 import java.time.LocalDate;
@@ -26,9 +28,9 @@ public class ProfesionalServicio {
     
     @Transactional
     
-    public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2, String matricula, Especialidades especialidad, String[]prestadores, Double precio, String direccion, Boolean atencionVirtual,String bio) throws MiException {
+    public void registrar(String matricula, Especialidades especialidad, LocalDateTime agendaTurnos, Integer duracionTurno, Double precio, Integer calificacion, String direccion, Boolean atencionVirtual, String bio, String[] prestadores, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password,String password2, GeneroEnum genero, UsuarioEnum rol, Boolean alta) throws MiException {
         validarAtributos(nombre,apellido,email,dni,fecha_nac,password,password2,matricula,precio,direccion,bio);
-        //Falta validador
+        
         Profesional profesional= new Profesional();
 
         profesional.setNombre(nombre);
@@ -38,7 +40,7 @@ public class ProfesionalServicio {
         profesional.setFecha_nac(fecha_nac);
         profesional.setPassword(new BCryptPasswordEncoder().encode(password));
 
-        profesional.setRol(Rol.USER);
+        profesional.setRol(UsuarioEnum.USER);
         
         
         // Creacion datos del profesional
@@ -72,11 +74,6 @@ public class ProfesionalServicio {
             profesional.setBio(bio);
             profesional.setAgendaTurnos(agendaTurno);
         }
-        
-        
-        
-        
-    
     }
     
     //Eliminar un profesional
