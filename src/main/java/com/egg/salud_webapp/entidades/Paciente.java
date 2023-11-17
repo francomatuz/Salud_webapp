@@ -1,8 +1,10 @@
 
 package com.egg.salud_webapp.entidades;
 
+import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
+import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,31 +22,21 @@ public class Paciente extends Usuario{
    @Enumerated(EnumType.STRING)
    private ObraSocial obraSocial;
    
-  @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
-  private HistoriaClinica historiaClinica;
+//  @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
+//  private HistoriaClinica historiaClinica;
   
  /*   @OneToOne
     private Imagen imagen;
   */
-  
+
     public Paciente() {
-        this.historiaClinica = new HistoriaClinica(this);
     }
 
-    public HistoriaClinica getHistoriaClinica() {
-        return historiaClinica;
-    }
-
-    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
-        this.historiaClinica = historiaClinica;
-    }
-
-    public UsuarioEnum getRol() {
-        return rol;
-    }
-
-    public void setRol(UsuarioEnum rol) {
-        this.rol = rol;
+    public Paciente(Boolean activo, ObraSocial obraSocial, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
+        super(id, nombre, apellido, dni, fecha_nac, email, password, genero, rol);
+        this.activo = activo;
+        this.obraSocial = obraSocial;
+//        this.historiaClinica = historiaClinica;
     }
 
     public Boolean getActivo() {
@@ -55,7 +47,6 @@ public class Paciente extends Usuario{
         this.activo = activo;
     }
 
- 
     public ObraSocial getObraSocial() {
         return obraSocial;
     }
@@ -63,6 +54,13 @@ public class Paciente extends Usuario{
     public void setObraSocial(ObraSocial obraSocial) {
         this.obraSocial = obraSocial;
     }
-    
-    
+
+//    public HistoriaClinica getHistoriaClinica() {
+//        return historiaClinica;
+//    }
+//
+//    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
+//        this.historiaClinica = historiaClinica;
+//    }
+     
 }
