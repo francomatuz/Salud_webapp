@@ -1,6 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
-import com.egg.salud_webapp.entidades.HistoriaClinica;
+
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
@@ -50,8 +50,8 @@ public class PacienteServicio implements UserDetailsService {
 
         paciente.setRol(UsuarioEnum.USER);
         // Creacion de historia clinica
-        HistoriaClinica historiaClinica = new HistoriaClinica();
-        paciente.setHistoriaClinica(historiaClinica);
+//        HistoriaClinica historiaClinica = new HistoriaClinica();
+//        paciente.setHistoriaClinica(historiaClinica);
 
         pacienteRepositorio.save(paciente);
     }
@@ -146,7 +146,7 @@ public class PacienteServicio implements UserDetailsService {
         if (email == null || email.isEmpty()) {
             throw new MiException("El email no puede estar vacío o ser nulo");
         }
-        if (dniExistente != null && dniExistente.getEmail().equals(dni)) {
+        if (dniExistente != null && dniExistente.getDni().equals(dni)) {
             throw new MiException("Ya hay un usuario existente con el dni ingresado");
         }
 
@@ -173,6 +173,7 @@ public class PacienteServicio implements UserDetailsService {
 
             List<GrantedAuthority> permisos = new ArrayList();
 
+            
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + paciente.getRol().toString());
 
             permisos.add(p);
