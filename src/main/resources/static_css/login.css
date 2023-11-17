@@ -1,0 +1,25 @@
+body{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+
+.registro-cont span {
+
+    display: inline;
+    margin-top: 5px;
+    margin-right: 10px;
+    flex-direction:column;
+
+}
+
+.form-label{
+
+    text-align:center;
+}
+
+
