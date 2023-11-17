@@ -1,6 +1,7 @@
 
 package com.egg.salud_webapp.entidades;
 
+import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
 import javax.persistence.Entity;
@@ -29,6 +30,8 @@ public class Usuario {
     
     //@OneToOne
     //private Imagen imagen;
+    @Enumerated(EnumType.STRING)
+    protected GeneroEnum genero;
     
     @Enumerated(EnumType.STRING)
     protected UsuarioEnum rol;
@@ -110,6 +113,14 @@ public class Usuario {
 
     public void setRol(UsuarioEnum rol) {
         this.rol = rol;
+    }
+
+    public GeneroEnum getGenero() {
+        return genero;
+    }
+
+    public void setGenero(GeneroEnum genero) {
+        this.genero = genero;
     }
 
       
