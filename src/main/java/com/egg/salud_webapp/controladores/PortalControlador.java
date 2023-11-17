@@ -34,23 +34,15 @@ public class PortalControlador {
     }
 
     @GetMapping("/registrar")
-    public String registrar(Rol rol) throws MiException {        if (null == rol) {
-        // Ver la posibilidad de otro caso o lanzar una excepcion si es necesario
-        throw new MiException ("Rol no valido"+rol);
-        
-    } else //tipo usuario va a ser un enum acordado con el front
-     //recibe enum que diga si es profesional o paciente
-     switch (rol) {
-         case PACIENTE:
-             return "registrarpaciente.html";
-         case PROFESIONAL:
-             return "registrarprofesional.html";
-         default:
-             // Ver la posibilidad de otro caso o lanzar una excepcion si es necesario
-             throw new MiException ("Rol no valido"+rol);
-     }
-
+     public String registrar() {
+        return "registrar.html";
     }
+    @GetMapping("/registrar/paciente")
+    public String registrarPaciente() {
+        return "registrarpaciente.html";
+    }
+
+    
         //falta logica
         @PostMapping("/registrar/paciente")
         public String registrarpaciente(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String email, @RequestParam String dni, @RequestParam LocalDate fecha_nac, @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password, @RequestParam String password2,ModelMap modelo) throws MiException{
@@ -75,7 +67,7 @@ public class PortalControlador {
              modelo.put("obra social", obraSocial);
              modelo.put("genero", genero);
              
-               return "registrarpaciente.html";
+               return "login.html";
              
         }
         
