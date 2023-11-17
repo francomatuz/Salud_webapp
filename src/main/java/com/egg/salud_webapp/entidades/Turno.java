@@ -2,6 +2,7 @@
 package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.Estado;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,36 +17,40 @@ public class Turno {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Date horario;
+    private Long id_turno; //ver id_turno
     
+    //Va a quedar el id del paciente relacion con turno
+    @OneToOne
+    private Paciente paciente;
+
     //@OneToOne
     //private Profesional doctor;
     
-    @OneToOne
-    private Paciente paciente;
+    private String motivo;
     
-    @Enumerated(EnumType.STRING)
-    protected Estado estado;
+    private LocalDate fecha_turno;
+    
+    private Date horario_turno;
     
     private Boolean virtual_presencial;
-    private String motivo;
-    private Boolean tomado;
+      
+    @Enumerated(EnumType.STRING)
+    private Estado estado;
+    
+    //private Boolean tomado; //no entendemos el boolean y enum
+    
+    //La obra social sale del paciente, y va a estar por defecto en la vista
 
-    public Long getId() {
-        return id;
+    public Turno() {
+    }
+       
+
+    public Long getId_turno() {
+        return id_turno;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Date getHorario() {
-        return horario;
-    }
-
-    public void setHorario(Date horario) {
-        this.horario = horario;
+    public void setId_turno(Long id_turno) {
+        this.id_turno = id_turno;
     }
 
     public Paciente getPaciente() {
@@ -56,14 +61,6 @@ public class Turno {
         this.paciente = paciente;
     }
 
-    public Boolean getVirtual_presencial() {
-        return virtual_presencial;
-    }
-
-    public void setVirtual_presencial(Boolean virtual_presencial) {
-        this.virtual_presencial = virtual_presencial;
-    }
-
     public String getMotivo() {
         return motivo;
     }
@@ -72,14 +69,38 @@ public class Turno {
         this.motivo = motivo;
     }
 
-    public Boolean getTomado() {
-        return tomado;
+    public LocalDate getFecha_turno() {
+        return fecha_turno;
     }
 
-    public void setTomado(Boolean tomado) {
-        this.tomado = tomado;
+    public void setFecha_turno(LocalDate fecha_turno) {
+        this.fecha_turno = fecha_turno;
     }
-    
+
+    public Date getHorario_turno() {
+        return horario_turno;
+    }
+
+    public void setHorario_turno(Date horario_turno) {
+        this.horario_turno = horario_turno;
+    }
+
+    public Boolean getVirtual_presencial() {
+        return virtual_presencial;
+    }
+
+    public void setVirtual_presencial(Boolean virtual_presencial) {
+        this.virtual_presencial = virtual_presencial;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
     
     
 }
