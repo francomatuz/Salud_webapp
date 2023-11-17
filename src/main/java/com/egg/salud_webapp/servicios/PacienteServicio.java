@@ -109,10 +109,28 @@ public class PacienteServicio implements UserDetailsService{
         return pacientes;
 
     }
+    
+        @Transactional
+    public void cambiarRol(Long id){
+        Optional<Paciente> respuesta = pacienteRepositorio.findById(id);
+    	
+    	if(respuesta.isPresent()) {
+    		
+    		Paciente paciente = respuesta.get();
+    		
+    		if(paciente.getRol().equals(UsuarioEnum.USER)) {
+    			
+    		paciente.setRol(UsuarioEnum.ADMIN);
+    		
+    		}else if(paciente.getRol().equals(UsuarioEnum.ADMIN)) {
+    			paciente.setRol(UsuarioEnum.USER);
+    		}
+    	}
+    }
 
     private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
 
-        Optional<Paciente> dniExistente = pacienteRepositorio.buscarPorDni(dni);
+        Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
         
         if (nombre.isEmpty() || nombre == null) {
@@ -128,9 +146,9 @@ public class PacienteServicio implements UserDetailsService{
         if (email == null || email.isEmpty()) {
             throw new MiException("El email no puede estar vacío o ser nulo");
         }
-        if (dniExistente.isPresent()) {
-            throw new MiException("Ya hay un usuario existente con el Dni ingresado");
-        }
+//        if (dniExistente.isPresent()) {
+//            throw new MiException("Ya hay un usuario existente con el Dni ingresado");
+//        }
 
         if (dni.isEmpty() || dni == null) {
             throw new MiException("El dni no puede estar vacío o ser nulo");
