@@ -76,6 +76,7 @@ public class PacienteServicio implements UserDetailsService {
             paciente.setObraSocial(obraSocial);
             paciente.setGenero(genero);
             paciente.setPassword(new BCryptPasswordEncoder().encode(password));
+            
 
             paciente.setRol(UsuarioEnum.USER);
             pacienteRepositorio.save(paciente);
