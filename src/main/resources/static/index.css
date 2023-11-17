@@ -1,0 +1,85 @@
+body {
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* Cambia la fuente para todo el cuerpo del documento */
+  }
+
+  /* Estilos para el navbar */
+  .navbar {
+    padding: 1rem; 
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .navbar-nav .nav-link {
+    margin-right: 1rem; 
+  }
+
+.form-select {
+    width: calc(30% - 10px); 
+    margin: 0 5px; 
+    display: inline-block; 
+    font-size: 14px; 
+    vertical-align: middle; 
+}
+
+/* Estilos para el contenedor de los selects */
+.select-container {
+    text-align: center; 
+}
+
+/* Estilos para el botón */
+.btn-primary {
+    display: block; /* Convertirlo en bloque para centrarlo */
+    margin: 10px auto; /* Centrar el botón */
+    width: 30%; /* Ancho del botón */
+    font-size: 14px; /* Tamaño de fuente */
+    text-align: center; /* Centrar el texto del botón */
+}
+
+h5.card-title {
+    font-size: 5rem; /* Tamaño grande */
+    text-align: center; /* Centrar el texto */
+    margin-bottom: 20px; /* Espacio inferior */
+    font-weight: bold; /* Estilo de fuente en negrita */
+    color: #ffffff; /* Color del texto */
+    
+    
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 5rem; /* Tamaño grande */
+    font-weight: bold; /* Estilo de fuente en negrita */
+    color: #333; /* Color del texto */
+    margin-bottom: 20px; /* Espacio inferior */
+}
+
+.form-select {
+    width: 80%; 
+    margin-bottom: 10px; 
+}
+
+.btn-primary {
+    margin-top: 20px; 
+}
+
+footer {
+    background-color: #333; 
+    color: #fff; 
+    padding: 20px;
+    text-align: center; 
+  }
+  
+  /* Estilos para los párrafos dentro del footer */
+  footer p {
+    margin: 5px 0; 
+  }
+  
