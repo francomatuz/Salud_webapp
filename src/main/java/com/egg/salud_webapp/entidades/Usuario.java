@@ -11,10 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
-@Entity
-@Inheritance
+@MappedSuperclass
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Usuario {
     
     @Id
@@ -39,7 +41,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, UsuarioEnum rol) {
+    public Usuario(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -47,10 +49,10 @@ public class Usuario {
         this.fecha_nac = fecha_nac;
         this.email = email;
         this.password = password;
+        this.genero = genero;
         this.rol = rol;
     }
 
-    
     public Long getId() {
         return id;
     }
