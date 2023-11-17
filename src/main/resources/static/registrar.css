@@ -1,0 +1,65 @@
+body {
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* Fuente del texto */
+    margin: 0; /* Elimina los márgenes predeterminados */
+    padding: 0; /* Elimina el relleno predeterminado */
+  }
+  
+  /* Estilos para el navbar */
+  .navbar {
+    padding: 1rem; 
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .navbar-nav .nav-link {
+    margin-right: 1rem; 
+  }
+  .card {
+    width: 50%; /* Ancho máximo de las tarjetas */
+    margin: 50px auto; /* Margen exterior y centrado horizontal */
+    text-align: center; /* Centrar contenido */
+}
+
+.card-img-top {
+    width: 20%; /* Reducir el tamaño de la imagen al 50% */
+    display: block; /* Mostrar la imagen como bloque */
+    margin: 0 auto 15px; /* Centrar horizontalmente y agregar espacio inferior */
+}
+
+.card a {
+    text-decoration: none; /* Eliminar subrayado de enlace */
+    color: inherit; /* Heredar color del texto */
+}
+
+.card a:hover {
+    text-decoration: none; /* Eliminar subrayado en el hover */
+}
+
+  
+  .card-title {
+    font-size: 1.5rem; /* Tamaño del título */
+    font-weight: bold; /* Texto en negrita */
+    margin-bottom: 0.5rem; /* Espacio inferior */
+  }
+  
+  .card-text {
+    font-size: 1rem; /* Tamaño del texto */
+  }
+  
+
+  
+  .row-cols-3 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centrar el contenido */
+    gap: 1rem; /* Espacio entre tarjetas */
+  }
+
+  .card-link {
+    text-decoration: none;
+    color: inherit; /* hereda el color del texto */
+}
+  
