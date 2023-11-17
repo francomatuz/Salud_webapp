@@ -78,6 +78,21 @@ public class PortalControlador {
         
         return "login.html";
     } 
+        @PostMapping("/logincheck")
+public String loginCheck(@RequestParam String email, @RequestParam String password, ModelMap modelo) {
+    // Aquí deberías realizar la lógica de autenticación, por ejemplo, usando Spring Security.
+    // Puedes usar el servicio de Spring Security o tu propio servicio para verificar las credenciales.
+
+    // Ejemplo simple (debes adaptarlo a tus necesidades):
+    if (email.equals("usuario@example.com") && password.equals("contraseña")) {
+        // Autenticación exitosa, puedes redirigir a la página de inicio u otra página deseada.
+        return "redirect:/inicio";
+    } else {
+        // Autenticación fallida, agrega un mensaje de error y redirige a la página de login.
+        modelo.put("error", "Usuario o contraseña incorrectos");
+        return "login.html";
+    }
+}
 
     }
 
