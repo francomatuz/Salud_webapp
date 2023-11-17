@@ -39,7 +39,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, UsuarioEnum rol) {
+    public Usuario(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -47,10 +47,10 @@ public class Usuario {
         this.fecha_nac = fecha_nac;
         this.email = email;
         this.password = password;
+        this.genero = genero;
         this.rol = rol;
     }
 
-    
     public Long getId() {
         return id;
     }
