@@ -1,7 +1,8 @@
 
 package com.egg.salud_webapp.entidades;
 
-import com.egg.salud_webapp.enumeraciones.Rol;
+import com.egg.salud_webapp.enumeraciones.GeneroEnum;
+import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,17 +26,31 @@ public class Usuario {
     protected String apellido;
     protected String dni;
     protected LocalDate fecha_nac;
-    
-    //@OneToOne
-    //private Imagen imagen;
-    
     protected String email;
     protected String password;
     
+    
+    //@OneToOne
+    //private Imagen imagen;
     @Enumerated(EnumType.STRING)
-    protected Rol rol;
+    protected GeneroEnum genero;
+    
+    @Enumerated(EnumType.STRING)
+    protected UsuarioEnum rol;
 
     public Usuario() {
+    }
+
+    public Usuario(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.fecha_nac = fecha_nac;
+        this.email = email;
+        this.password = password;
+        this.genero = genero;
+        this.rol = rol;
     }
 
     public Long getId() {
@@ -94,12 +109,20 @@ public class Usuario {
         this.password = password;
     }
 
-    public Rol getRol() {
+    public UsuarioEnum getRol() {
         return rol;
     }
 
-    public void setRol(Rol rol) {
+    public void setRol(UsuarioEnum rol) {
         this.rol = rol;
+    }
+
+    public GeneroEnum getGenero() {
+        return genero;
+    }
+
+    public void setGenero(GeneroEnum genero) {
+        this.genero = genero;
     }
 
       

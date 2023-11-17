@@ -1,65 +1,66 @@
 
 package com.egg.salud_webapp.entidades;
 
-import com.egg.salud_webapp.enumeraciones.Rol;
+import com.egg.salud_webapp.enumeraciones.GeneroEnum;
+import com.egg.salud_webapp.enumeraciones.ObraSocial;
+import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
+import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
 public class Paciente extends Usuario{
-  @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
     private Boolean activo;
+ 
   
+
+
    @Enumerated(EnumType.STRING)
-    private Rol rol;
+   private ObraSocial obraSocial;
+   
+//  @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
+//  private HistoriaClinica historiaClinica;
+  
+ /*   @OneToOne
+    private Imagen imagen;
+  */
 
-  @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
-  private HistoriaClinica historiaClinica;
-  
-  
     public Paciente() {
-        this.historiaClinica = new HistoriaClinica(this);
     }
 
-    public HistoriaClinica getHistoriaClinica() {
-        return historiaClinica;
+    public Paciente(Boolean activo, ObraSocial obraSocial, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
+        super(id, nombre, apellido, dni, fecha_nac, email, password, genero, rol);
+        this.activo = activo;
+        this.obraSocial = obraSocial;
+//        this.historiaClinica = historiaClinica;
     }
 
-    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
-        this.historiaClinica = historiaClinica;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Rol getRol() {
-        return rol;
-    }
-
-    public void setRol(Rol rol) {
-        this.rol = rol;
-    }
-
-    public Boolean getActive() {
+    public Boolean getActivo() {
         return activo;
     }
 
-    public void setActive(Boolean active) {
+    public void setActivo(Boolean activo) {
         this.activo = activo;
     }
-    
-    
+
+    public ObraSocial getObraSocial() {
+        return obraSocial;
+    }
+
+    public void setObraSocial(ObraSocial obraSocial) {
+        this.obraSocial = obraSocial;
+    }
+
+//    public HistoriaClinica getHistoriaClinica() {
+//        return historiaClinica;
+//    }
+//
+//    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
+//        this.historiaClinica = historiaClinica;
+//    }
+     
 }
