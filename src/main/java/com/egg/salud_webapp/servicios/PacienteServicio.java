@@ -2,6 +2,8 @@ package com.egg.salud_webapp.servicios;
 
 import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Paciente;
+import com.egg.salud_webapp.enumeraciones.GeneroEnum;
+import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.PacienteRepositorio;
@@ -24,7 +26,7 @@ public class PacienteServicio {
     //Metodos Crud
     //Crear paciente
     @Transactional
-    public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
+    public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         //Falta validador
         Paciente paciente = new Paciente();
@@ -34,6 +36,8 @@ public class PacienteServicio {
         paciente.setEmail(email);
         paciente.setDni(dni);
         paciente.setFecha_nac(fecha_nac);
+        paciente.setObraSocial(obraSocial);
+        paciente.setGenero(genero);
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
 
         paciente.setRol(UsuarioEnum.USER);
@@ -46,7 +50,7 @@ public class PacienteServicio {
 
     //Actualizar paciente
     @Transactional
-    public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
+    public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac, ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
             validarAtributos(nombre,apellido,email,dni,fecha_nac,password,password2);
      
@@ -61,6 +65,8 @@ public class PacienteServicio {
             paciente.setEmail(email);
             paciente.setDni(dni);
             paciente.setFecha_nac(fecha_nac);
+            paciente.setObraSocial(obraSocial);
+            paciente.setGenero(genero);
             paciente.setPassword(new BCryptPasswordEncoder().encode(password));
 
             paciente.setRol(UsuarioEnum.USER);
