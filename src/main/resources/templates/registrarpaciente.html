@@ -56,7 +56,7 @@
 
         <div class="col-md-4">
           <label for="validationDefault08" class="form-label">Género</label>
-        <select class="form-select" aria-label="Default select example" >
+        <select class="form-select" name="genero" aria-label="Default select example" >
           <option th:each="gen : ${generos}"
           th:value="${gen}"
           th:text="${gen}"></option>
@@ -85,7 +85,7 @@
         
         <div class="col-md-4">
         <label for="validationDefault08" class="form-label">Seleccione cobertura</label>
-        <select class="form-select" aria-label="Default select example">
+        <select class="form-select" name="obraSocial" aria-label="Default select example">
           <option th:each="obraSocial : ${obrasSociales}"
           th:value="${obraSocial}"
           th:text="${obraSocial}"></option>
