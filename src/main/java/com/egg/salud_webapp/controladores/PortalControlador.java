@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/")
 public class PortalControlador {
     
- @Autowired
- private PacienteServicio pacienteServicio;
+    @Autowired
+    private PacienteServicio pacienteServicio;
 
     @GetMapping("/")
     public String index() {
@@ -36,62 +36,48 @@ public class PortalControlador {
     }
 
     @GetMapping("/registrar")
-    public String registrar(Rol rol) throws MiException {        if (null == rol) {
-        // Ver la posibilidad de otro caso o lanzar una excepcion si es necesario
-        throw new MiException ("Rol no valido"+rol);
-        
-    } else //tipo usuario va a ser un enum acordado con el front
-     //recibe enum que diga si es profesional o paciente
-     switch (rol) {
-         case PACIENTE:
-             return "registrarpaciente.html";
-         case PROFESIONAL:
-             return "registrarprofesional.html";
-         default:
-             // Ver la posibilidad de otro caso o lanzar una excepcion si es necesario
-             throw new MiException ("Rol no valido"+rol);
-     }
-
+    public String registrar() {
+        return "registrar.html";
     }
-        //falta logica
-        @PostMapping("/registrar/paciente")
-        public String registrarpaciente(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String email, @RequestParam String dni, @RequestParam LocalDate fecha_nac, @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password, @RequestParam String password2,ModelMap modelo) throws MiException{
-        
-             pacienteServicio.registrar(nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password, password2);
-            
-            
-         /*    try { 
-                 pacienteServicio.registrar(nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password, password2);
-            
-                    modelo.put("Exito", "Paciente registrado exitosamente");
-                    
-                    return "index.html";
-                    
-        } catch (MiException ex) {
-            
-             Logger.getLogger(PortalControlador.class.getName()).log(Level.SEVERE, null, ex);
-            
-             modelo.put("Error", ex.getMessage());
-             modelo.put("nombre", nombre);
-             modelo.put("apellido", apellido);
-             modelo.put("email", email);
-             modelo.put("dni", dni);
-             modelo.put("fecha de nacimiento", fecha_nac);
-             modelo.put("obra social", obraSocial);
-             modelo.put("genero", genero);*/
-             
-               return "login.html";
-             
-        }
-        
-        }
+
+    @GetMapping("/registrar/paciente")
+    public String registrarPaciente() {
+        return "registrarpaciente.html";
+    }
+
     
-        
-        @PostMapping("/registrar/profesional")
-        public String registrarprofesional(){
-        
-        return "solicitud.html";
-        }
+    @PostMapping("/registrar/paciente")
+    public String registrarpaciente(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String email, @RequestParam String dni, @RequestParam LocalDate fecha_nac, @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password, @RequestParam String password2, ModelMap modelo) throws MiException {
 
+        pacienteServicio.registrar(nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password, password2);
+
+        try {
+            pacienteServicio.registrar(nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password, password2);
+
+            modelo.put("Exito", "Paciente registrado exitosamente");
+
+            return "index.html";
+
+        } catch (MiException ex) {
+
+            Logger.getLogger(PortalControlador.class.getName()).log(Level.SEVERE, null, ex);
+
+            modelo.put("Error", ex.getMessage());
+            modelo.put("nombre", nombre);
+            modelo.put("apellido", apellido);
+            modelo.put("email", email);
+            modelo.put("dni", dni);
+            modelo.put("fecha de nacimiento", fecha_nac);
+            modelo.put("obra social", obraSocial);
+            modelo.put("genero", genero);
+
+            return "login.html";
+
+        }
     }
+   }
+             
+        
+
+
 

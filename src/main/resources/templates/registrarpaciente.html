@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
  
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="index.html">Salud</a>
+          <a class="navbar-brand" th:href=@{/}>Salud</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -37,62 +37,59 @@
       </nav>
 
     
-      <form class="row g-3">
+      <form th:action="@{/registrar}" class="row g-3">
         <div class="col-md-4">
           <label for="validationDefault01" class="form-label">Nombre</label>
-          <input type="text" class="form-control" id="validationDefault01" value="Ingrese su nombre" required>
+          <input type="text" name="nombre" class="form-control" id="validationDefault01" th:value="${nombre}" required>
         </div>
         <div class="col-md-4">
           <label for="validationDefault02" class="form-label">Apellido</label>
-          <input type="text" class="form-control" id="validationDefault02" value="Ingrese su apellido" required>
+          <input type="text" name="apellido" class="form-control" id="validationDefault02" th:value="${apellido}" required>
         </div>
         <div class="col-md-4">
           <label for="validationDefaultUsername" class="form-label">DNI o Identificación</label>
           <div class="input-group">
             <span class="input-group-text" id="inputGroupPrepend2">Nº</span>
-            <input type="text" class="form-control" id="validationDefault03" aria-describedby="inputGroupPrepend2" required>
+            <input type="text" name="dni" class="form-control" id="validationDefault03" th:value="${dni}" aria-describedby="inputGroupPrepend2" required>
           </div>
         </div>
 
         <div class="col-md-4">
           <label for="validationDefault08" class="form-label">Género</label>
-          <select class="form-select" aria-label="Default select example">
-            <option selected>...</option>
-            <option value="1">Femenino</option>
-            <option value="2">Masculino</option>
-            <option value="3">Otro</option>
+        <select class="form-select" aria-label="Default select example">
+          <option th:each="genero : ${generos}"
+          th:value="${genero}"
+          th:text="${genero}"></option>
+        </select>
         </div>
 
         <div class="col-md-2">
             <label for="validationDefault05" class="form-label">Fecha de Nacimiento</label>
-            <input type="date" class="form-control" id="validationDefault04" required>
+            <input type="date" class="form-control" id="validationDefault04" th:value="${fecha}" required>
           </div>
         </div>
 
         <div class="col-md-4">
           <label for="validationDefault01" class="form-label">Correo electrónico</label>
-          <input type="text" class="form-control" id="validationDefault01" value="Ingrese su correo electrónico" required>
+          <input type="text" name="email" class="form-control" id="validationDefault01" value="Ingrese su correo electrónico" th:value="${email}" required>
         </div>
 
         <div class="col-md-3">
             <label for="validationDefault05" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="validationDefault06" required>
+            <input type="password" name="password" class="form-control" id="validationDefault06" th:value="${password}" required>
           </div>
+        
         <div class="col-md-3">
           <label for="validationDefault05" class="form-label">Confirmar Contraseña</label>
-          <input type="password" class="form-control" id="validationDefault07" required>
+          <input type="password" name="password2" class="form-control" id="validationDefault07" th:value="${password2}" required>
         </div>
+        
         <div class="col-md-4">
         <label for="validationDefault08" class="form-label">Seleccione cobertura</label>
         <select class="form-select" aria-label="Default select example">
-          <option selected>...</option>
-          <option value="1">OSDE</option>
-          <option value="2">SWISS MEDICAL</option>
-          <option value="3">GALENO</option>
-          <option value="4">SANCOR SALUD</option>
-          <option value="5">OMINT</option>
-          <option value="6">OTRO</option>
-          <option value="7">NO TIENE</option>
+          <option th:each="obraSocial : ${obrasSociales}"
+          th:value="${obraSocial}"
+          th:text="${obraSocial}"></option>
         </select>
       </div>
 
