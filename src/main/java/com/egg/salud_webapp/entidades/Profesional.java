@@ -25,11 +25,10 @@ public class Profesional extends Usuario{
     private String direccion;
     private Boolean atencionVirtual;
     private String bio;
-    private String[] obraSocial;
+    private String[] prestadores;
+    private Boolean alta;
 
-
-    public Profesional(String matricula, Especialidades especialidad, LocalDateTime agendaTurnos, Integer duracionTurno, Double precio, Integer calificacion, String direccion, Boolean atencionVirtual, String bio, String[] obraSocial, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, Rol rol) {
-        super(id, nombre, apellido, dni, fecha_nac, email, password, rol);
+    public Profesional(String matricula, Especialidades especialidad, LocalDateTime agendaTurnos, Integer duracionTurno, Double precio, Integer calificacion, String direccion, Boolean atencionVirtual, String bio, String[] obraSocial, Boolean alta) {
         this.matricula = matricula;
         this.especialidad = especialidad;
         this.agendaTurnos = agendaTurnos;
@@ -39,7 +38,11 @@ public class Profesional extends Usuario{
         this.direccion = direccion;
         this.atencionVirtual = atencionVirtual;
         this.bio = bio;
-        this.obraSocial = obraSocial;
+        this.prestadores = obraSocial;
+        this.alta = alta;
+    }
+
+    public Profesional() {
     }
 
     public String getMatricula() {
@@ -114,12 +117,20 @@ public class Profesional extends Usuario{
         this.bio = bio;
     }
 
-    public String[] getObraSocial() {
-        return obraSocial;
+    public String[] getPrestadores() {
+        return prestadores;
     }
 
-    public void setObraSocial(String[] obraSocial) {
-        this.obraSocial = obraSocial;
+    public void setPrestadores(String[] prestadores) {
+        this.prestadores = prestadores;
+    }
+
+    public Boolean getAlta() {
+        return alta;
+    }
+
+    public void setAlta(Boolean alta) {
+        this.alta = alta;
     }
 
 }
