@@ -51,7 +51,7 @@ public class ProfesionalServicio {
         profesional.setDireccion(direccion);
         profesional.setAtencionVirtual(atencionVirtual);
         profesional.setBio(bio);
-        profesional.setAlta(false);
+//        profesional.setAlta(false);
 
         profesionalRepositorio.save(profesional);
     }

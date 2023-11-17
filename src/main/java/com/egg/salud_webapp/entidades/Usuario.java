@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.OneToOne;
 
-@Entity
+
 @Inheritance
 public class Usuario {
     
