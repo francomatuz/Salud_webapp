@@ -11,14 +11,22 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
-public class PacienteServicio {
+public class PacienteServicio implements UserDetailsService{
 
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
@@ -105,7 +113,7 @@ public class PacienteServicio {
     private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
 
         Optional<Paciente> dniExistente = pacienteRepositorio.buscarPorDni(dni);
-        Optional<Paciente> emailExistente = pacienteRepositorio.buscarPorEmail(email);
+        Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
         
         if (nombre.isEmpty() || nombre == null) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
@@ -113,9 +121,9 @@ public class PacienteServicio {
         if (apellido.isEmpty() || apellido == null) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
-        if (emailExistente.isPresent()) {
-            throw new MiException("Ya hay un usuario existente con el Email ingresado");
-        }
+//        if (emailExistente.ifPresent()) {
+//            throw new MiException("Ya hay un usuario existente con el Email ingresado");
+//        }
 
         if (email == null || email.isEmpty()) {
             throw new MiException("El email no puede estar vacío o ser nulo");
@@ -136,5 +144,31 @@ public class PacienteServicio {
         if (!password.equals(password2)) {
             throw new MiException("La contraseñas ingresadas deben ser iguales");
         }
+    }
+    
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        Paciente paciente = pacienteRepositorio.buscarPorEmail(email);
+
+        if (paciente != null) {
+
+            List<GrantedAuthority> permisos = new ArrayList();
+
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + paciente.getRol().toString());
+
+            permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("usuariosession", paciente);
+
+            return new User(paciente.getEmail(), paciente.getPassword(), permisos);
+        } else {
+            return null;
+        }
+
     }
 }

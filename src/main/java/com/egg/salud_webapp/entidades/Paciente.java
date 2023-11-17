@@ -1,8 +1,10 @@
 
 package com.egg.salud_webapp.entidades;
 
+import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
+import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -26,25 +28,15 @@ public class Paciente extends Usuario{
  /*   @OneToOne
     private Imagen imagen;
   */
-  
+
     public Paciente() {
-        this.historiaClinica = new HistoriaClinica(this);
     }
 
-    public HistoriaClinica getHistoriaClinica() {
-        return historiaClinica;
-    }
-
-    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
+    public Paciente(Boolean activo, ObraSocial obraSocial, HistoriaClinica historiaClinica, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
+        super(id, nombre, apellido, dni, fecha_nac, email, password, genero, rol);
+        this.activo = activo;
+        this.obraSocial = obraSocial;
         this.historiaClinica = historiaClinica;
-    }
-
-    public UsuarioEnum getRol() {
-        return rol;
-    }
-
-    public void setRol(UsuarioEnum rol) {
-        this.rol = rol;
     }
 
     public Boolean getActivo() {
@@ -55,7 +47,6 @@ public class Paciente extends Usuario{
         this.activo = activo;
     }
 
- 
     public ObraSocial getObraSocial() {
         return obraSocial;
     }
@@ -63,6 +54,13 @@ public class Paciente extends Usuario{
     public void setObraSocial(ObraSocial obraSocial) {
         this.obraSocial = obraSocial;
     }
-    
-    
+
+    public HistoriaClinica getHistoriaClinica() {
+        return historiaClinica;
+    }
+
+    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
+        this.historiaClinica = historiaClinica;
+    }
+     
 }
