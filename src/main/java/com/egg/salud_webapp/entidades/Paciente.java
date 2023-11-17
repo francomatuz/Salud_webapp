@@ -15,8 +15,7 @@ public class Paciente extends Usuario{
     private Boolean activo;
  
   
-   @Enumerated(EnumType.STRING)
-    private UsuarioEnum rol;
+
 
    @Enumerated(EnumType.STRING)
    private ObraSocial obraSocial;
