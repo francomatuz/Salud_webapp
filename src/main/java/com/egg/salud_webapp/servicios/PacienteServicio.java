@@ -104,8 +104,8 @@ public class PacienteServicio {
 
     private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
 
-        Optional<Paciente> dniExistente = pacienteRepositorio.buscarPorDni(dni);
-        Optional<Paciente> emailExistente = pacienteRepositorio.buscarPorEmail(email);
+        Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
+        Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
         
         if (nombre.isEmpty() || nombre == null) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
@@ -113,15 +113,15 @@ public class PacienteServicio {
         if (apellido.isEmpty() || apellido == null) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
-        if (emailExistente.isPresent()) {
-            throw new MiException("Ya hay un usuario existente con el Email ingresado");
-        }
+       if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
+        throw new MiException("Ya hay un usuario existente con el Email ingresado");
+    }
 
         if (email == null || email.isEmpty()) {
             throw new MiException("El email no puede estar vacío o ser nulo");
         }
-        if (dniExistente.isPresent()) {
-            throw new MiException("Ya hay un usuario existente con el Dni ingresado");
+        if (dniExistente != null && dniExistente.getEmail().equals(dni)) {
+            throw new MiException("Ya hay un usuario existente con el dni ingresado");
         }
 
         if (dni.isEmpty() || dni == null) {
