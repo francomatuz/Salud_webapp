@@ -37,7 +37,7 @@
       </nav>
 
     
-      <form th:action="@{/registrar}" class="row g-3">
+      <form class="formulario" th:action="@{/registrar/paciente}" method="POST" enctype="multipart/form-data">
         <div class="col-md-4">
           <label for="validationDefault01" class="form-label">Nombre</label>
           <input type="text" name="nombre" class="form-control" id="validationDefault01" th:value="${nombre}" required>
@@ -56,17 +56,17 @@
 
         <div class="col-md-4">
           <label for="validationDefault08" class="form-label">Género</label>
-        <select class="form-select" aria-label="Default select example">
-          <option th:each="genero : ${generos}"
-          th:value="${genero}"
-          th:text="${genero}"></option>
+        <select class="form-select" aria-label="Default select example" >
+          <option th:each="gen : ${generos}"
+          th:value="${gen}"
+          th:text="${gen}"></option>
         </select>
         </div>
 
         <div class="col-md-2">
             <label for="validationDefault05" class="form-label">Fecha de Nacimiento</label>
             <input type="date" class="form-control" id="validationDefault04" th:value="${fecha}" required>
-          </div>
+          </div> 
         </div>
 
         <div class="col-md-4">

@@ -26,7 +26,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
-public class PacienteServicio implements UserDetailsService{
+public class PacienteServicio implements UserDetailsService {
 
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
@@ -60,8 +60,8 @@ public class PacienteServicio implements UserDetailsService{
     @Transactional
     public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac, ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
-            validarAtributos(nombre,apellido,email,dni,fecha_nac,password,password2);
-     
+        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
+
         Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
 
         if (respuesta.isPresent()) {
@@ -81,25 +81,24 @@ public class PacienteServicio implements UserDetailsService{
             pacienteRepositorio.save(paciente);
         }
     }
-    
+
     @Transactional
     public void eliminar(Long id) throws MiException {
-        
-        Optional <Paciente> pacienteExistente = pacienteRepositorio.buscarPorId(id);
-        
-        if(pacienteExistente.isPresent()) {
+
+        Optional<Paciente> pacienteExistente = pacienteRepositorio.buscarPorId(id);
+
+        if (pacienteExistente.isPresent()) {
             pacienteRepositorio.delete(pacienteExistente.get());
-        } else
-        throw new MiException("No se encontro un paciente con los datos ingresados");
+        } else {
+            throw new MiException("No se encontro un paciente con los datos ingresados");
+        }
     }
-    
 
     public Paciente getOne(Long id) {
         return pacienteRepositorio.getOne(id);
     }
 
     // Metodo leer pacientes de la base de datos
-    
     public List<Paciente> listarPacientes() {
 
         List<Paciente> pacientes = new ArrayList();
@@ -109,46 +108,46 @@ public class PacienteServicio implements UserDetailsService{
         return pacientes;
 
     }
-    
-        @Transactional
-    public void cambiarRol(Long id){
+
+    @Transactional
+    public void cambiarRol(Long id) {
         Optional<Paciente> respuesta = pacienteRepositorio.findById(id);
-    	
-    	if(respuesta.isPresent()) {
-    		
-    		Paciente paciente = respuesta.get();
-    		
-    		if(paciente.getRol().equals(UsuarioEnum.USER)) {
-    			
-    		paciente.setRol(UsuarioEnum.ADMIN);
-    		
-    		}else if(paciente.getRol().equals(UsuarioEnum.ADMIN)) {
-    			paciente.setRol(UsuarioEnum.USER);
-    		}
-    	}
+
+        if (respuesta.isPresent()) {
+
+            Paciente paciente = respuesta.get();
+
+            if (paciente.getRol().equals(UsuarioEnum.USER)) {
+
+                paciente.setRol(UsuarioEnum.ADMIN);
+
+            } else if (paciente.getRol().equals(UsuarioEnum.ADMIN)) {
+                paciente.setRol(UsuarioEnum.USER);
+            }
+        }
     }
 
     private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
 
         Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
-        
+
         if (nombre.isEmpty() || nombre == null) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
         if (apellido.isEmpty() || apellido == null) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
-//        if (emailExistente.ifPresent()) {
-//            throw new MiException("Ya hay un usuario existente con el Email ingresado");
-//        }
+        if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
+            throw new MiException("Ya hay un usuario existente con el Email ingresado");
+        }
 
         if (email == null || email.isEmpty()) {
             throw new MiException("El email no puede estar vacío o ser nulo");
         }
-//        if (dniExistente.isPresent()) {
-//            throw new MiException("Ya hay un usuario existente con el Dni ingresado");
-//        }
+        if (dniExistente != null && dniExistente.getEmail().equals(dni)) {
+            throw new MiException("Ya hay un usuario existente con el dni ingresado");
+        }
 
         if (dni.isEmpty() || dni == null) {
             throw new MiException("El dni no puede estar vacío o ser nulo");
@@ -163,7 +162,7 @@ public class PacienteServicio implements UserDetailsService{
             throw new MiException("La contraseñas ingresadas deben ser iguales");
         }
     }
-    
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +34,14 @@ public class PortalControlador {
     }
 
     @GetMapping("/registrar/paciente")
-    public String registrarPaciente() {
+    public String registrarPaciente(ModelMap modelo) {
+        modelo.put("generos", GeneroEnum.values());
+        modelo.put("obrasSociales", ObraSocial.values());
         return "registrarpaciente.html";
     }
 
     @PostMapping("/registrar/paciente")
-    public String registrarpaciente(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String email, @RequestParam String dni, @RequestParam LocalDate fecha_nac, @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password, @RequestParam String password2, ModelMap modelo) throws MiException {
+    public String registrarpaciente(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String email, @RequestParam String dni, @RequestParam(name = "fecha_nac") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac, @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password, @RequestParam String password2, ModelMap modelo) throws MiException {
 
         try {
             pacienteServicio.registrar(nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password, password2);
