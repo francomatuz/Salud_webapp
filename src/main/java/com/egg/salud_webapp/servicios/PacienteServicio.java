@@ -1,6 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
-import com.egg.salud_webapp.entidades.HistoriaClinica;
+
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
@@ -52,8 +52,8 @@ public class PacienteServicio implements UserDetailsService {
 
         paciente.setRol(UsuarioEnum.USER);
         // Creacion de historia clinica
-        HistoriaClinica historiaClinica = new HistoriaClinica();
-        paciente.setHistoriaClinica(historiaClinica);
+//        HistoriaClinica historiaClinica = new HistoriaClinica();
+//        paciente.setHistoriaClinica(historiaClinica);
 
         pacienteRepositorio.save(paciente);
     }
@@ -78,6 +78,7 @@ public class PacienteServicio implements UserDetailsService {
             paciente.setObraSocial(obraSocial);
             paciente.setGenero(genero);
             paciente.setPassword(new BCryptPasswordEncoder().encode(password));
+            
 
             paciente.setRol(UsuarioEnum.USER);
             pacienteRepositorio.save(paciente);
@@ -178,6 +179,7 @@ System.out.println("DNI ingresado para validación: " + dni);
 
             List<GrantedAuthority> permisos = new ArrayList();
 
+            
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + paciente.getRol().toString());
 
             permisos.add(p);
