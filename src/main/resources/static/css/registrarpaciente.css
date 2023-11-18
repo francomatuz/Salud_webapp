@@ -13,7 +13,9 @@ body {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Estilos para los campos del formulario */
@@ -23,25 +25,32 @@ body {
 
 .form-control {
     margin-bottom: 15px;
-    width: 100%;
+  
 }
 
 /* Estilos para el botón */
 .btn-primary {
     
-    width: 25%;
-    align-items: center;
+    width: 100%;
+/*    align-items: center;*/
 }
 
 /* Estilos para los formularios */
 .formulario {
     display: flex;
     flex-wrap: wrap;
-/*    gap: 20px;  Espacio entre formularios */
+    gap: 20px;  
 }
 
 .formulario > * {
     flex-grow: 1;
     min-width: 0;
-    width: calc(100% / 3 - 20px); /* Ajusta el número de formularios por fila */
+    width: 100%; /* Ajusta el número de formularios por fila */
 }
+    @media (min-width: 768px) {
+    .formulario > * {
+        width: calc(33.333% - 20px); /* Ajusta el ancho y el espacio horizontal entre formularios para pantallas medianas */
+    }
+    
+}
+

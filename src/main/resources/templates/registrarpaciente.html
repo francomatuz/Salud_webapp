@@ -38,16 +38,16 @@
       </nav>
 
       <div class="container">
-      <form class="formulario" th:action="@{/registrar/paciente}" method="POST" enctype="multipart/form-data">
-        <div class="col-md-4">
+      <form class="formulario" th:action="@{/registrar/paciente}" method="POST" enctype="multipart/form-data" style="margin: 0 20px;">
+        <div class="col-md-6">
           <label for="validationDefault01" class="form-label">Nombre</label>
           <input type="text" name="nombre" class="form-control" id="validationDefault01" th:value="${nombre}" required>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="validationDefault02" class="form-label">Apellido</label>
           <input type="text" name="apellido" class="form-control" id="validationDefault02" th:value="${apellido}" required>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="validationDefaultUsername" class="form-label">DNI o Identificación</label>
           <div class="input-group">
             <span class="input-group-text" id="inputGroupPrepend2">Nº</span>
@@ -55,7 +55,7 @@
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="validationDefault08" class="form-label">Género</label>
         <select class="form-select" name="genero" aria-label="Default select example" >
           <option th:each="gen : ${generos}"
@@ -64,12 +64,12 @@
         </select>
         </div>
 
-         <div class="col-md-4">
+         <div class="col-md-6">
             <label for="validationDefault04" class="form-label">Fecha de Nacimiento</label>
             <input type="text" class="form-control datepicker" id="validationDefault04" name="fecha_nac" th:value="${fecha}" required>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="validationDefault01" class="form-label">Correo electrónico</label>
           <input type="text" name="email" class="form-control" id="validationDefault01" value="Ingrese su correo electrónico" th:value="${email}" required>
         </div>
@@ -84,7 +84,7 @@
           <input type="password" name="password2" class="form-control" id="validationDefault07" th:value="${password2}" required>
         </div>
         
-        <div class="col-md-4">
+        <div class="col-md-6">
         <label for="validationDefault08" class="form-label">Seleccione cobertura</label>
         <select class="form-select" name="obraSocial" aria-label="Default select example">
           <option th:each="obraSocial : ${obrasSociales}"
@@ -92,7 +92,7 @@
           th:text="${obraSocial}"></option>
         </select>
       </div>
-    </div>
+   
 
         <div class="col-12">
           <div class="form-check">
@@ -102,9 +102,10 @@
             </label>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-mds-6">
           <button class="btn btn-primary" type="submit">Registrarse</button>
         </div>
+           </div>
       </form>
    
   
