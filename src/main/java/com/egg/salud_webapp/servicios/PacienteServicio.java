@@ -36,6 +36,8 @@ public class PacienteServicio implements UserDetailsService {
     @Transactional
     public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
+          validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
+            
         //Falta validador
         Paciente paciente = new Paciente();
 
@@ -60,7 +62,7 @@ public class PacienteServicio implements UserDetailsService {
     @Transactional
     public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac, ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
-        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
+      
 
         Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
 
@@ -132,6 +134,10 @@ public class PacienteServicio implements UserDetailsService {
 
         Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
+        
+       
+System.out.println("DNI existente en la base de datos: " + (dniExistente != null ? dniExistente.getDni() : "null"));
+System.out.println("DNI ingresado para validación: " + dni);
 
         if (nombre.isEmpty() || nombre == null) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
