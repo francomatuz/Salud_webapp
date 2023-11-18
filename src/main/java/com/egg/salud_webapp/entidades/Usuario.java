@@ -1,4 +1,3 @@
-
 package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
@@ -18,7 +17,7 @@ import javax.persistence.OneToOne;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Usuario {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -28,13 +27,13 @@ public class Usuario {
     protected LocalDate fecha_nac;
     protected String email;
     protected String password;
-    
-    
-    //@OneToOne
-    //private Imagen imagen;
+
+    @OneToOne
+    private Imagen imagen;
+
     @Enumerated(EnumType.STRING)
     protected GeneroEnum genero;
-    
+
     @Enumerated(EnumType.STRING)
     protected UsuarioEnum rol;
 
@@ -109,6 +108,14 @@ public class Usuario {
         this.password = password;
     }
 
+    public Imagen getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Imagen imagen) {
+        this.imagen = imagen;
+    }
+
     public UsuarioEnum getRol() {
         return rol;
     }
@@ -125,5 +132,4 @@ public class Usuario {
         this.genero = genero;
     }
 
-      
 }
