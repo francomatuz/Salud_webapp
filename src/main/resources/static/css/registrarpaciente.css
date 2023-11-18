@@ -37,7 +37,7 @@ body {
 .formulario {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* Espacio entre formularios */
+/*    gap: 20px;  Espacio entre formularios */
 }
 
 .formulario > * {
