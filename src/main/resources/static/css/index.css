@@ -5,22 +5,30 @@
 }
 body{
     background-color:  #e0e1dd;
-}
+;}
 html{
     font-size: 62.5%;
     font-family: 'Montserrat', sans-serif;
 }
-.bg-dark{
-    background-color: #778da9;
+
+.navbar {
+  background-color: #1b263b; 
 }
+
+.navbar .nav-link {
+  color: #ffffff; /* Cambiar el color del texto a blanco (#ffffff) */
+}
+
+
 .logo{
     font-family: 'Montserrat', sans-serif;
     font-size: large;
     font-weight: bold;
-    color: #e0e1dd;
+    color: #ffffff;
 }
 .container-fluid a{
     text-align: center;
+    
 }
 .ml-5 {
     margin-left: 1.5rem !important;
@@ -37,12 +45,23 @@ nav a:hover{
     margin-left: 4px;
     margin-right: 4px;
 }
+
+.navbar .nav-link[href*="/login"] .fs-5 {
+  color: #ffffff; /* Cambiar el color del texto a rojo (#ff0000) para el enlace "Login" */
+}
+
+.navbar .nav-link.disabled {
+    
+     color:#6d9efc
+    
+}
+
 .contenedor-footer {
     display: flex;
     justify-content: end;
     align-items: center;
     font-size: medium;
-    color: #e0e1dd;
+    color:#ffffff;
     background-color: #1b263b;
     height: 80px; /* Altura del contenedor (ajusta segÃºn sea necesario) */
     border: 1px solid #ccc;
@@ -65,3 +84,4 @@ nav a:hover{
 .section-title h1{
     font-weight: bold !important;
 }
+
