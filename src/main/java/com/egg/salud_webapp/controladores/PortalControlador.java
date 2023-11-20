@@ -56,7 +56,7 @@ public class PortalControlador {
 
             modelo.put("Exito", "Paciente registrado exitosamente");
 
-            return "index.html";
+            return "login.html";
 
         } catch (MiException ex) {
 
@@ -71,7 +71,7 @@ public class PortalControlador {
             modelo.put("obra social", obraSocial);
             modelo.put("genero", genero);
 
-            return "login.html";
+            return "error.html";
 
         }
     }
