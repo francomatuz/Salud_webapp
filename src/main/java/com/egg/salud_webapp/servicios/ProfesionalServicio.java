@@ -4,6 +4,7 @@ package com.egg.salud_webapp.servicios;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
+import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
@@ -19,93 +20,104 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProfesionalServicio {
-    
+
     @Autowired
     ProfesionalRepositorio profesionalRepositorio;
-    //Metodos Crud
-    //Crear paciente
-    
+    // Metodos Crud
+    // Crear paciente
+
     @Transactional
+
     
-    public void registrar(String matricula, Especialidades especialidad, LocalDateTime agendaTurnos, Integer duracionTurno, Double precio, Integer calificacion, String direccion, Boolean atencionVirtual, String bio, String[] prestadores, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password,String password2, GeneroEnum genero, UsuarioEnum rol, Boolean alta) throws MiException {
-        validarAtributos(nombre,apellido,email,dni,fecha_nac,password,password2,matricula,precio,direccion,bio);
-        
-        Profesional profesional= new Profesional();
+    public void registrar(String matricula, Especialidades especialidad,
+            String direccion, Boolean atencionVirtual,
+            String bio, ObraSocial[] prestadores, Long id, String nombre, String apellido, String dni,
+            LocalDate fecha_nac,
+            String email, String password, String password2, GeneroEnum genero, Boolean alta) throws MiException {
+        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2, matricula, direccion,
+                bio);
 
-        profesional.setNombre(nombre);
-        profesional.setApellido(apellido);
-        profesional.setEmail(email);
-        profesional.setDni(dni);
-        profesional.setFecha_nac(fecha_nac);
-        profesional.setPassword(new BCryptPasswordEncoder().encode(password));
-
-        profesional.setRol(UsuarioEnum.USER);
-        
-        
-        // Creacion datos del profesional
-        profesional.setMatricula(matricula);
-        profesional.setEspecialidad(especialidad);
-        profesional.setPrestadores(prestadores);
-        profesional.setPrecio(precio);
-        profesional.setDireccion(direccion);
-        profesional.setAtencionVirtual(atencionVirtual);
-        profesional.setBio(bio);
-//        profesional.setAlta(false);
-
+        Profesional profesional = new Profesional(matricula, especialidad, direccion, atencionVirtual, bio, prestadores,
+                nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,
+                UsuarioEnum.USER);
         profesionalRepositorio.save(profesional);
     }
-    
+
     @Transactional
-    private void actualizar(Long id,String email, String password, String password2, String[]prestadores, Double precio, String direccion,Boolean atencionVirtual, String bio, LocalDateTime agendaTurno) throws MiException {
-        
-        validarAtributos2(email, password, password2, precio,direccion,bio, agendaTurno);
-        Optional<Profesional>respuesta = profesionalRepositorio.buscarPorId(id);
-        
-        if(respuesta.isPresent()){
-            
-            Profesional profesional = respuesta.get();
-            profesional.setEmail(email);
-            profesional.setPassword(new BCryptPasswordEncoder().encode(password));
-            profesional.setPrestadores(prestadores);
-            profesional.setPrecio(precio);
-            profesional.setDireccion(direccion);
-            profesional.setAtencionVirtual(atencionVirtual);
-            profesional.setBio(bio);
-            profesional.setAgendaTurnos(agendaTurno);
+    private void actualizar(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
+            String password, String password2, ObraSocial[] prestadores,
+            String direccion, Boolean atencionVirtual, String bio, LocalDateTime agendaTurno)
+            throws MiException {
+
+        validarAtributos2(email, password, password2, direccion, bio, agendaTurno);
+        Profesional profesionalAActualizar = getById(id);
+
+        if (profesionalAActualizar != null) {
+
+            profesionalAActualizar.setNombre(nombre != null ? nombre : profesionalAActualizar.getNombre());
+            profesionalAActualizar.setApellido(apellido != null ? apellido : profesionalAActualizar.getApellido());
+            profesionalAActualizar.setEmail(email != null ? email : profesionalAActualizar.getEmail());
+            profesionalAActualizar.setDni(dni != null ? dni : profesionalAActualizar.getDni());
+            profesionalAActualizar.setFecha_nac(fecha_nac != null ? fecha_nac : profesionalAActualizar.getFecha_nac());
+            profesionalAActualizar.setPassword(password != null ? new BCryptPasswordEncoder().encode(password)
+                    : profesionalAActualizar.getPassword());
+            profesionalAActualizar
+                    .setPrestadores(prestadores != null ? prestadores : profesionalAActualizar.getPrestadores());
+            profesionalAActualizar.setAtencionFisicaDireccion(
+                    direccion != null ? direccion : profesionalAActualizar.getAtencionFisicaDireccion());
+            profesionalAActualizar.setAtencionVirtual(
+                    atencionVirtual != null ? atencionVirtual : profesionalAActualizar.getAtencionVirtual());
+            profesionalAActualizar.setBio(bio != null ? bio : profesionalAActualizar.getBio());
+
+            profesionalRepositorio.save(profesionalAActualizar);
+            // el signo de pregunta y los dos puntos es como si fuera un IF
         }
     }
-    
-    //Eliminar un profesional
+
+    // Eliminar un profesional
     @Transactional
-    private void eliminar(Long id) throws MiException{
-        Optional <Profesional> profesionalExistente = profesionalRepositorio.buscarPorId(id);
-        if(profesionalExistente.isPresent()){
-            profesionalRepositorio.delete(profesionalExistente.get());
-        }else{
-            throw new MiException("No se encontró un profesional con los datos ingresados");
-        }
+    private void eliminar(Long id) throws MiException {
+        profesionalRepositorio.delete(getById(id));
     }
-    
-    //Listar profesionales
-    public List<Profesional> listarProfesionales (){
-        List<Profesional>profesionales = new ArrayList<>();
+
+    public boolean tieneBio(Long id) throws MiException {
+        Profesional profesional = getById(id);
+
+        if (profesional.getBio() == null || profesional.getBio() == "" || profesional.getBio().isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    // Listar profesionales
+    public List<Profesional> listarProfesionales() {
+        List<Profesional> profesionales = new ArrayList<>();
         profesionales = profesionalRepositorio.findAll();
         return profesionales;
-    } 
-    
-    //Buscar un profesional por id
-    public Profesional getById(Long id){
-      return profesionalRepositorio.getById(id);
     }
-    
-    
-    //validar los atributos de creación
-    private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2,String matricula, Double precio, String direccion,String bio ) throws MiException {
+
+    // Buscar un profesional por id
+    public Profesional getById(Long id) throws MiException {
+        Profesional profesional = profesionalRepositorio.getById(id);
+        if (profesional == null) {
+            throw new MiException("No se encontró un profesional con los datos ingresados");
+        } else {
+            return profesional;
+        }
+    }
+
+    // validar los atributos de creación
+    private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+            String password, String password2, String matricula, String direccion, String bio)
+            throws MiException {
 
         Optional<Profesional> dniExistente = profesionalRepositorio.buscarPorDni(dni);
         Optional<Profesional> emailExistente = profesionalRepositorio.buscarPorEmail(email);
-       // Optional<Profesional> matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
-        
+        // Optional<Profesional> matriculaExistente =
+        // profesionalRepositorio.buscarPorMatricula(matricula);
+
         if (nombre.isEmpty() || nombre == null) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
@@ -142,16 +154,14 @@ public class ProfesionalServicio {
         if (bio.isEmpty() || bio == null) {
             throw new MiException("La bio no puede estar vacía o ser nula");
         }
-        if(precio>0){
-            throw new MiException("El precio debe ser mayor a 0");
-        }        
+
     }
-    
-    //validar atributos de actualización
-      private void validarAtributos2(String email, String password, String password2, Double precio, String direccion,String bio, LocalDateTime agendaTurno) throws MiException {
+
+    // validar atributos de actualización
+    private void validarAtributos2(String email, String password, String password2, String direccion,
+            String bio, LocalDateTime agendaTurno) throws MiException {
 
         Optional<Profesional> emailExistente = profesionalRepositorio.buscarPorEmail(email);
-        
 
         if (emailExistente.isPresent()) {
             throw new MiException("Ya hay un usuario existente con el Email ingresado");
@@ -172,9 +182,8 @@ public class ProfesionalServicio {
         if (bio.isEmpty() || bio == null) {
             throw new MiException("La bio no puede estar vacía o ser nula");
         }
-        if(precio>0){
-            throw new MiException("El precio debe ser mayor a 0");
-        }        
+
     }
-    
+
+  
 }
