@@ -166,7 +166,7 @@ public class PacienteServicio implements UserDetailsService {
 
         if (paciente != null) {
 
-            List<GrantedAuthority> permisos = new ArrayList();
+            List<GrantedAuthority> permisos = new ArrayList<>();
 
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + paciente.getRol().toString());
 
