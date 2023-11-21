@@ -42,7 +42,6 @@ public class PacienteServicio implements UserDetailsService {
            validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
         
 
-       
         Paciente paciente = new Paciente();
 
         paciente.setNombre(nombre);
@@ -69,6 +68,7 @@ public void actualizar(Long id, String nuevoNombre, String nuevoApellido, String
     Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
 
     if (respuesta.isPresent()) {
+        
         Paciente paciente = respuesta.get();
 
        

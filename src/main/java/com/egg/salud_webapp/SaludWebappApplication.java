@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.egg.salud_webapp")
+//@ComponentScan(basePackages = "com.egg.salud_webapp")
 public class SaludWebappApplication implements CommandLineRunner  {
 
     @Autowired
@@ -25,11 +25,12 @@ public class SaludWebappApplication implements CommandLineRunner  {
     @Override
     public void run(String... args) throws Exception {
         
-        leerPaciente(10L);
-        //eliminarPaciente(4L);
+       leerPaciente(10L);
+       // eliminarPaciente(4L);
        // modificarPaciente(10L);
     }
 
+    
     public void leerPaciente(Long idPaciente) {
         
         Paciente paciente = pacienteServicio.getOne(idPaciente);
@@ -49,6 +50,7 @@ public class SaludWebappApplication implements CommandLineRunner  {
         }
     }
 
+    
     public void eliminarPaciente(Long idPaciente) {
         try {
             pacienteServicio.eliminar(idPaciente);
@@ -57,10 +59,12 @@ public class SaludWebappApplication implements CommandLineRunner  {
             System.out.println("Error al intentar eliminar al paciente: " + e.getMessage());
         }
     }
+    
+    
      public void modificarPaciente(Long idPaciente) {
         
         try {
-            pacienteServicio.actualizar(idPaciente, "Marcos", null, null, null, null, null, null, null, null);
+            pacienteServicio.actualizar(idPaciente, "Marcos", "Fama", null, null, null, null, null, null, null);
         } catch (MiException ex) {
             Logger.getLogger(SaludWebappApplication.class.getName()).log(Level.SEVERE, "ERROR", ex);
         }

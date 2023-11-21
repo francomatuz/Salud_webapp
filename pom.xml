@@ -71,9 +71,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.egg.salud_webapp.SaludWebAppApplication</mainClass>
-                </configuration>
             </plugin>
         </plugins>
     </build>
