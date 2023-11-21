@@ -5,20 +5,15 @@ import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Paciente extends Usuario{
 
     private Boolean activo;
  
-  
-
-
    @Enumerated(EnumType.STRING)
    private ObraSocial obraSocial;
    
@@ -32,8 +27,8 @@ public class Paciente extends Usuario{
     public Paciente() {
     }
 
-    public Paciente(Boolean activo, ObraSocial obraSocial, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
-        super(id, nombre, apellido, dni, fecha_nac, email, password, genero, rol);
+    public Paciente(Boolean activo, ObraSocial obraSocial, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
+        super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
         this.activo = activo;
         this.obraSocial = obraSocial;
 //        this.historiaClinica = historiaClinica;

@@ -1,6 +1,5 @@
 package com.egg.salud_webapp.servicios;
 
-
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
@@ -30,18 +29,14 @@ public class PacienteServicio implements UserDetailsService {
 
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
-    
-    
 
-    //Metodos Crud
-    //Crear paciente
+    // Metodos Crud
+    // Crear paciente
     @Transactional
-    public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
+    public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+            ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
-
-           validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
-        
-
+        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
         Paciente paciente = new Paciente();
 
         paciente.setNombre(nombre);
@@ -55,56 +50,38 @@ public class PacienteServicio implements UserDetailsService {
 
         paciente.setRol(UsuarioEnum.USER);
         // Creacion de historia clinica
-//        HistoriaClinica historiaClinica = new HistoriaClinica();
-//        paciente.setHistoriaClinica(historiaClinica);
+        // HistoriaClinica historiaClinica = new HistoriaClinica();
+        // paciente.setHistoriaClinica(historiaClinica);
 
         pacienteRepositorio.save(paciente);
     }
 
-    //Actualizar paciente
- @Transactional
-public void actualizar(Long id, String nuevoNombre, String nuevoApellido, String nuevoEmail, String nuevoDni, LocalDate nuevaFechaNac, ObraSocial nuevaObraSocial, GeneroEnum nuevoGenero, String nuevaPassword, String nuevaPassword2) throws MiException {
+    // Actualizar paciente
+    @Transactional
+    public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+            ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
-    Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
+        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
 
-    if (respuesta.isPresent()) {
-        
-        Paciente paciente = respuesta.get();
+        Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
 
-       
-        if (nuevoNombre != null) {
-            paciente.setNombre(nuevoNombre);
-        }
-        if (nuevoApellido != null) {
-            paciente.setApellido(nuevoApellido);
-        }
-        if (nuevoEmail != null) {
-            paciente.setEmail(nuevoEmail);
-        }
-        if (nuevoDni != null) {
-            paciente.setDni(nuevoDni);
-        }
-        if (nuevaFechaNac != null) {
-            paciente.setFecha_nac(nuevaFechaNac);
-        }
-        if (nuevaObraSocial != null) {
-            paciente.setObraSocial(nuevaObraSocial);
-        }
-        if (nuevoGenero != null) {
-            paciente.setGenero(nuevoGenero);
-        }
-        if (nuevaPassword != null) {
-            paciente.setPassword(new BCryptPasswordEncoder().encode(nuevaPassword));
-        }
+        if (respuesta.isPresent()) {
 
-        paciente.setRol(UsuarioEnum.USER);
-        pacienteRepositorio.save(paciente);
-        
-    } else {
-        throw new MiException("No está el ID");
+            Paciente paciente = respuesta.get();
+
+            paciente.setNombre(nombre);
+            paciente.setApellido(apellido);
+            paciente.setEmail(email);
+            paciente.setDni(dni);
+            paciente.setFecha_nac(fecha_nac);
+            paciente.setObraSocial(obraSocial);
+            paciente.setGenero(genero);
+            paciente.setPassword(new BCryptPasswordEncoder().encode(password));
+
+            paciente.setRol(UsuarioEnum.USER);
+            pacienteRepositorio.save(paciente);
+        }
     }
-}
-
 
     @Transactional
     public void eliminar(Long id) throws MiException {
@@ -118,19 +95,13 @@ public void actualizar(Long id, String nuevoNombre, String nuevoApellido, String
         }
     }
 
-    public Paciente getOne(Long id) {
-       return pacienteRepositorio.findById(id).orElse(null);
+    public Paciente getById(Long id) {
+        return pacienteRepositorio.getById(id);
     }
 
     // Metodo leer pacientes de la base de datos
     public List<Paciente> listarPacientes() {
-
-        List<Paciente> pacientes = new ArrayList();
-
-        pacientes = pacienteRepositorio.findAll();
-
-        return pacientes;
-
+        return pacienteRepositorio.findAll();
     }
 
     @Transactional
@@ -151,19 +122,16 @@ public void actualizar(Long id, String nuevoNombre, String nuevoApellido, String
         }
     }
 
-    private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
+    private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+            String password, String password2) throws MiException {
 
         Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
-        
-       
-//System.out.println("DNI existente en la base de datos: " + (dniExistente != null ? dniExistente.getDni() : "null"));
-//System.out.println("DNI ingresado para validación: " + dni);
 
-        if (nombre == null || nombre.isEmpty()) {
+        if (nombre.isEmpty() || nombre == null) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
-        if (apellido == null || apellido.isEmpty()) {
+        if (apellido.isEmpty() || apellido == null) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
         if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
@@ -177,13 +145,13 @@ public void actualizar(Long id, String nuevoNombre, String nuevoApellido, String
             throw new MiException("Ya hay un usuario existente con el dni ingresado");
         }
 
-        if (dni == null || dni.isEmpty()) {
+        if (dni.isEmpty() || dni == null) {
             throw new MiException("El dni no puede estar vacío o ser nulo");
         }
         if (fecha_nac == null) {
             throw new MiException("La fecha de nacimiento no puede estar vacía ");
         }
-        if (password == null || password.isEmpty() || password.length() <= 5) {
+        if (password.isEmpty() || password == null || password.length() <= 5) {
             throw new MiException("La contraseña no puede estar vacia y debe tener más de 5 dígitos");
         }
         if (!password.equals(password2)) {
@@ -198,9 +166,8 @@ public void actualizar(Long id, String nuevoNombre, String nuevoApellido, String
 
         if (paciente != null) {
 
-            List<GrantedAuthority> permisos = new ArrayList();
+            List<GrantedAuthority> permisos = new ArrayList<>();
 
-            
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + paciente.getRol().toString());
 
             permisos.add(p);
