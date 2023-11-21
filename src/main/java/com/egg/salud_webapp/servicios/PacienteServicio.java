@@ -30,14 +30,18 @@ public class PacienteServicio implements UserDetailsService {
 
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
+    
+    
 
     //Metodos Crud
     //Crear paciente
     @Transactional
     public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
-          validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
-            
+
+           validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
+        
+
         //Falta validador
         Paciente paciente = new Paciente();
 
@@ -62,7 +66,8 @@ public class PacienteServicio implements UserDetailsService {
     @Transactional
     public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac, ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
-      
+          validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
+
 
         Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
 
@@ -82,6 +87,8 @@ public class PacienteServicio implements UserDetailsService {
 
             paciente.setRol(UsuarioEnum.USER);
             pacienteRepositorio.save(paciente);
+        } else{
+            throw new MiException("No esta el ID");
         }
     }
 
