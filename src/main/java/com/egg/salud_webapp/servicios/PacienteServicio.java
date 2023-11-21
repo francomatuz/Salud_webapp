@@ -42,7 +42,7 @@ public class PacienteServicio implements UserDetailsService {
            validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
         
 
-        //Falta validador
+       
         Paciente paciente = new Paciente();
 
         paciente.setNombre(nombre);
@@ -63,34 +63,48 @@ public class PacienteServicio implements UserDetailsService {
     }
 
     //Actualizar paciente
-    @Transactional
-    public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac, ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
+ @Transactional
+public void actualizar(Long id, String nuevoNombre, String nuevoApellido, String nuevoEmail, String nuevoDni, LocalDate nuevaFechaNac, ObraSocial nuevaObraSocial, GeneroEnum nuevoGenero, String nuevaPassword, String nuevaPassword2) throws MiException {
 
-          validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
+    Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
 
+    if (respuesta.isPresent()) {
+        Paciente paciente = respuesta.get();
 
-        Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
-
-        if (respuesta.isPresent()) {
-
-            Paciente paciente = respuesta.get();
-
-            paciente.setNombre(nombre);
-            paciente.setApellido(apellido);
-            paciente.setEmail(email);
-            paciente.setDni(dni);
-            paciente.setFecha_nac(fecha_nac);
-            paciente.setObraSocial(obraSocial);
-            paciente.setGenero(genero);
-            paciente.setPassword(new BCryptPasswordEncoder().encode(password));
-            
-
-            paciente.setRol(UsuarioEnum.USER);
-            pacienteRepositorio.save(paciente);
-        } else{
-            throw new MiException("No esta el ID");
+       
+        if (nuevoNombre != null) {
+            paciente.setNombre(nuevoNombre);
         }
+        if (nuevoApellido != null) {
+            paciente.setApellido(nuevoApellido);
+        }
+        if (nuevoEmail != null) {
+            paciente.setEmail(nuevoEmail);
+        }
+        if (nuevoDni != null) {
+            paciente.setDni(nuevoDni);
+        }
+        if (nuevaFechaNac != null) {
+            paciente.setFecha_nac(nuevaFechaNac);
+        }
+        if (nuevaObraSocial != null) {
+            paciente.setObraSocial(nuevaObraSocial);
+        }
+        if (nuevoGenero != null) {
+            paciente.setGenero(nuevoGenero);
+        }
+        if (nuevaPassword != null) {
+            paciente.setPassword(new BCryptPasswordEncoder().encode(nuevaPassword));
+        }
+
+        paciente.setRol(UsuarioEnum.USER);
+        pacienteRepositorio.save(paciente);
+        
+    } else {
+        throw new MiException("No está el ID");
     }
+}
+
 
     @Transactional
     public void eliminar(Long id) throws MiException {
@@ -143,13 +157,13 @@ public class PacienteServicio implements UserDetailsService {
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
         
        
-System.out.println("DNI existente en la base de datos: " + (dniExistente != null ? dniExistente.getDni() : "null"));
-System.out.println("DNI ingresado para validación: " + dni);
+//System.out.println("DNI existente en la base de datos: " + (dniExistente != null ? dniExistente.getDni() : "null"));
+//System.out.println("DNI ingresado para validación: " + dni);
 
-        if (nombre.isEmpty() || nombre == null) {
+        if (nombre == null || nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
-        if (apellido.isEmpty() || apellido == null) {
+        if (apellido == null || apellido.isEmpty()) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
         if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
@@ -163,13 +177,13 @@ System.out.println("DNI ingresado para validación: " + dni);
             throw new MiException("Ya hay un usuario existente con el dni ingresado");
         }
 
-        if (dni.isEmpty() || dni == null) {
+        if (dni == null || dni.isEmpty()) {
             throw new MiException("El dni no puede estar vacío o ser nulo");
         }
         if (fecha_nac == null) {
             throw new MiException("La fecha de nacimiento no puede estar vacía ");
         }
-        if (password.isEmpty() || password == null || password.length() <= 5) {
+        if (password == null || password.isEmpty() || password.length() <= 5) {
             throw new MiException("La contraseña no puede estar vacia y debe tener más de 5 dígitos");
         }
         if (!password.equals(password2)) {
