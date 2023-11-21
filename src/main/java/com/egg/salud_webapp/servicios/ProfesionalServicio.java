@@ -4,7 +4,6 @@ package com.egg.salud_webapp.servicios;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
-import com.egg.salud_webapp.enumeraciones.Rol;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
@@ -52,6 +51,7 @@ public class ProfesionalServicio {
         profesional.setAtencionVirtual(atencionVirtual);
         profesional.setBio(bio);
         profesional.setAlta(false);
+        profesional.setGenero(genero);
 
         profesionalRepositorio.save(profesional);
     }
