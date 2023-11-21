@@ -1,6 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
-import com.egg.salud_webapp.entidades.HistoriaClinica;
+
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
@@ -11,24 +11,37 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
-public class PacienteServicio {
+public class PacienteServicio implements UserDetailsService {
 
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
+    
+    
 
     //Metodos Crud
     //Crear paciente
     @Transactional
     public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
-        //Falta validador
+
+           validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
+        
+
         Paciente paciente = new Paciente();
 
         paciente.setNombre(nombre);
@@ -42,56 +55,74 @@ public class PacienteServicio {
 
         paciente.setRol(UsuarioEnum.USER);
         // Creacion de historia clinica
-        HistoriaClinica historiaClinica = new HistoriaClinica();
-        paciente.setHistoriaClinica(historiaClinica);
+//        HistoriaClinica historiaClinica = new HistoriaClinica();
+//        paciente.setHistoriaClinica(historiaClinica);
 
         pacienteRepositorio.save(paciente);
     }
 
     //Actualizar paciente
-    @Transactional
-    public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac, ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
+ @Transactional
+public void actualizar(Long id, String nuevoNombre, String nuevoApellido, String nuevoEmail, String nuevoDni, LocalDate nuevaFechaNac, ObraSocial nuevaObraSocial, GeneroEnum nuevoGenero, String nuevaPassword, String nuevaPassword2) throws MiException {
 
-            validarAtributos(nombre,apellido,email,dni,fecha_nac,password,password2);
-     
-        Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
+    Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
 
-        if (respuesta.isPresent()) {
+    if (respuesta.isPresent()) {
+        
+        Paciente paciente = respuesta.get();
 
-            Paciente paciente = respuesta.get();
-
-            paciente.setNombre(nombre);
-            paciente.setApellido(apellido);
-            paciente.setEmail(email);
-            paciente.setDni(dni);
-            paciente.setFecha_nac(fecha_nac);
-            paciente.setObraSocial(obraSocial);
-            paciente.setGenero(genero);
-            paciente.setPassword(new BCryptPasswordEncoder().encode(password));
-
-            paciente.setRol(UsuarioEnum.USER);
-            pacienteRepositorio.save(paciente);
+       
+        if (nuevoNombre != null) {
+            paciente.setNombre(nuevoNombre);
         }
+        if (nuevoApellido != null) {
+            paciente.setApellido(nuevoApellido);
+        }
+        if (nuevoEmail != null) {
+            paciente.setEmail(nuevoEmail);
+        }
+        if (nuevoDni != null) {
+            paciente.setDni(nuevoDni);
+        }
+        if (nuevaFechaNac != null) {
+            paciente.setFecha_nac(nuevaFechaNac);
+        }
+        if (nuevaObraSocial != null) {
+            paciente.setObraSocial(nuevaObraSocial);
+        }
+        if (nuevoGenero != null) {
+            paciente.setGenero(nuevoGenero);
+        }
+        if (nuevaPassword != null) {
+            paciente.setPassword(new BCryptPasswordEncoder().encode(nuevaPassword));
+        }
+
+        paciente.setRol(UsuarioEnum.USER);
+        pacienteRepositorio.save(paciente);
+        
+    } else {
+        throw new MiException("No está el ID");
     }
-    
+}
+
+
     @Transactional
     public void eliminar(Long id) throws MiException {
-        
-        Optional <Paciente> pacienteExistente = pacienteRepositorio.buscarPorId(id);
-        
-        if(pacienteExistente.isPresent()) {
+
+        Optional<Paciente> pacienteExistente = pacienteRepositorio.buscarPorId(id);
+
+        if (pacienteExistente.isPresent()) {
             pacienteRepositorio.delete(pacienteExistente.get());
-        } else
-        throw new MiException("No se encontro un paciente con los datos ingresados");
+        } else {
+            throw new MiException("No se encontro un paciente con los datos ingresados");
+        }
     }
-    
 
     public Paciente getOne(Long id) {
-        return pacienteRepositorio.getOne(id);
+       return pacienteRepositorio.findById(id).orElse(null);
     }
 
     // Metodo leer pacientes de la base de datos
-    
     public List<Paciente> listarPacientes() {
 
         List<Paciente> pacientes = new ArrayList();
@@ -102,39 +133,88 @@ public class PacienteServicio {
 
     }
 
+    @Transactional
+    public void cambiarRol(Long id) {
+        Optional<Paciente> respuesta = pacienteRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Paciente paciente = respuesta.get();
+
+            if (paciente.getRol().equals(UsuarioEnum.USER)) {
+
+                paciente.setRol(UsuarioEnum.ADMIN);
+
+            } else if (paciente.getRol().equals(UsuarioEnum.ADMIN)) {
+                paciente.setRol(UsuarioEnum.USER);
+            }
+        }
+    }
+
     private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2) throws MiException {
 
-        Optional<Paciente> dniExistente = pacienteRepositorio.buscarPorDni(dni);
-        Optional<Paciente> emailExistente = pacienteRepositorio.buscarPorEmail(email);
+        Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
+        Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
         
-        if (nombre.isEmpty() || nombre == null) {
+       
+//System.out.println("DNI existente en la base de datos: " + (dniExistente != null ? dniExistente.getDni() : "null"));
+//System.out.println("DNI ingresado para validación: " + dni);
+
+        if (nombre == null || nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
-        if (apellido.isEmpty() || apellido == null) {
+        if (apellido == null || apellido.isEmpty()) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
-        if (emailExistente.isPresent()) {
+        if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
             throw new MiException("Ya hay un usuario existente con el Email ingresado");
         }
 
         if (email == null || email.isEmpty()) {
             throw new MiException("El email no puede estar vacío o ser nulo");
         }
-        if (dniExistente.isPresent()) {
-            throw new MiException("Ya hay un usuario existente con el Dni ingresado");
+        if (dniExistente != null && dniExistente.getDni().equals(dni)) {
+            throw new MiException("Ya hay un usuario existente con el dni ingresado");
         }
 
-        if (dni.isEmpty() || dni == null) {
+        if (dni == null || dni.isEmpty()) {
             throw new MiException("El dni no puede estar vacío o ser nulo");
         }
         if (fecha_nac == null) {
             throw new MiException("La fecha de nacimiento no puede estar vacía ");
         }
-        if (password.isEmpty() || password == null || password.length() <= 5) {
+        if (password == null || password.isEmpty() || password.length() <= 5) {
             throw new MiException("La contraseña no puede estar vacia y debe tener más de 5 dígitos");
         }
         if (!password.equals(password2)) {
             throw new MiException("La contraseñas ingresadas deben ser iguales");
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        Paciente paciente = pacienteRepositorio.buscarPorEmail(email);
+
+        if (paciente != null) {
+
+            List<GrantedAuthority> permisos = new ArrayList();
+
+            
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + paciente.getRol().toString());
+
+            permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("usuariosession", paciente);
+
+            return new User(paciente.getEmail(), paciente.getPassword(), permisos);
+        } else {
+            return null;
+        }
+
     }
 }
