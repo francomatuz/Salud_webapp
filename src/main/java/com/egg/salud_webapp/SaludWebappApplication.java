@@ -25,7 +25,7 @@ public class SaludWebappApplication implements CommandLineRunner  {
     @Override
     public void run(String... args) throws Exception {
         
-       leerPaciente(10L);
+     //  leerPaciente(10L);
        // eliminarPaciente(4L);
        // modificarPaciente(10L);
     }
