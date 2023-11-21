@@ -105,7 +105,7 @@ public class PacienteServicio implements UserDetailsService {
     }
 
     public Paciente getOne(Long id) {
-        return pacienteRepositorio.getOne(id);
+       return pacienteRepositorio.findById(id).orElse(null);
     }
 
     // Metodo leer pacientes de la base de datos
