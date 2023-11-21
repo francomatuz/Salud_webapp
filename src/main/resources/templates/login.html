@@ -10,58 +10,27 @@
     </head>
 
     <body>
-          <header>
-      <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-          <a class="navbar-brand ml-5" href="/">
-            <div class="d-flex">
-              <img src="/img/healthIcon.png"alt="Logo" width="30" height="35" class="d-inline-block align-text-top">
-              <p class="logo">   Grupo 4 - Salud</p>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">Salud</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Busqueda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contacto</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" aria-disabled="true">Admin</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-          </a>
-        </div>
-
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div
-          class="collapse navbar-collapse justify-content-end"
-          id="navbarNav"
-        >
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" th:href="@{/login}"
-                ><span class="fs-5 fw-bold">Login</span></a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" th:href="@{registrar}"
-                ><span class="fs-5 fw-bold">Registrate</span></a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#profesionales"
-                ><span class="fs-5 fw-bold">Contactanos</span></a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true"
-                ><span class="fs-5 fw-bold">Admin</span></a
-              >
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
+        </nav>
 
         <div class="container-fluid m-5 contenedor">
             <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
@@ -81,12 +50,24 @@
 
 
                 <div class="form-group my-3">
-
+<<<<<<< Updated upstream
                     <h3 class="card-title">Iniciar Sesión</h3>
                 </div>
 
                 <div class="form-group my-3">
                     <input type="email" class="form-control" name="email" placeholder="Correo Electrónico">
+=======
+                    <h3 class="card-title">Accede a SaludWebApp!</h3>
+                </div>
+               
+                <div class="form-group my-3">
+                    <input type="email" class="form-control" name="email" placeholder="Email">
+                </div>
+
+                <div class="form-group my-3">
+                    <input type="password" class="form-control" name="password" placeholder="Contraseña">
+>>>>>>> Stashed changes
+                </div>
 
                 <div class="form-group my-3">
                     <input type="password" class="form-control" name="password" placeholder="Contraseña">
@@ -94,7 +75,12 @@
 
 
                 <button type="submit" class="btn btn-primary mt-3 botones">Ingresar</button>
-              
+                
+<<<<<<< Updated upstream
+=======
+
+                <button type="submit" class="btn btn-primary mt-2 botones">Ingresar</button>
+>>>>>>> Stashed changes
             </form>
             
             <div class="col-md-12 text-center mt-5">
@@ -105,6 +91,14 @@
                         <a th:href="@{/}" class="btn btn-secondary my-2 botonVolver botones">Volver</a>
                     </div>   
             </section>
+<<<<<<< Updated upstream
+=======
+          
+            <div class="registro-cont">
+                <p><span>Aún no estas registrado?</span><a href="registrar.html" class="link-primary"> Registrate </a></p> 
+               </div>
+    
+            </div>
 
 <!--    <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="login-container">
@@ -152,7 +146,10 @@
                     </div>-->
         </div>
 
+<<<<<<< Updated upstream
+=======
         </div>-->
+>>>>>>> Stashed changes
 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
