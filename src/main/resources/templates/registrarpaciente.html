@@ -11,115 +11,131 @@
 </head>
 
 <body>
- 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+   <header>
+      <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-          <a class="navbar-brand" th:href=@{/}>Salud</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="login.html">Login</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Busqueda</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Contacto</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Admin</a>
-              </li>
-            </ul>
-          </div>
+          <a class="navbar-brand ml-5" href="#">
+            <div class="d-flex">
+              <img src="/img/healthIcon.png"alt="Logo" width="30" height="35" class="d-inline-block align-text-top">
+              <p class="logo">   Grupo 4 - Salud</p>
+            </div>
+          </a>
+        </div>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" th:href="@{/login}"
+                ><span class="fs-5 fw-bold">Login</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{registrar}"
+                ><span class="fs-5 fw-bold">Registrate</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#profesionales"
+                ><span class="fs-5 fw-bold">Contactanos</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true"
+                ><span class="fs-5 fw-bold">Admin</span></a>
+            </li>
+          </ul>
         </div>
       </nav>
+    </header>
+    
+       <div class="container">
+        <form class="formulario" th:action="@{/registrar/paciente}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" class="form-control" id="nombre" th:value="${nombre}" required>
+            </div>
+            <div class="form-group">
+                <label for="apellido">Apellido</label>
+                <input type="text" name="apellido" class="form-control" id="apellido" th:value="${apellido}" required>
+            </div>
+            <!-- Otros campos del formulario -->
+            <div class="form-group">
+                <label for="dni">DNI o Identificación</label>
+                <input type="text" name="dni" class="form-control" id="dni" th:value="${dni}" required>
+            </div>
+            <!-- Agrega estilos a los demás campos del formulario -->
+            <!-- ... -->
 
-      <div class="container">
-      <form class="formulario" th:action="@{/registrar/paciente}" method="POST" enctype="multipart/form-data" style="margin: 0 20px;">
-        <div class="col-md-6">
-          <label for="validationDefault01" class="form-label">Nombre</label>
-          <input type="text" name="nombre" class="form-control" id="validationDefault01" th:value="${nombre}" required>
-        </div>
-        <div class="col-md-6">
-          <label for="validationDefault02" class="form-label">Apellido</label>
-          <input type="text" name="apellido" class="form-control" id="validationDefault02" th:value="${apellido}" required>
-        </div>
-        <div class="col-md-6">
-          <label for="validationDefaultUsername" class="form-label">DNI o Identificación</label>
-          <div class="input-group">
-            <span class="input-group-text" id="inputGroupPrepend2">Nº</span>
-            <input type="text" name="dni" class="form-control" id="validationDefault03" th:value="${dni}" aria-describedby="inputGroupPrepend2" required>
-          </div>
-        </div>
+            <div class="form-group">
+                <label for="genero">Género</label>
+                <select class="form-control" name="genero" id="genero">
+                    <option th:each="gen : ${generos}" th:value="${gen}" th:text="${gen}"></option>
+                </select>
+            </div>
+            <!-- ... -->
 
-        <div class="col-md-6">
-          <label for="validationDefault08" class="form-label">Género</label>
-        <select class="form-select" name="genero" aria-label="Default select example" >
-          <option th:each="gen : ${generos}"
-          th:value="${gen}"
-          th:text="${gen}"></option>
-        </select>
-        </div>
+            <div class="form-group">
+                <label for="fecha_nac">Fecha de Nacimiento</label>
+                <input type="text" class="form-control datepicker" id="fecha_nac" name="fecha_nac" th:value="${fecha}" required>
+            </div>
+            <!-- ... -->
 
-         <div class="col-md-6">
-            <label for="validationDefault04" class="form-label">Fecha de Nacimiento</label>
-            <input type="text" class="form-control datepicker" id="validationDefault04" name="fecha_nac" th:value="${fecha}" required>
-        </div>
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" name="email" class="form-control" id="email" value="Ingrese su correo electrónico" th:value="${email}" required>
+            </div>
+            <!-- ... -->
 
-        <div class="col-md-6">
-          <label for="validationDefault01" class="form-label">Correo electrónico</label>
-          <input type="text" name="email" class="form-control" id="validationDefault01" value="Ingrese su correo electrónico" th:value="${email}" required>
-        </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" class="form-control" id="password" th:value="${password}" required>
+            </div>
+            <div class="form-group">
+                <label for="password2">Confirmar Contraseña</label>
+                <input type="password" name="password2" class="form-control" id="password2" th:value="${password2}" required>
+            </div>
 
-        <div class="col-md-3">
-            <label for="validationDefault05" class="form-label">Contraseña</label>
-            <input type="password" name="password" class="form-control" id="validationDefault06" th:value="${password}" required>
-          </div>
-        
-        <div class="col-md-3">
-          <label for="validationDefault05" class="form-label">Confirmar Contraseña</label>
-          <input type="password" name="password2" class="form-control" id="validationDefault07" th:value="${password2}" required>
-        </div>
-        
-        <div class="col-md-6">
-        <label for="validationDefault08" class="form-label">Seleccione cobertura</label>
-        <select class="form-select" name="obraSocial" aria-label="Default select example">
-          <option th:each="obraSocial : ${obrasSociales}"
-          th:value="${obraSocial}"
-          th:text="${obraSocial}"></option>
-        </select>
-      </div>
-   
+            <div class="form-group">
+                <label for="obraSocial">Seleccione cobertura</label>
+                <select class="form-control" name="obraSocial" id="obraSocial">
+                    <option th:each="obraSocial : ${obrasSociales}" th:value="${obraSocial}" th:text="${obraSocial}"></option>
+                </select>
+            </div>
+            <!-- ... -->
 
-        <div class="col-12">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
-            <label class="form-check-label" for="invalidCheck2">
-            Acepto los <a href="terminosycondiciones.html">términos y condiciones</a>
-            </label>
-          </div>
-        </div>
-        <div class="col-mds-6">
-          <button class="btn btn-primary" type="submit">Registrarse</button>
-        </div>
-           </div>
-      </form>
-   
-  
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+                <label class="form-check-label" for="invalidCheck2">
+                    Acepto los <a href="terminosycondiciones.html">términos y condiciones</a>
+                </label>
+            </div>
 
+            <button class="btn btn-primary" type="submit">Registrarse</button>
+        </form>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js"></script>
 
     <!-- Inicializa el selector de fecha -->
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.datepicker').datepicker({
                 format: 'yyyy-mm-dd',
                 language: 'es',
@@ -128,4 +144,5 @@
         });
     </script>
 </body>
+
 </html>
