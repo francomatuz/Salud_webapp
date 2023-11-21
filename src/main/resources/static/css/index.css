@@ -84,4 +84,8 @@ nav a:hover{
 .section-title h1{
     font-weight: bold !important;
 }
-
+@media(max-width: 767px){
+  .navbar-logo {
+    display: none !important;
+  }
+}
