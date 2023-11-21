@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turnos Médicos</title>
+    <link href="/css/registrarpaciente.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="register-paciente.css" rel="stylesheet">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
 </head>
 
 <body>
@@ -36,17 +37,17 @@
         </div>
       </nav>
 
-    
-      <form class="formulario" th:action="@{/registrar/paciente}" method="POST" enctype="multipart/form-data">
-        <div class="col-md-4">
+      <div class="container">
+      <form class="formulario" th:action="@{/registrar/paciente}" method="POST" enctype="multipart/form-data" style="margin: 0 20px;">
+        <div class="col-md-6">
           <label for="validationDefault01" class="form-label">Nombre</label>
           <input type="text" name="nombre" class="form-control" id="validationDefault01" th:value="${nombre}" required>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="validationDefault02" class="form-label">Apellido</label>
           <input type="text" name="apellido" class="form-control" id="validationDefault02" th:value="${apellido}" required>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="validationDefaultUsername" class="form-label">DNI o Identificación</label>
           <div class="input-group">
             <span class="input-group-text" id="inputGroupPrepend2">Nº</span>
@@ -54,7 +55,7 @@
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="validationDefault08" class="form-label">Género</label>
         <select class="form-select" name="genero" aria-label="Default select example" >
           <option th:each="gen : ${generos}"
@@ -63,14 +64,14 @@
         </select>
         </div>
 
-         <div class="col-md-4">
+         <div class="col-md-6">
             <label for="validationDefault04" class="form-label">Fecha de Nacimiento</label>
             <input type="text" class="form-control datepicker" id="validationDefault04" name="fecha_nac" th:value="${fecha}" required>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="validationDefault01" class="form-label">Correo electrónico</label>
-          <input type="email" name="email" class="form-control" id="validationDefault01"  th:value="${email}" required>
+          <input type="text" name="email" class="form-control" id="validationDefault01" value="Ingrese su correo electrónico" th:value="${email}" required>
         </div>
 
         <div class="col-md-3">
@@ -83,7 +84,7 @@
           <input type="password" name="password2" class="form-control" id="validationDefault07" th:value="${password2}" required>
         </div>
         
-        <div class="col-md-4">
+        <div class="col-md-6">
         <label for="validationDefault08" class="form-label">Seleccione cobertura</label>
         <select class="form-select" name="obraSocial" aria-label="Default select example">
           <option th:each="obraSocial : ${obrasSociales}"
@@ -91,22 +92,33 @@
           th:text="${obraSocial}"></option>
         </select>
       </div>
+<<<<<<< Updated upstream
+   
 
         <div class="col-12">
+=======
+            <div class="col-12">
+>>>>>>> Stashed changes
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
             <label class="form-check-label" for="invalidCheck2">
-            Acepto los términos y condiciones
+            Acepto los <a href="terminosycondiciones.html">términos y condiciones</a>
             </label>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-mds-6">
           <button class="btn btn-primary" type="submit">Registrarse</button>
         </div>
+<<<<<<< Updated upstream
+           </div>
+=======
+    </div>
+>>>>>>> Stashed changes
       </form>
+   
   
 
- <!-- Agrega los scripts de Bootstrap y Bootstrap-datepicker -->
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
