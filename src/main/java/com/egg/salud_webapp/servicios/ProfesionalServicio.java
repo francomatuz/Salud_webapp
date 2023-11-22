@@ -4,7 +4,6 @@ package com.egg.salud_webapp.servicios;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
-import com.egg.salud_webapp.enumeraciones.Rol;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
@@ -89,14 +88,14 @@ public class ProfesionalServicio {
     
     //Listar profesionales
     public List<Profesional> listarProfesionales (){
-        List<Profesional>profesionales = new ArrayList();
+        List<Profesional>profesionales = new ArrayList<>();
         profesionales = profesionalRepositorio.findAll();
         return profesionales;
     } 
     
     //Buscar un profesional por id
-    public Profesional getOne(Long id){
-      return profesionalRepositorio.getOne(id);
+    public Profesional getById(Long id){
+      return profesionalRepositorio.getById(id);
     }
     
     
@@ -105,7 +104,7 @@ public class ProfesionalServicio {
 
         Optional<Profesional> dniExistente = profesionalRepositorio.buscarPorDni(dni);
         Optional<Profesional> emailExistente = profesionalRepositorio.buscarPorEmail(email);
-        Optional<Profesional> matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
+       // Optional<Profesional> matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
         
         if (nombre.isEmpty() || nombre == null) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
