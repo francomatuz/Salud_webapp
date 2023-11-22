@@ -5,20 +5,15 @@ import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Paciente extends Usuario{
 
     private Boolean activo;
  
-  
-
-
    @Enumerated(EnumType.STRING)
    private ObraSocial obraSocial;
    
