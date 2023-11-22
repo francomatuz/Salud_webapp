@@ -1,0 +1,39 @@
+body {
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* Fuente del texto */
+    background-color: #f8f9fa; /* Color de fondo */
+}
+
+.navbar {
+    padding: 1rem; /* Espaciado interno */
+}
+  
+.navbar-brand {
+    font-size: 1.5rem; /* Tamaño del texto */
+    font-weight: bold; /* Texto en negrita */
+}
+  
+.navbar-nav .nav-link {
+    margin-right: 1rem; /* Espacio entre enlaces */
+}
+
+.container {
+    margin-top: 20px;
+    background-color: #fff; /* Color del contenedor */
+    padding: 20px;
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Estilos para los campos del formulario */
+.form-label {
+    font-weight: bold;
+}
+
+.form-control {
+    margin-bottom: 15px;
+}
+
+/* Estilos para el botón */
+.btn-primary {
+    width: 100%;
+}

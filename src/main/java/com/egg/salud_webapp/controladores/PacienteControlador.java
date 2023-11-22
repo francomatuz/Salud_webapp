@@ -31,7 +31,7 @@ public class PacienteControlador {
 
     @GetMapping("/{id}")
     public ResponseEntity<Paciente> obtenerPacientePorId(@PathVariable Long id) {
-        Paciente paciente = pacienteServicio.getOne(id);
+        Paciente paciente = pacienteServicio.getById(id);
         return new ResponseEntity<>(paciente, HttpStatus.OK);
     }      
 }
