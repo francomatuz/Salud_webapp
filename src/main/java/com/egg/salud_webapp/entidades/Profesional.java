@@ -30,9 +30,9 @@ public class Profesional extends Usuario {
     private String atencionFisicaDireccion; // cambio de nombre, seguir un patron en el nombramiento de variables.
     private Boolean atencionVirtual;
     private String bio;
-    private ObraSocial[] prestadores; // esto es un array de obras sociales, por lo tanto se usa el enum para crear el
-                                      // array
+    private ObraSocial[] prestadores; // esto es un array de obras sociales, por lo tanto se usa el enum para crear el array
     private Boolean alta;
+    private Double calificacion;
 
     public Profesional(String matricula, Especialidades especialidad, String atencionFisicaDireccion,
             Boolean atencionVirtual, String bio, ObraSocial[] prestadores, String nombre, String apellido, String dni,
@@ -44,8 +44,7 @@ public class Profesional extends Usuario {
         this.atencionVirtual = atencionVirtual;
         this.bio = bio;
         this.prestadores = prestadores;
-        
-
+     
     }
 
     public Profesional() {
@@ -107,4 +106,12 @@ public class Profesional extends Usuario {
         this.atencionFisicaDireccion = atencionFisicaDireccion;
     }
 
+    public Double getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(Double calificacion) {
+        this.calificacion = calificacion;
+    }
+ 
 }

@@ -70,14 +70,16 @@ public class ProfesionalServicio {
             profesionalAActualizar.setBio(bio != null ? bio : profesionalAActualizar.getBio());
 
             profesionalRepositorio.save(profesionalAActualizar);
-            // el signo de pregunta y los dos puntos es como si fuera un IF
         }
     }
 
     // Eliminar un profesional
     @Transactional
     private void eliminar(Long id) throws MiException {
-        profesionalRepositorio.delete(getById(id));
+        Profesional profesional = profesionalRepositorio.getById(id);
+        if(profesional!=null){
+            profesionalRepositorio.delete(getById(id));
+        }  
     }
 
     public boolean tieneBio(Long id) throws MiException {
