@@ -84,15 +84,13 @@
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Perfil del Profesional</h5>
+                        <h1 th:if="${session.usuariosession!=null}" th:text="${session.usuariosession.nombre}">Invitado</h1>
                         <div class="row">
                             <div class="col-md-6">
-                                <p th:if="${session.usuariosession!=null}" th:text="${session.usuariosession.nombre}">Carlitos Perez</p>
-                                <p>Área: Cardiologia</p>
-                                <!-- Otros detalles del perfil -->
+                                <h2>Área: Cardiologia</h2>
                             </div>
-                            <div class="col-md-6">
-                                <img src="/img/profile-pic.jpg" alt="Profile Picture" class="img-fluid">
+                            <div class="user-avatar-container">
+                                <img src="/img/profilejpg.jpg" alt="Foto de perfile" class="img-fluid">
                             </div>
                         </div>
                     </div>

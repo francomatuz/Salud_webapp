@@ -22,6 +22,12 @@ body {
     margin-bottom: 5px;
 }
 
+.user-avatar-container{
+
+    size:100px;
+
+}
+
 /* Sidebar */
 .col-md-3 {
     padding-right: 15px;

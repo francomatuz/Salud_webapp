@@ -43,22 +43,7 @@ public class PortalControlador {
         modelo.put("obrasSociales", ObraSocial.values());
         return "registrarpaciente.html";
     }
-
-
-    @GetMapping ("/registrar/profesional")
-    public String registrarProfesional (ModelMap modelo) {
-       modelo.put("generos", GeneroEnum.values());
-       modelo.put("especialidades", Especialidades.values());
-        return "registrarprofesional.html";
-    }
-        
-     @GetMapping ("/dashboardprofesional")
-    public String dashboardprofesional (ModelMap modelo) 
-     {
-         modelo.put("especialidades", Especialidades.values());
-        return "dashboardprofesional.html";
-    }
-
+    
     @PostMapping("/registrar/paciente")
     public String registrarpaciente(@RequestParam String nombre, @RequestParam String apellido,
             @RequestParam String email, @RequestParam String dni,
