@@ -32,7 +32,7 @@ public class Profesional extends Usuario {
     private String bio;
     private ObraSocial[] prestadores; // esto es un array de obras sociales, por lo tanto se usa el enum para crear el array
     private Boolean alta;
-    private Double calificacion;
+    //private Double calificacion;
 
     public Profesional(String matricula, Especialidades especialidad, String atencionFisicaDireccion,
             Boolean atencionVirtual, String bio, ObraSocial[] prestadores, String nombre, String apellido, String dni,
@@ -106,12 +106,6 @@ public class Profesional extends Usuario {
         this.atencionFisicaDireccion = atencionFisicaDireccion;
     }
 
-    public Double getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(Double calificacion) {
-        this.calificacion = calificacion;
-    }
+   
  
 }

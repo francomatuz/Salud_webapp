@@ -30,26 +30,26 @@ public class ProfesionalServicio {
 
     
     public void registrar(String matricula, Especialidades especialidad,
-            String direccion, Boolean atencionVirtual,
+            String direccionFisica, Boolean atencionVirtual,
             String bio, ObraSocial[] prestadores, Long id, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
             String email, String password, String password2, GeneroEnum genero, Boolean alta) throws MiException {
-        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2, matricula, direccion,
+        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2, matricula, direccionFisica,
                 bio);
 
-        Profesional profesional = new Profesional(matricula, especialidad, direccion, atencionVirtual, bio, prestadores,
+        Profesional profesional = new Profesional(matricula, especialidad, direccionFisica, atencionVirtual, bio, prestadores,
                 nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,
                 UsuarioEnum.USER);
         profesionalRepositorio.save(profesional);
     }
 
     @Transactional
-    private void actualizar(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
+    public void actualizar(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
             String password, String password2, ObraSocial[] prestadores,
-            String direccion, Boolean atencionVirtual, String bio, LocalDateTime agendaTurno)
+            String direccion, Boolean atencionVirtual, String bio)
             throws MiException {
 
-        validarAtributos2(email, password, password2, direccion, bio, agendaTurno);
+        validarAtributos2(email, password, password2, direccion, bio);
         Profesional profesionalAActualizar = getById(id);
 
         if (profesionalAActualizar != null) {
@@ -75,7 +75,7 @@ public class ProfesionalServicio {
 
     // Eliminar un profesional
     @Transactional
-    private void eliminar(Long id) throws MiException {
+    public void eliminar(Long id) throws MiException {
         Profesional profesional = profesionalRepositorio.getById(id);
         if(profesional!=null){
             profesionalRepositorio.delete(getById(id));
@@ -161,7 +161,7 @@ public class ProfesionalServicio {
 
     // validar atributos de actualización
     private void validarAtributos2(String email, String password, String password2, String direccion,
-            String bio, LocalDateTime agendaTurno) throws MiException {
+            String bio) throws MiException {
 
         Optional<Profesional> emailExistente = profesionalRepositorio.buscarPorEmail(email);
 
