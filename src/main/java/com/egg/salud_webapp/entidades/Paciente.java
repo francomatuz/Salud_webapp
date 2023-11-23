@@ -5,9 +5,11 @@ import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Paciente extends Usuario{
@@ -17,8 +19,8 @@ public class Paciente extends Usuario{
    @Enumerated(EnumType.STRING)
    private ObraSocial obraSocial;
    
-//  @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
-//  private HistoriaClinica historiaClinica;
+  @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
+   private HistoriaClinica historiaClinica;
   
  /*   @OneToOne
     private Imagen imagen;
@@ -50,12 +52,12 @@ public class Paciente extends Usuario{
         this.obraSocial = obraSocial;
     }
 
-//    public HistoriaClinica getHistoriaClinica() {
-//        return historiaClinica;
-//    }
-//
-//    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
-//        this.historiaClinica = historiaClinica;
-//    }
+    public HistoriaClinica getHistoriaClinica() {
+        return historiaClinica;
+    }
+
+    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
+        this.historiaClinica = historiaClinica;
+    }
      
 }

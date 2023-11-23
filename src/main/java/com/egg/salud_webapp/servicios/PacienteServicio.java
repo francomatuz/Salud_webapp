@@ -1,5 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
@@ -49,9 +50,9 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
 
         paciente.setRol(UsuarioEnum.USER);
-        // Creacion de historia clinica
-        // HistoriaClinica historiaClinica = new HistoriaClinica();
-        // paciente.setHistoriaClinica(historiaClinica);
+       //  Creacion de historia clinica
+         HistoriaClinica historiaClinica = new HistoriaClinica();
+         paciente.setHistoriaClinica(historiaClinica);
 
         pacienteRepositorio.save(paciente);
     }
