@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turnos Médicos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="register-paciente.css" rel="stylesheet">
-   
+    <link href="/src/main/resources/static/registrarprofesional.css" rel="stylesheet">
+    <link rel="icon" href="/img/healthIcon.png" type="image/x-icon">
 </head>
 
 <body>
@@ -34,105 +34,80 @@
             </ul>
           </div>
         </div>
-      </nav>
-
-    
-      <form class="row g-3">
-        <div class="col-md-4">
-          <label for="validationDefault01" class="form-label">Nombre</label>
-          <input type="text" class="form-control" id="validationDefault01" value="Ingrese su nombre" required>
+    </nav>
+    <div class="container">
+    <form class="row g-3">
+        <div class="col-md-6">
+            <label for="validationDefault01" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="validationDefault01" value="Ingrese su nombre" required>
         </div>
-        <div class="col-md-4">
-          <label for="validationDefault02" class="form-label">Apellido</label>
-          <input type="text" class="form-control" id="validationDefault02" value="Ingrese su apellido" required>
+        <div class="col-md-6">
+            <label for="validationDefault02" class="form-label">Apellido</label>
+            <input type="text" class="form-control" id="validationDefault02" value="Ingrese su apellido" required>
         </div>
-
-        <div class="col-md-4">
-          <label for="validationDefaultUsername" class="form-label">DNI</label>
-          <div class="input-group">
-            <span class="input-group-text" id="inputGroupPrepend2">Nº</span>
-            <input type="text" class="form-control" id="validationDefault03" aria-describedby="inputGroupPrepend2" required>
-          </div>
+        <div class="col-md-6">
+            <label for="validationDefault03" class="form-label">DNI</label>
+            <input type="text" class="form-control" id="validationDefault03" required>
         </div>
-
-        <div class="col-md-4">
-          <label for="validationDefaultUsername" class="form-label">Número de Matricula</label>
-          <div class="input-group">
-            <span class="input-group-text" id="inputGroupPrepend2">Nº</span>
-            <input type="text" class="form-control" id="validationDefault03" aria-describedby="inputGroupPrepend2" required>
-          </div>
+        <div class="col-md-6">
+            <label for="validationDefault04" class="form-label">Número de Matrícula</label>
+            <input type="text" class="form-control" id="validationDefault04" required>
         </div>
-
-        <div class="col-md-4">
-          <label for="validationDefault08" class="form-label">Género</label>
-          <select class="form-select" aria-label="Default select example">
-            <option selected>...</option>
-            <option value="1">Femenino</option>
-            <option value="2">Masculino</option>
-            <option value="3">Otro</option>
-        </div>
-
-        <div class="col-md-2">
+        <div class="col-md-6">
             <label for="validationDefault05" class="form-label">Fecha de Nacimiento</label>
-            <input type="date" class="form-control" id="validationDefault04" required>
-          </div>
-        </div>
-        <div class="col-md-3">
-            <label for="validationDefault05" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="validationDefault06" required>
-          </div>
-        <div class="col-md-3">
-          <label for="validationDefault05" class="form-label">Confirmar Contraseña</label>
-          <input type="password" class="form-control" id="validationDefault07" required>
+            <input type="date" class="form-control" id="validationDefault05" required>
         </div>
 
-        <div class="col-md-4">
-          
-          <label for="validationDefault05" class="form-label">Domicilio</label>
-          <input type="text" class="form-control" id="validationDefault07" value="Ingrese su domicilio" required>
-        </div>
-        <div class="col-md-4">
-          <label for="validationDefault01" class="form-label">Correo electrónico</label>
-          <input type="text" class="form-control" id="validationDefault01" value="Ingrese su correo electrónico" required>
-        </div>
-
-        <div class="col-md-4">
-          <label for="validationDefault08" class="form-label">Atiende de manera virtual?</label>
-          <select class="form-select" aria-label="Default select example">
-            <option selected>...</option>
-            <option value="1">SI</option>
-            <option value="2">NO</option>
-          </select>
-        </div>
-
-
-      <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">Biografia</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <div class="col-md-6">
+          <label for="validationDefault10" class="form-label">Correo electrónico</label>
+          <input type="email" class="form-control" id="validationDefault10" placeholder="nombre@ejemplo.com" required>
       </div>
-      
-       
-       
+
+        <div class="col-md-6">
+            <label for="validationDefault06" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="validationDefault06" required>
+        </div>
+        <div class="col-md-6">
+            <label for="validationDefault07" class="form-label">Confirmar Contraseña</label>
+            <input type="password" class="form-control" id="validationDefault07" required>
+        </div>
+        <div class="col-md-6">
+            <label for="validationDefault08" class="form-label">Género</label>
+            <select class="form-select" aria-label="Default select example" id="validationDefault08">
+                <option selected>...</option>
+                <option value="1">Femenino</option>
+                <option value="2">Masculino</option>
+                <option value="3">Otro</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="validationDefault09" class="form-label">Atiende de manera virtual?</label>
+            <select class="form-select" aria-label="Default select example" id="validationDefault09">
+                <option selected>...</option>
+                <option value="1">Sí</option>
+                <option value="2">No</option>
+            </select>
+        </div>
+        
         <div class="col-12">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
-            <label class="form-check-label" for="invalidCheck2">
-            Acepto los términos y condiciones
-            </label>
-          </div>
+
+          <div class="col-md-12">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+                <label class="form-check-label" for="invalidCheck2">
+                    Acepto los términos y condiciones
+                </label>
+            </div>
         </div>
-        <div class="col-6">
-          <button class="btn btn-primary" type="submit">Registrarse</button>
+        <div class="col-md-12">
+            <button class="btn btn-primary" type="submit">Registrarse</button>
         </div>
-      </form>
+    </form>
+</div>
+   
   
 
 
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-</body>
-</html>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
