@@ -22,7 +22,7 @@ public class Profesional extends Usuario {
     @Enumerated(EnumType.STRING)
     private Especialidades especialidad;
 
-    @Column(columnDefinition = "TIMESTAMP")
+    
     // private LocalDateTime agendaTurnos; no se usa
     // private Integer duracionTurno Se hace en la entity turno, y no necesariamente
     // se instancia , haces fecha de inicio y fecha fin
