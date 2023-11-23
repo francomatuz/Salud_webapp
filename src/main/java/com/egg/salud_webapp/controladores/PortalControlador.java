@@ -3,6 +3,7 @@ package com.egg.salud_webapp.controladores;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
+import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.servicios.PacienteServicio;
 import java.time.LocalDate;
@@ -41,6 +42,21 @@ public class PortalControlador {
         modelo.put("generos", GeneroEnum.values());
         modelo.put("obrasSociales", ObraSocial.values());
         return "registrarpaciente.html";
+    }
+
+
+    @GetMapping ("/registrar/profesional")
+    public String registrarProfesional (ModelMap modelo) {
+       modelo.put("generos", GeneroEnum.values());
+       modelo.put("especialidades", Especialidades.values());
+        return "registrarprofesional.html";
+    }
+        
+     @GetMapping ("/dashboardprofesional")
+    public String dashboardprofesional (ModelMap modelo) 
+     {
+         modelo.put("especialidades", Especialidades.values());
+        return "dashboardprofesional.html";
     }
 
     @PostMapping("/registrar/paciente")
