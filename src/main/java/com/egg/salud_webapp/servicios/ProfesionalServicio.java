@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,11 +33,12 @@ public class ProfesionalServicio {
     
     public void registrar(String matricula, Especialidades especialidad,
             String direccion, Boolean atencionVirtual,
-            String bio, ObraSocial[] prestadores, Long id, String nombre, String apellido, String dni,
+            String bio, List <ObraSocial> prestadores, Long id, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
             String email, String password, String password2, GeneroEnum genero, Boolean alta) throws MiException {
         validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2, matricula, direccion,
                 bio);
+                
 
         Profesional profesional = new Profesional(matricula, especialidad, direccion, atencionVirtual, bio, prestadores,
                 nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,
@@ -45,7 +48,7 @@ public class ProfesionalServicio {
 
     @Transactional
     private void actualizar(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
-            String password, String password2, ObraSocial[] prestadores,
+            String password, String password2, List <ObraSocial> prestadores,
             String direccion, Boolean atencionVirtual, String bio, LocalDateTime agendaTurno)
             throws MiException {
 
@@ -68,6 +71,8 @@ public class ProfesionalServicio {
             profesionalAActualizar.setAtencionVirtual(
                     atencionVirtual != null ? atencionVirtual : profesionalAActualizar.getAtencionVirtual());
             profesionalAActualizar.setBio(bio != null ? bio : profesionalAActualizar.getBio());
+
+          
 
             profesionalRepositorio.save(profesionalAActualizar);
             // el signo de pregunta y los dos puntos es como si fuera un IF

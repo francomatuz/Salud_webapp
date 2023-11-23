@@ -5,10 +5,14 @@ import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
+import java.util.List;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 
 @Entity
 public class Profesional extends Usuario {
@@ -30,12 +34,16 @@ public class Profesional extends Usuario {
     private String atencionFisicaDireccion; // cambio de nombre, seguir un patron en el nombramiento de variables.
     private Boolean atencionVirtual;
     private String bio;
-    private ObraSocial[] prestadores; // esto es un array de obras sociales, por lo tanto se usa el enum para crear el
+    @ElementCollection(targetClass = ObraSocial.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "profesional_prestadores", joinColumns = @JoinColumn(name = "profesional_id"))
+    @Column(name = "obra_social")
+    private List<ObraSocial> prestadores; // esto es un array de obras sociales, por lo tanto se usa el enum para crear el
                                       // array
     private Boolean alta;
 
     public Profesional(String matricula, Especialidades especialidad, String atencionFisicaDireccion,
-            Boolean atencionVirtual, String bio, ObraSocial[] prestadores, String nombre, String apellido, String dni,
+            Boolean atencionVirtual, String bio,List <ObraSocial> prestadores, String nombre, String apellido, String dni,
             LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
         super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
         this.matricula = matricula;
@@ -83,13 +91,7 @@ public class Profesional extends Usuario {
         this.bio = bio;
     }
 
-    public ObraSocial[] getPrestadores() {
-        return prestadores;
-    }
-
-    public void setPrestadores(ObraSocial[] prestadores) {
-        this.prestadores = prestadores;
-    }
+  
 
     public Boolean getAlta() {
         return alta;
@@ -106,5 +108,14 @@ public class Profesional extends Usuario {
     public void setAtencionFisicaDireccion(String atencionFisicaDireccion) {
         this.atencionFisicaDireccion = atencionFisicaDireccion;
     }
+
+    public List<ObraSocial> getPrestadores() {
+        return prestadores;
+    }
+
+    public void setPrestadores(List<ObraSocial> prestadores) {
+        this.prestadores = prestadores;
+    }
+
 
 }

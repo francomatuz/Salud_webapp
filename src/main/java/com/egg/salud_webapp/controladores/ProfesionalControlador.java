@@ -1,6 +1,7 @@
 package com.egg.salud_webapp.controladores;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class ProfesionalControlador {
 
             @RequestParam String direccion,
             @RequestParam Boolean atencionVirtual, @RequestParam String bio,
-            @RequestParam ObraSocial[] prestadores, @RequestParam Long id, @RequestParam String nombre,
+            @RequestParam List<ObraSocial> prestadores, @RequestParam Long id, @RequestParam String nombre,
             @RequestParam String apellido, @RequestParam String dni,
             @RequestParam LocalDate fecha_nac, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, @RequestParam GeneroEnum genero, @RequestParam UsuarioEnum rol,
