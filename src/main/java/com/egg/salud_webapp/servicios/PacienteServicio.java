@@ -58,31 +58,48 @@ public class PacienteServicio implements UserDetailsService {
     }
 
     // Actualizar paciente
-    @Transactional
-    public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
-            ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
+   @Transactional
+public void actualizar(Long id, String nuevoNombre, String nuevoApellido, String nuevoEmail, String nuevoDni, LocalDate nuevaFechaNac, ObraSocial nuevaObraSocial, GeneroEnum nuevoGenero, String nuevaPassword, String nuevaPassword2) throws MiException {
 
-        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
+    Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
 
-        Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
+    if (respuesta.isPresent()) {
+        
+        Paciente paciente = respuesta.get();
 
-        if (respuesta.isPresent()) {
-
-            Paciente paciente = respuesta.get();
-
-            paciente.setNombre(nombre);
-            paciente.setApellido(apellido);
-            paciente.setEmail(email);
-            paciente.setDni(dni);
-            paciente.setFecha_nac(fecha_nac);
-            paciente.setObraSocial(obraSocial);
-            paciente.setGenero(genero);
-            paciente.setPassword(new BCryptPasswordEncoder().encode(password));
-
-            paciente.setRol(UsuarioEnum.USER);
-            pacienteRepositorio.save(paciente);
+       
+        if (nuevoNombre != null) {
+            paciente.setNombre(nuevoNombre);
         }
+        if (nuevoApellido != null) {
+            paciente.setApellido(nuevoApellido);
+        }
+        if (nuevoEmail != null) {
+            paciente.setEmail(nuevoEmail);
+        }
+        if (nuevoDni != null) {
+            paciente.setDni(nuevoDni);
+        }
+        if (nuevaFechaNac != null) {
+            paciente.setFecha_nac(nuevaFechaNac);
+        }
+        if (nuevaObraSocial != null) {
+            paciente.setObraSocial(nuevaObraSocial);
+        }
+        if (nuevoGenero != null) {
+            paciente.setGenero(nuevoGenero);
+        }
+        if (nuevaPassword != null) {
+            paciente.setPassword(new BCryptPasswordEncoder().encode(nuevaPassword));
+        }
+
+        paciente.setRol(UsuarioEnum.USER);
+        pacienteRepositorio.save(paciente);
+        
+    } else {
+        throw new MiException("No está el ID");
     }
+}
 
     @Transactional
     public void eliminar(Long id) throws MiException {
