@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+
 
 @SpringBootApplication
 //@ComponentScan(basePackages = "com.egg.salud_webapp")
@@ -25,7 +25,7 @@ public class SaludWebappApplication implements CommandLineRunner  {
     @Override
     public void run(String... args) throws Exception {
         
-     //  leerPaciente(10L);
+     //  leerPaciente(12L);
        // eliminarPaciente(4L);
        // modificarPaciente(10L);
     }

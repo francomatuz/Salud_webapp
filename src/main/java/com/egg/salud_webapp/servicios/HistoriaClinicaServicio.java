@@ -17,9 +17,9 @@ public class HistoriaClinicaServicio {
     @Transactional
     public void agregarFichaMedica(Long id, FichaMedica fichaMedica){
         
-        HistoriaClinica historiaClinica = historiaClinicaRepositorio.getById(id);
+        HistoriaClinica historiaClinica = historiaClinicaRepositorio.buscarPorId(id);
         
-       fichaMedica.setHistoriaClinica(historiaClinica)
+       fichaMedica.setHistoriaClinica(historiaClinica);
         
      historiaClinica.getFichasMedicas().add(fichaMedica);
      
