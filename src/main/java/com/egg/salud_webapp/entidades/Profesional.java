@@ -51,9 +51,7 @@ public class Profesional extends Usuario {
         this.atencionFisicaDireccion = atencionFisicaDireccion;
         this.atencionVirtual = atencionVirtual;
         this.bio = bio;
-        this.prestadores = prestadores;
-        
-
+        this.prestadores = prestadores;      
     }
 
     public Profesional() {
