@@ -1,6 +1,7 @@
 
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.FichaMedica;
 import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.repositorios.HistoriaClinicaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
