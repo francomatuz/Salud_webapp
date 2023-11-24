@@ -4,10 +4,7 @@
  */
 package com.egg.salud_webapp.enumeraciones;
 
-/**
- *
- * @author Agustina
- */
+
 public enum Especialidades {
     GINECOLOGIA,
     CLINICA,
