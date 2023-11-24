@@ -63,9 +63,9 @@
                             >
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" aria-disabled="true"
+                            <a th:href="@{/dashboardpaciente}" class="nav-link" aria-disabled="true"
                                ><span class="fs-5 fw-bold nombreUsuario" th:if="${session.usuariosession!=null}" th:text="${session.usuariosession.nombre}"></span></a
-                            >
+                           >
                         </li>
                     </ul>
                 </div>

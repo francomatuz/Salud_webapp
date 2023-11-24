@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Grupo 4 - Salud</title>
+
+        <link href="/css/dashboardpaciente.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="icon" href="/img/healthIcon.png" type="image/x-icon">
+    </head>
+    <body>
+    <body>
+        <div class="contenedor">
+            <aside>
+                <div class="d-flex img-text-logo">
+                    <img src="/img/healthIcon.png" alt="Logo" width="30" height="35" class="d-inline-block align-text-top">
+                    <p class="logo">Grupo 4 - Salud</p>
+                </div>
+                <ul class="menu">
+                    <br>
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+                            </svg>
+                            <span class="disapear">ACTUALIZAR</span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                            </svg>
+                            <span class="disapear">ELIMINAR</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                            </svg><span class="disapear">VOLVER</span>
+                        </a>
+                    </li>
+
+                    <li class="logout">
+                        <a href="/logout">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-door-closed-fill" viewBox="0 0 16 16">
+                            <path d="M12 1a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2a1 1 0 0 1 1-1zm-2 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                            </svg><span class="disapear">LOGOUT</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </aside>
+
+            <main>
+                <div>
+                    <h1 class="main-title">BIENVENIDO<h1 th:text="${session.usuariosession.nombre}"class="main-title"></h1></h1>
+                </div>
+
+                <section class="usuario-info">
+                    <div class="img-contenedor">
+                        <img src="/img/ryan.jpg" alt="img">
+                    </div>
+
+                    <div class="info-contenedor">
+                        <div>
+                            <h1 class="turnos-title">TU INFO</h1>
+                        </div>
+                        <div>
+                            <p>DNI:<span th:text="${session.usuariosession.dni}"></span></p>
+                            <p>FECHA DE NACIMIENTO:<span th:text="${session.usuariosession.fecha_nac}"></span></p>
+                            <p>GENERO:<span th:text="${session.usuariosession.genero}"></span></p>
+                            <p>EMAIL:<span th:text="${session.usuariosession.email}"></span></p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="turnos-usuario">
+                    <div>
+                        <h1 class="turnos-title">TUS TURNOS</h1>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </body>
+</html>
