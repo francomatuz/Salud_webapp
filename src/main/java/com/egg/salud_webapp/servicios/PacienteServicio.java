@@ -30,8 +30,6 @@ public class PacienteServicio implements UserDetailsService {
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
 
-    // Metodos Crud
-    // Crear paciente
     @Transactional
     public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
@@ -47,11 +45,7 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setObraSocial(obraSocial);
         paciente.setGenero(genero);
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
-
-        paciente.setRol(UsuarioEnum.USER);
-        // Creacion de historia clinica
-        // HistoriaClinica historiaClinica = new HistoriaClinica();
-        // paciente.setHistoriaClinica(historiaClinica);
+        paciente.setRol(UsuarioEnum.USER); 
 
         pacienteRepositorio.save(paciente);
     }
@@ -68,7 +62,7 @@ public class PacienteServicio implements UserDetailsService {
         if (respuesta.isPresent()) {
 
             Paciente paciente = respuesta.get();
-             // Si el correo electrónico no cambia, no realiza la validación
+             
         
     
             paciente.setNombre(nombre != null && !nombre.isEmpty() ? nombre : paciente.getNombre());
@@ -78,11 +72,7 @@ public class PacienteServicio implements UserDetailsService {
             paciente.setFecha_nac(fecha_nac != null ? fecha_nac : paciente.getFecha_nac());
             paciente.setObraSocial(obraSocial != null ? obraSocial : paciente.getObraSocial());
             paciente.setGenero(genero != null ? genero : paciente.getGenero());
-            paciente.setPassword(password != null && !password.isEmpty() && password2 != null && !password2.isEmpty()
-                    ? new BCryptPasswordEncoder().encode(password)
-                    : paciente.getPassword());
-    
-            // Puedes agregar más condiciones según tus necesidades
+            paciente.setPassword(password != null && !password.isEmpty() && password2 != null && !password2.isEmpty()? new BCryptPasswordEncoder().encode(password): paciente.getPassword());
     
             pacienteRepositorio.save(paciente);
         }
@@ -104,7 +94,6 @@ public class PacienteServicio implements UserDetailsService {
         return pacienteRepositorio.getById(id);
     }
 
-    // Metodo leer pacientes de la base de datos
     public List<Paciente> listarPacientes() {
         return pacienteRepositorio.findAll();
     }
