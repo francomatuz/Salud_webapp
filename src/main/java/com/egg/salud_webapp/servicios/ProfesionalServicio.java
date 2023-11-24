@@ -2,11 +2,13 @@
 package com.egg.salud_webapp.servicios;
 
 import com.egg.salud_webapp.entidades.Profesional;
+import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
+import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,25 +27,39 @@ public class ProfesionalServicio {
 
     @Autowired
     ProfesionalRepositorio profesionalRepositorio;
+    @Autowired
+    ProfesionalPrestadoresRepositorio profesionalPrestadoresRepositorio;
     // Metodos Crud
     // Crear paciente
 
     @Transactional
-
-    
     public void registrar(String matricula, Especialidades especialidad,
-            String direccion, Boolean atencionVirtual,
-            String bio, List <ObraSocial> prestadores, Long id, String nombre, String apellido, String dni,
+             Boolean atencionVirtual,
+           String[] prestadores,  String nombre, String apellido, String dni,
             LocalDate fecha_nac,
-            String email, String password, String password2, GeneroEnum genero, Boolean alta) throws MiException {
-        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2, matricula, direccion,
-                bio);
+            String email, String password, String password2, GeneroEnum genero) throws MiException {
+        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2, matricula);
                 
-
-        Profesional profesional = new Profesional(matricula, especialidad, direccion, atencionVirtual, bio, prestadores,
+        List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
+        Profesional profesional = new Profesional(matricula, especialidad,  atencionVirtual, 
                 nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,
                 UsuarioEnum.USER);
         profesionalRepositorio.save(profesional);
+        for (String prestador  : prestadoresList) {
+            ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesional,prestador);
+            profesionalPrestadoresRepositorio.save(profesionalPrestadores);
+
+            
+        }
+    }
+     public List<String> convertirStringAListaDeObrasSociales(String[] prestadoresArray) {
+        List<String> obrasSociales = new ArrayList<>();
+        if (prestadoresArray != null) {
+            for (String prestador : prestadoresArray) {
+                obrasSociales.add(String.valueOf(prestador));
+            }
+        }
+        return obrasSociales;
     }
 
     @Transactional
@@ -64,8 +80,8 @@ public class ProfesionalServicio {
             profesionalAActualizar.setFecha_nac(fecha_nac != null ? fecha_nac : profesionalAActualizar.getFecha_nac());
             profesionalAActualizar.setPassword(password != null ? new BCryptPasswordEncoder().encode(password)
                     : profesionalAActualizar.getPassword());
-            profesionalAActualizar
-                    .setPrestadores(prestadores != null ? prestadores : profesionalAActualizar.getPrestadores());
+            // profesionalAActualizar
+            //         .setPrestadores(prestadores != null ? prestadores : profesionalAActualizar.getPrestadores());
             profesionalAActualizar.setAtencionFisicaDireccion(
                     direccion != null ? direccion : profesionalAActualizar.getAtencionFisicaDireccion());
             profesionalAActualizar.setAtencionVirtual(
@@ -115,7 +131,7 @@ public class ProfesionalServicio {
 
     // validar los atributos de creación
     private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
-            String password, String password2, String matricula, String direccion, String bio)
+            String password, String password2, String matricula)
             throws MiException {
 
         Optional<Profesional> dniExistente = profesionalRepositorio.buscarPorDni(dni);
@@ -153,12 +169,8 @@ public class ProfesionalServicio {
         if (matricula.isEmpty() || matricula == null) {
             throw new MiException("La matrícula no puede estar vacía o ser nula");
         }
-        if (direccion.isEmpty() || direccion == null) {
-            throw new MiException("El direccion no puede estar vacío o ser nulo");
-        }
-        if (bio.isEmpty() || bio == null) {
-            throw new MiException("La bio no puede estar vacía o ser nula");
-        }
+        
+        
 
     }
 
@@ -190,5 +202,6 @@ public class ProfesionalServicio {
 
     }
 
+   
   
 }
