@@ -26,6 +26,11 @@ public class PerfilPacienteControlador {
 @Autowired
     private PacienteServicio pacienteServicio;
 
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "dashboardpaciente.html";
+    }
+
     @GetMapping("/actualizar")
     public String mostrarFormulario(ModelMap modelo, HttpSession session) {
         
