@@ -5,7 +5,7 @@
 }
 body{
     background-color:  #e0e1dd;
-;}
+}
 html{
     font-size: 62.5%;
     font-family: 'Montserrat', sans-serif;
@@ -165,4 +165,9 @@ input{
         left: 48%;
         top: 10%;
     }
+}
+.nombreUsuario{
+    display: inlineblock;
+    width:100px;
+    color: #00b4d8;
 }
