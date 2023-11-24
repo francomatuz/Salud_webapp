@@ -18,7 +18,7 @@ import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.servicios.ProfesionalServicio;
 
 @Controller
-@RequestMapping("/profesional")
+@RequestMapping
 public class ProfesionalControlador {
     @Autowired
     private ProfesionalServicio profesionalServicio;
