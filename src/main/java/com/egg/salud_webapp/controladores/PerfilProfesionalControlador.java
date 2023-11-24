@@ -1,6 +1,5 @@
 package com.egg.salud_webapp.controladores;
 
-import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
@@ -8,11 +7,10 @@ import com.egg.salud_webapp.excepciones.MiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.egg.salud_webapp.servicios.PacienteServicio;
 import com.egg.salud_webapp.servicios.ProfesionalServicio;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
@@ -48,11 +46,12 @@ public class PerfilProfesionalControlador {
         return "actualizarprofesional.html"; // Nombre del formulario de actualización de perfil
     }
 
+
     @PostMapping("/actualizar")
-    public String actualizarPerfil(@RequestParam String nombre, @RequestParam String apellido,
-            @RequestParam String email, @RequestParam String dni,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
-            @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, ModelMap modelo, HttpSession session)
+    public String actualizarPerfil(@RequestParam String nombre, @RequestParam String apellido,@RequestParam String dni,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
+            @RequestParam String email, 
+            
+            @RequestParam List <ObraSocial> prestadores, @RequestParam GeneroEnum genero, ModelMap modelo, HttpSession session)
             throws MiException {
 
         // Obtener el usuario logueado desde la sesión
@@ -66,8 +65,8 @@ public class PerfilProfesionalControlador {
 
         try {
             // Actualizar el perfil del paciente (sin cambiar la contraseña)
-            profesionalServicio.actualizar(profesionalLogueado.getId(), nombre, apellido, email, dni, fecha_nac, obraSocial,
-                    genero, null, null);
+            profesionalServicio.actualizar(profesionalLogueado.getId(), nombre, apellido, dni, fecha_nac, email, prestadores,
+                    genero, null , null);
 
             modelo.put("Exito", "Perfil actualizado exitosamente");
 

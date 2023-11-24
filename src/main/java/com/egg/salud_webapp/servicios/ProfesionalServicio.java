@@ -11,7 +11,6 @@ import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -60,12 +59,13 @@ public class ProfesionalServicio {
     }
 
     @Transactional
-    private void actualizar(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
-            String password, String password2, List <ObraSocial> prestadores,
-            String direccion, Boolean atencionVirtual, String bio, LocalDateTime agendaTurno)
+    public void actualizar(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
+     List <ObraSocial> prestadores,GeneroEnum genero,
+            String password, String password2
+            )
             throws MiException {
 
-        validarAtributos2(email, password, password2, direccion, bio, agendaTurno);
+        validarAtributos2(email, password, password2);
         Profesional profesionalAActualizar = getById(id);
 
         if (profesionalAActualizar != null) {
@@ -79,11 +79,11 @@ public class ProfesionalServicio {
                     : profesionalAActualizar.getPassword());
             // profesionalAActualizar
             //         .setPrestadores(prestadores != null ? prestadores : profesionalAActualizar.getPrestadores());
-            profesionalAActualizar.setAtencionFisicaDireccion(
-                    direccion != null ? direccion : profesionalAActualizar.getAtencionFisicaDireccion());
-            profesionalAActualizar.setAtencionVirtual(
-                    atencionVirtual != null ? atencionVirtual : profesionalAActualizar.getAtencionVirtual());
-            profesionalAActualizar.setBio(bio != null ? bio : profesionalAActualizar.getBio());
+            // profesionalAActualizar.setAtencionFisicaDireccion(
+            //         direccion != null ? direccion : profesionalAActualizar.getAtencionFisicaDireccion());
+            // profesionalAActualizar.setAtencionVirtual(
+            //         atencionVirtual != null ? atencionVirtual : profesionalAActualizar.getAtencionVirtual());
+            // profesionalAActualizar.setBio(bio != null ? bio : profesionalAActualizar.getBio());
 
           
 
@@ -172,8 +172,7 @@ public class ProfesionalServicio {
     }
 
     // validar atributos de actualización
-    private void validarAtributos2(String email, String password, String password2, String direccion,
-            String bio, LocalDateTime agendaTurno) throws MiException {
+    private void validarAtributos2(String email, String password, String password2) throws MiException {
 
         Optional<Profesional> emailExistente = profesionalRepositorio.buscarPorEmail(email);
 
@@ -190,12 +189,12 @@ public class ProfesionalServicio {
         if (!password.equals(password2)) {
             throw new MiException("La contraseñas ingresadas deben ser iguales");
         }
-        if (direccion.isEmpty() || direccion == null) {
-            throw new MiException("El direccion no puede estar vacío o ser nulo");
-        }
-        if (bio.isEmpty() || bio == null) {
-            throw new MiException("La bio no puede estar vacía o ser nula");
-        }
+        // if (direccion.isEmpty() || direccion == null) {
+        //     throw new MiException("El direccion no puede estar vacío o ser nulo");
+        // }
+        // if (bio.isEmpty() || bio == null) {
+        //     throw new MiException("La bio no puede estar vacía o ser nula");
+        // }
 
     }
 }
