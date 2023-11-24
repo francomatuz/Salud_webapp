@@ -1,6 +1,7 @@
 
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
@@ -12,13 +13,24 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
-public class ProfesionalServicio {
+public class ProfesionalServicio implements UserDetailsService {
     
     @Autowired
     ProfesionalRepositorio profesionalRepositorio;
@@ -109,7 +121,7 @@ public class ProfesionalServicio {
     private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac, String password, String password2,String matricula, Double precio, String direccion,String bio ) throws MiException {
 
         Optional<Profesional> dniExistente = profesionalRepositorio.buscarPorDni(dni);
-        Optional<Profesional> emailExistente = profesionalRepositorio.buscarPorEmail(email);
+        Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
        // Optional<Profesional> matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
         
         if (nombre.isEmpty() || nombre == null) {
@@ -118,7 +130,7 @@ public class ProfesionalServicio {
         if (apellido.isEmpty() || apellido == null) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
-        if (emailExistente.isPresent()) {
+        if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
             throw new MiException("Ya hay un usuario existente con el Email ingresado");
         }
         if (email == null || email.isEmpty()) {
@@ -156,10 +168,10 @@ public class ProfesionalServicio {
     //validar atributos de actualización
       private void validarAtributos2(String email, String password, String password2, Double precio, String direccion,String bio, LocalDateTime agendaTurno) throws MiException {
 
-        Optional<Profesional> emailExistente = profesionalRepositorio.buscarPorEmail(email);
+        Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
         
 
-        if (emailExistente.isPresent()) {
+        if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
             throw new MiException("Ya hay un usuario existente con el Email ingresado");
         }
         if (email == null || email.isEmpty()) {
@@ -181,6 +193,32 @@ public class ProfesionalServicio {
         if(precio>0){
             throw new MiException("El precio debe ser mayor a 0");
         }        
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        Profesional profesional = profesionalRepositorio.buscarPorEmail(email);
+
+        if (profesional != null) {
+
+            List<GrantedAuthority> permisos = new ArrayList<>();
+
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + profesional.getRol().toString());
+
+            permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("usuariosession", profesional.getRol().toString());
+
+            return new User(profesional.getEmail(), profesional.getPassword(), permisos);
+        } else {
+            return null;
+        }
+
     }
     
 }
