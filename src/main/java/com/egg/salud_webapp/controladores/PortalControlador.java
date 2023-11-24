@@ -44,7 +44,7 @@ public class PortalControlador {
     }
 
     @PostMapping("/registrar/paciente")
-    public String registrarPaciente(@RequestParam String nombre, @RequestParam String apellido,
+    public String registrarpaciente(@RequestParam String nombre, @RequestParam String apellido,
             @RequestParam String email, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password,
@@ -76,6 +76,10 @@ public class PortalControlador {
         }
     }
 
+    
+
+
+
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error, ModelMap modelo) {
 
@@ -98,6 +102,5 @@ public class PortalControlador {
 
         return "index.html";
     }
-  
-
+   
 }

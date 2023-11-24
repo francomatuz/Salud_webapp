@@ -1,22 +1,62 @@
-body {
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* Fuente del texto */
-    margin: 0; /* Elimina los márgenes predeterminados */
-    padding: 0; /* Elimina el relleno predeterminado */
-  }
-  
-  /* Estilos para el navbar */
-  .navbar {
-    padding: 1rem; 
-  }
-  
-  .navbar-brand {
-    font-size: 1.5rem;
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin:0;
+}
+body{
+    background-color:  #e0e1dd;
+;}
+html{
+    font-size: 62.5%;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.navbar {
+  background-color: #1b263b; 
+}
+
+.navbar .nav-link {
+  color: #ffffff; /* Cambiar el color del texto a blanco (#ffffff) */
+}
+
+
+.logo{
+    font-family: 'Montserrat', sans-serif;
+    font-size: large;
     font-weight: bold;
-  }
+    color: #ffffff;
+}
+.container-fluid a{
+    text-align: center;
+    
+}
+.ml-5 {
+    margin-left: 1.5rem !important;
+}
+#navbarNav{
+    font-family: 'Montserrat', sans-serif;
+}
+nav a:hover{
+    text-shadow: 0 0 10px white;
+    cursor:pointer;
+}
+.collapse .navbar-nav .nav-link {
+    padding: 6px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.navbar .nav-link[href*="/login"] .fs-5 {
+  color: #ffffff; 
+}
+
+.navbar .nav-link.disabled {
+    
+     color:#6d9efc
+    
+}
+
   
-  .navbar-nav .nav-link {
-    margin-right: 1rem; 
-  }
   .card {
     width: 50%; /* Ancho máximo de las tarjetas */
     margin: 50px auto; /* Margen exterior y centrado horizontal */
@@ -37,7 +77,6 @@ body {
 .card a:hover {
     text-decoration: none; /* Eliminar subrayado en el hover */
 }
-
   
   .card-title {
     font-size: 1.5rem; /* Tamaño del título */
@@ -62,4 +101,13 @@ body {
     text-decoration: none;
     color: inherit; /* hereda el color del texto */
 }
-  
+.contenedor-footer {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    font-size: medium;
+    color:#ffffff;
+    background-color: #1b263b;
+    height: 80px; /* Altura del contenedor (ajusta segÃºn sea necesario) */
+    border: 1px solid #ccc;
+}
