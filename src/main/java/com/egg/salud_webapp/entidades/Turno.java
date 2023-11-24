@@ -19,6 +19,7 @@ public class Turno {
     private Long id;
     private Date horario;
     
+    
     //@OneToOne
     //private Profesional doctor;
     

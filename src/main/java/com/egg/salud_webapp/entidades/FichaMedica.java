@@ -10,7 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class FichaMedica {
+public class FichaMedica { 
+// la ficha media debe crearse cuando se reserva un turno 
+// y no se da de baja
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
