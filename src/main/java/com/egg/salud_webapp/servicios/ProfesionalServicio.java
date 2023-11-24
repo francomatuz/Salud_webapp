@@ -33,6 +33,7 @@ public class ProfesionalServicio {
                 bio);
 
         Profesional profesional = new Profesional(matricula, especialidad, direccion, atencionVirtual, bio, prestadores,nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,UsuarioEnum.USER);
+        profesional.setAlta(false);
         profesionalRepositorio.save(profesional);
     }
 
@@ -45,7 +46,7 @@ public class ProfesionalServicio {
         validarAtributos2(email, password, password2, direccion, bio);
         Profesional profesionalAActualizar = getById(id);
 
-        if (profesionalAActualizar != null) {
+        if (profesionalAActualizar != null && !profesionalAActualizar.getAlta()){
 
             profesionalAActualizar.setNombre(nombre != null ? nombre : profesionalAActualizar.getNombre());
             profesionalAActualizar.setApellido(apellido != null ? apellido : profesionalAActualizar.getApellido());
@@ -74,7 +75,15 @@ public class ProfesionalServicio {
             profesionalRepositorio.delete(getById(id));
         }  
     }
-
+    
+    //Analizar que pasa cuando se da de baja, que permisos se otorgan y cuales no!
+    public void darBaja(Long id) throws MiException{
+        Profesional profesional = profesionalRepositorio.getById(id);
+        if(profesional!=null){
+            profesional.setAlta(false);
+        }
+    }
+    
     public boolean tieneBio(Long id) throws MiException {
         Profesional profesional = getById(id);
 
@@ -102,7 +111,32 @@ public class ProfesionalServicio {
             return profesional;
         }
     }
+    
+    //Buscar profesional por especialidad
+    public List<Profesional> buscarPorEspecialidad(Especialidades especialidad) throws MiException{
+        List<Profesional> profesionales = new ArrayList<>();
+        profesionales = profesionalRepositorio.buscarPorEspecialidad(especialidad.toString());
+        if(!profesionales.isEmpty()){
+            return profesionales;
+        }else{
+            throw new MiException("No se encontró un profesional con los datos ingresados");
+        }
+        
+    }
 
+    //Buscar profesional por obra social
+    
+//    public List<Profesional> buscarPorEspecialidad(String obraSocialAbuscar) throws MiException{
+//        List<Profesional> profesionales = new ArrayList<>();
+//        
+//        if(!profesionales.isEmpty()){
+//            return profesionales;
+//        }else{
+//            throw new MiException("No se encontró un profesional con los datos ingresados");
+//        }
+        
+//    }
+    
     // validar los atributos de creación
     private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             String password, String password2, String matricula, String direccion, String bio)

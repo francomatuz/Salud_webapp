@@ -21,7 +21,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-@RequestMapping("profesional")
+@RequestMapping("/profesional")
 public class ProfesionalControlador {
     @Autowired
     private ProfesionalServicio profesionalServicio;
@@ -75,6 +75,8 @@ public class ProfesionalControlador {
         modelo.addAttribute("profesionales", profesionales);
         return "profesional_lista.html";
     }
+    
+    @GetMapping("/lista")
     
     @GetMapping("/modificar/{id}")
     public String modificar(@PathVariable Long id, ModelMap modelo) throws MiException {
