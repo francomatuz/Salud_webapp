@@ -5,10 +5,14 @@ import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
+import java.util.List;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 
 @Entity
 public class Profesional extends Usuario {
@@ -18,7 +22,7 @@ public class Profesional extends Usuario {
     @Enumerated(EnumType.STRING)
     private Especialidades especialidad;
 
-    @Column(columnDefinition = "TIMESTAMP")
+    //@Column(columnDefinition = "TIMESTAMP")
     // private LocalDateTime agendaTurnos; no se usa
     // private Integer duracionTurno Se hace en la entity turno, y no necesariamente
     // se instancia , haces fecha de inicio y fecha fin
@@ -30,13 +34,15 @@ public class Profesional extends Usuario {
     private String atencionFisicaDireccion; // cambio de nombre, seguir un patron en el nombramiento de variables.
     private Boolean atencionVirtual;
     private String bio;
-    private ObraSocial[] prestadores; // esto es un array de obras sociales, por lo tanto se usa el enum para crear el array
+    @ElementCollection(targetClass = ObraSocial.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "profesional_prestadores", joinColumns = @JoinColumn(name = "profesional_id"))
+    @Column(name = "obra_social")
+    private List<ObraSocial> prestadores; // esto es un array de obras sociales, por lo tanto se usa el enum para crear el array
     private Boolean alta;
     //private Double calificacion;
 
-    public Profesional(String matricula, Especialidades especialidad, String atencionFisicaDireccion,
-            Boolean atencionVirtual, String bio, ObraSocial[] prestadores, String nombre, String apellido, String dni,
-            LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
+    public Profesional(String matricula, Especialidades especialidad, String atencionFisicaDireccion, Boolean atencionVirtual, String bio, List<ObraSocial> prestadores, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
         super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
         this.matricula = matricula;
         this.especialidad = especialidad;
@@ -44,7 +50,6 @@ public class Profesional extends Usuario {
         this.atencionVirtual = atencionVirtual;
         this.bio = bio;
         this.prestadores = prestadores;
-     
     }
 
     public Profesional() {
@@ -82,11 +87,11 @@ public class Profesional extends Usuario {
         this.bio = bio;
     }
 
-    public ObraSocial[] getPrestadores() {
+    public List<ObraSocial> getPrestadores() {
         return prestadores;
     }
 
-    public void setPrestadores(ObraSocial[] prestadores) {
+    public void setPrestadores(List<ObraSocial> prestadores) {
         this.prestadores = prestadores;
     }
 
@@ -106,6 +111,4 @@ public class Profesional extends Usuario {
         this.atencionFisicaDireccion = atencionFisicaDireccion;
     }
 
-   
- 
 }

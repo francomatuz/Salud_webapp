@@ -9,7 +9,6 @@ import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,23 +28,17 @@ public class ProfesionalServicio {
     @Transactional
 
     
-    public void registrar(String matricula, Especialidades especialidad,
-            String direccionFisica, Boolean atencionVirtual,
-            String bio, ObraSocial[] prestadores, Long id, String nombre, String apellido, String dni,
-            LocalDate fecha_nac,
-            String email, String password, String password2, GeneroEnum genero, Boolean alta) throws MiException {
-        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2, matricula, direccionFisica,
+    public void registrar(String matricula, Especialidades especialidad, String direccion, Boolean atencionVirtual,  String bio, List <ObraSocial> prestadores, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, String password2, GeneroEnum genero, Boolean alta) throws MiException {
+        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2, matricula, direccion,
                 bio);
 
-        Profesional profesional = new Profesional(matricula, especialidad, direccionFisica, atencionVirtual, bio, prestadores,
-                nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,
-                UsuarioEnum.USER);
+        Profesional profesional = new Profesional(matricula, especialidad, direccion, atencionVirtual, bio, prestadores,nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,UsuarioEnum.USER);
         profesionalRepositorio.save(profesional);
     }
 
     @Transactional
     public void actualizar(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
-            String password, String password2, ObraSocial[] prestadores,
+            String password, String password2, List<ObraSocial> prestadores,
             String direccion, Boolean atencionVirtual, String bio)
             throws MiException {
 
