@@ -75,7 +75,8 @@
                             <li class="list-group-item">Perfil</li>
                             <li class="list-group-item">Estadísticas</li>
                             <li class="list-group-item">Citas Programadas</li>
-                      
+                            <button id="nuevoPaciente" class="btn btn-success">Nuevo Paciente</button>
+                            <button id="pacienteExistente" class="btn btn-primary">Paciente con H.C</button>
                         </ul>
                     </div>
                 </div>
@@ -102,25 +103,56 @@
                   <div class="card-body">
                       <h5 class="card-title">Biografía</h5>
                       <textarea id="biography" class="form-control mb-3" rows="5" placeholder="Escribe tu biografía aquí"></textarea>
-                      <button id="saveBiography" class="btn btn-primary">Guardar Biografía</button>
-                      <button id="editBiography" class="btn btn-primary">Editar Biografía</button>
+                      <button id="saveBiography" class="btn btn-success btn-sm">Guardar Biografía</button>
+                      <button id="editBiography" class="btn btn-primary btn-sm">Editar Biografía</button>
                   </div>
               </div>
               
 
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Citas Programadas</h5>
+              <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Citas Programadas</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Paciente</th>
+                                    <th>Motivo de la consulta</th>
+                                    <!-- Otros encabezados -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>24/11/23</td>
+                                <td>19:20</td>
+                                <td>Grupo Cuatro</td>
+                                <td>Bugs constantes en la cabeza</td>
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm">Reprogramar</button>
+                                    <button type="button" class="btn btn-danger btn-sm">Cancelar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>24/11/23</td>
+                                <td>20:00</td>
+                                <td>Grupo Tres</td>
+                                <td>Dolor de oídos</td>
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm">Reprogramar</button>
+                                    <button type="button" class="btn btn-danger btn-sm">Cancelar</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                
-                <!-- Otros elementos del dashboard -->
             </div>
-        </div>
-    </div>
+            
 
-    <button>Editar Perfil</button>
-    <button>Dar de Baja</button>
+    <button id="editBiography" class="btn btn-danger btn-sm">Dar de Baja</button>
+    <button id="editBiography" class="btn btn-primary btn-sm">Editar Perfil</button>
 
 
     

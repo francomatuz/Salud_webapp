@@ -58,6 +58,17 @@ body {
     background-color: #f0f0f0;
 }
 
+.btn-secondary {
+
+    background-color:darkgreen;
+    
+}
+
+.btn-success{
+
+    margin-top:auto;
+    margin-bottom:auto;
+}
 /* Navbar */
 .navbar {
     background-color:dodgerblue;
