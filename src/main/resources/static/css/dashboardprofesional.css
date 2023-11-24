@@ -23,11 +23,19 @@ body {
 }
 
 .user-avatar-container {
-    size: 100px; /* Ten en cuenta que 'size' no es una propiedad CSS válida para dimensiones. Puedes usar 'width' y 'height'. */
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
+    margin-left: auto; /* Orienta hacia el margen derecho */
+    margin-top: -60px; /* Ajusta el margen superior para mover la imagen hacia arriba */
+    overflow: hidden; /* Recorta cualquier contenido que exceda el tamaño del contenedor */
 }
 
+.user-avatar-container img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%; /* Establece el formato redondo */
+    object-fit: cover;
+}
 /* Agregar nuevos estilos */
 .sidebar {
     background-color: #fff;
@@ -52,7 +60,7 @@ body {
 
 /* Navbar */
 .navbar {
-    background-color: #fff; /* Color de fondo de la barra de navegación */
+    background-color:dodgerblue;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 

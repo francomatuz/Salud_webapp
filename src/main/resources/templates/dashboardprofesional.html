@@ -81,33 +81,36 @@
                 </div>
             </div>
             
-            <!-- Contenido principal -->
+            <!-- Aca esta la primera carta con nombre y apellido,especialidad y mn traido de DB -->
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-body">
-                        <h1 th:if="${session.usuariosession!=null}" th:text="${session.usuariosession.nombre}">Invitado</h1>
+                        <h1 th:if="${session.usuariosession!=null}" th:text="${session.usuariosession.nombre}">Fernando Chiquito</h1>
                         <div class="row">
                             <div class="col-md-6">
-                                <h2>Área: Cardiologia</h2>
+                                <h2>Cardiologia</h2>
+                                <h3>MN:16065</h3>
                             </div>
                             <div class="user-avatar-container">
-                                <img src="/img/profilejpg.jpg" alt="Foto de perfile" class="img-fluid">
+                                <img src="/src/main/resources/static/img/profilejpg.jpg" alt="Foto de perfile" class="img-fluid">
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card mt-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Estadísticas</h5>
-                        <!-- Gráficos o información estadística -->
-                    </div>
-                </div>
+                  <div class="card-body">
+                      <h5 class="card-title">Biografía</h5>
+                      <textarea id="biography" class="form-control mb-3" rows="5" placeholder="Escribe tu biografía aquí"></textarea>
+                      <button id="saveBiography" class="btn btn-primary">Guardar Biografía</button>
+                      <button id="editBiography" class="btn btn-primary">Editar Biografía</button>
+                  </div>
+              </div>
+              
 
                 <div class="card mt-3">
                     <div class="card-body">
                         <h5 class="card-title">Citas Programadas</h5>
-                        <!-- Lista de citas programadas o calendario -->
                     </div>
                 </div>
                 
