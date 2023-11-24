@@ -22,6 +22,12 @@ public class ProfesionalServicio {
     
     @Autowired
     ProfesionalRepositorio profesionalRepositorio;
+    
+    public Profesional obtenerProfesionalPorId(Long id) {
+        Optional<Profesional> profesionalOptional = profesionalRepositorio.buscarPorId(id);
+        return profesionalOptional.orElse(null);
+    }
+    
     //Metodos Crud
     //Crear paciente
     

@@ -5,10 +5,13 @@ import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Profesional extends Usuario{
@@ -17,6 +20,10 @@ public class Profesional extends Usuario{
     
     @Enumerated(EnumType.STRING)
     private Especialidades especialidad;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "imagen_id")
+    private Imagen imagen;
     
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime agendaTurnos;
@@ -126,4 +133,13 @@ public class Profesional extends Usuario{
         this.prestadores = prestadores;
     }
 
+    public Imagen getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Imagen imagen) {
+        this.imagen = imagen;
+    }
+
+    
 }

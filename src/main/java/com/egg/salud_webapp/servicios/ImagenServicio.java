@@ -1,86 +1,68 @@
 package com.egg.salud_webapp.servicios;
+import com.egg.salud_webapp.repositorios.ImagenRepositorio;
 
 import com.egg.salud_webapp.entidades.Imagen;
-import com.egg.salud_webapp.excepciones.MiException;
-import com.egg.salud_webapp.repositorios.ImagenRepositorio;
-import java.util.Optional;
-import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.egg.salud_webapp.entidades.Paciente;
+import com.egg.salud_webapp.entidades.Profesional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class ImagenServicio {
 
-    @Autowired
-    private ImagenRepositorio imagenRepositorio;
+     private final ImagenRepositorio imagenRepositorio;
+    private final PacienteServicio pacienteServicio;
+    private final ProfesionalServicio profesionalServicio;
 
-    public Imagen guardar(MultipartFile archivo) throws MiException {
-        if (archivo != null) {
-            try {
+    // Constructor para inyección de dependencias
+    public ImagenServicio(ImagenRepositorio imagenRepositorio, PacienteServicio pacienteServicio, ProfesionalServicio profesionalServicio) {
+        this.imagenRepositorio = imagenRepositorio;
+        this.pacienteServicio = pacienteServicio;
+        this.profesionalServicio = profesionalServicio;
+    }
 
-                Imagen imagen = new Imagen();
+    public Imagen guardarImagen(MultipartFile archivo, Long idPaciente, Long idProfesional) throws IOException {
+        // Lógica para guardar la imagen y asociarla a un paciente y un profesional
+        Imagen imagen = new Imagen();
+        imagen.setData(archivo.getBytes());  // Guarda los bytes de la imagen
 
-                imagen.setMime(archivo.getContentType());
+        // Asocia la imagen al paciente y al profesional utilizando sus ID
+        Paciente paciente = pacienteServicio.obtenerPacientePorId(idPaciente);
+        Profesional profesional = profesionalServicio.obtenerProfesionalPorId(idProfesional);
 
-                imagen.setNombre(archivo.getName());
+        imagen.setPaciente(paciente);
+        imagen.setProfesional(profesional);
 
-                imagen.setContenido(archivo.getBytes());
+        return imagenRepositorio.save(imagen);
+    }
+    public Imagen cargarImagen(byte[] imageData) {
+        Imagen imagen = new Imagen();
+        imagen.setData(imageData);
+        return imagenRepositorio.save(imagen);
+    }
 
-                return imagenRepositorio.save(imagen);
+    public byte[] obtenerImagenPorId(Long id) {
+        // Lógica para obtener la imagen por su ID
+        // Utiliza el repositorio para acceder a la base de datos
+        Optional<Imagen> optionalImagen = imagenRepositorio.findById(id);
+        return optionalImagen.map(Imagen::getData).orElse(null);
 
-            } catch (Exception e) {
-                System.err.println(e.getMessage()); //err: el mensaje va a ser de color rojo
-            }
+    }
+
+    public void actualizarImagen(Long id, MultipartFile archivo) throws IOException {
+        // Lógica para actualizar la imagen por su ID
+        Imagen imagen = imagenRepositorio.findById(id).orElse(null);
+        if (imagen != null) {
+            imagen.setData(archivo.getBytes());
+            imagenRepositorio.save(imagen);
         }
-        return null;
     }
 
-    public Imagen actualizar(MultipartFile archivo, String idImagen) throws MiException {
-        if (archivo != null) {
-            try {
-
-                Imagen imagen = new Imagen();
-
-                if (idImagen != null) {
-                    Optional<Imagen> respuesta = imagenRepositorio.findById(idImagen);
-
-                    if (respuesta.isPresent()) {
-                        imagen = respuesta.get();
-                    }
-                }
-
-                // Ejemplo de validación de tipo de archivo
-                if (!archivo.getContentType().startsWith("image/")) {
-                    throw new MiException("El archivo no es una imagen");
-                }
-
-// Generar un nombre único para la imagen
-                String nombreUnico = UUID.randomUUID().toString() + "_" + archivo.getOriginalFilename();
-                imagen.setNombre(nombreUnico);
-
-                if (idImagen == null) {
-    throw new MiException("ID de imagen no puede ser nulo");
-}
-
-                imagen.setMime(archivo.getContentType());
-
-                imagen.setNombre(archivo.getName());
-
-                imagen.setContenido(archivo.getBytes());
-
-                return imagenRepositorio.save(imagen);
-
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-            }
-        }
-        return null;
-
+    public void eliminarImagen(Long id) {
+        // Lógica para eliminar la imagen por su ID
+        imagenRepositorio.deleteById(id);
     }
-
-    public Long guardarImagen(MultipartFile file) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
 }

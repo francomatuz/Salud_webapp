@@ -5,9 +5,15 @@ import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Paciente extends Usuario{
@@ -17,12 +23,18 @@ public class Paciente extends Usuario{
    @Enumerated(EnumType.STRING)
    private ObraSocial obraSocial;
    
+   @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+   
+   @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "imagen_id")
+    private Imagen imagen;
+   
 //  @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
 //  private HistoriaClinica historiaClinica;
   
- /*   @OneToOne
-    private Imagen imagen;
-  */
+ 
 
     public Paciente() {
     }
@@ -50,6 +62,26 @@ public class Paciente extends Usuario{
         this.obraSocial = obraSocial;
     }
 
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Imagen getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Imagen imagen) {
+        this.imagen = imagen;
+    }
+     
+}
+
 //    public HistoriaClinica getHistoriaClinica() {
 //        return historiaClinica;
 //    }
@@ -57,5 +89,3 @@ public class Paciente extends Usuario{
 //    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
 //        this.historiaClinica = historiaClinica;
 //    }
-     
-}

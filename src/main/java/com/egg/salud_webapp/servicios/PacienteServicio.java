@@ -29,6 +29,11 @@ public class PacienteServicio implements UserDetailsService {
 
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
+    
+    public Paciente obtenerPacientePorId(Long id) {
+        Optional<Paciente> pacienteOptional = pacienteRepositorio.buscarPorId(id);
+        return pacienteOptional.orElse(null);
+    }
 
     // Metodos Crud
     // Crear paciente
@@ -183,5 +188,13 @@ public class PacienteServicio implements UserDetailsService {
             return null;
         }
 
+    }
+
+    public Paciente obtenerPaciente(Long pacienteId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void guardarPaciente(Paciente paciente) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
