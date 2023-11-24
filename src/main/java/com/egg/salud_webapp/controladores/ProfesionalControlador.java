@@ -27,6 +27,8 @@ public class ProfesionalControlador {
     @GetMapping("/registrar/profesional")
     public String registrarProfesional(ModelMap modelo) {
         modelo.put("generos", GeneroEnum.values());
+        modelo.put("especialidades", Especialidades.values());
+        modelo.put("obrasSociales", ObraSocial.values());
 
         return "registrarprofesional.html";
     }
