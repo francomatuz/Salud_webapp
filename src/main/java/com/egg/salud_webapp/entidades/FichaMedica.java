@@ -85,6 +85,17 @@ public class FichaMedica {
     public void setHistoriaClinica(HistoriaClinica historiaClinica) {
         this.historiaClinica = historiaClinica;
     }
+
+    @Override
+    public String toString() {
+        return "FichaMedica{" +
+                "\nid=" + id +
+                ", \nfecha=" + fecha +
+                ", \ndiagnostico=" + diagnostico +
+                ", \ntratamiento=" + tratamiento +
+                ", \nnotas=" + notas +
+                ", \nhistoriaClinica=" + historiaClinica + '}';
+    }
     
     
 }

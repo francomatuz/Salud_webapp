@@ -19,6 +19,8 @@ public class Turno {
     private Long id;
     private Date horario;
     
+    // cuando se crea un turno tambien se crea una ficha medica?
+    
     
     //@OneToOne
     //private Profesional doctor;

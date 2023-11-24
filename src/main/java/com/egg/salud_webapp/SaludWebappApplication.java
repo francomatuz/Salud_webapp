@@ -32,6 +32,7 @@ public class SaludWebappApplication implements CommandLineRunner  {
     @Override
     public void run(String... args) throws Exception {
        // crearFichaMedica();
+        mostrarFichaMedica();
      //  leerPaciente(12L);
        // eliminarPaciente(4L);
        // modificarPaciente(10L);
@@ -81,13 +82,17 @@ public class SaludWebappApplication implements CommandLineRunner  {
          
          FichaMedica fichaMedica = new FichaMedica();
          
-         LocalDate fechaTurno = LocalDate.of(1990, 5, 23);
+         LocalDate fechaTurno = LocalDate.of(1991, 8, 1);
          
-          fichaMedicaServicios.crear(fechaTurno, "Escarlatina", "Penicilina", "5ml cada 8h x 10 dias", 1L);
+          fichaMedicaServicios.crear(fechaTurno, "Piojos", "Vinagre", "2 baños con vinagre x dia durante 3 dias", 1L);
          
            
      }
     
-    
+     public void mostrarFichaMedica() throws Exception{
+          
+              fichaMedicaServicios.RecuperarFichaMedica();
+          
+      }
 }
 

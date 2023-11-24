@@ -3,6 +3,7 @@ package com.egg.salud_webapp.entidades;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +23,8 @@ public class HistoriaClinica {
     @JoinColumn(name = "paciente_id") // Asegúrate de que el nombre de la columna sea el correcto
     private Paciente paciente;
 
-    @OneToMany(mappedBy = "historiaClinica", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @OneToMany(mappedBy = "historiaClinica", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "historiaClinica")
     private List<FichaMedica> fichasMedicas;
 
     public HistoriaClinica() {
@@ -64,6 +66,12 @@ public class HistoriaClinica {
 
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
+    }
+
+    @Override
+    public String toString() {
+        return "HistoriaClinica{" + 
+                "\nid=" + id + '}';
     }
 
     

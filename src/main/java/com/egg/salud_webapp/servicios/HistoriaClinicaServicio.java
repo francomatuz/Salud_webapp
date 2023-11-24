@@ -15,18 +15,18 @@ public class HistoriaClinicaServicio {
     private HistoriaClinicaRepositorio historiaClinicaRepositorio;
     
     
-    @Transactional
-    public void agregarFichaMedica(Long id, FichaMedica fichaMedica){
-        
-        HistoriaClinica historiaClinica = historiaClinicaRepositorio.buscarPorId(id);
-        
-       fichaMedica.setHistoriaClinica(historiaClinica);
-        
-     historiaClinica.getFichasMedicas().add(fichaMedica);
-     
-     historiaClinicaRepositorio.save(historiaClinica);
-        
-    }
+//    @Transactional
+//    public void agregarFichaMedica(Long id, FichaMedica fichaMedica){
+//        
+//        HistoriaClinica historiaClinica = historiaClinicaRepositorio.buscarPorId(id);
+//        
+//       fichaMedica.setHistoriaClinica(historiaClinica);
+//        
+//     historiaClinica.getFichasMedicas().add(fichaMedica);
+//     
+//     historiaClinicaRepositorio.save(historiaClinica);
+//        
+//    }
     
      public HistoriaClinica getById(Long id) {
         return historiaClinicaRepositorio.getById(id);
