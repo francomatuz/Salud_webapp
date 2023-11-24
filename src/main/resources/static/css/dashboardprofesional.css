@@ -22,23 +22,31 @@ body {
     margin-bottom: 5px;
 }
 
-.user-avatar-container{
-
-    size:100px;
-
+.user-avatar-container {
+    size: 100px; /* Ten en cuenta que 'size' no es una propiedad CSS válida para dimensiones. Puedes usar 'width' y 'height'. */
+    width: 100px;
+    height: 100px;
 }
 
-/* Sidebar */
-.col-md-3 {
-    padding-right: 15px;
-    padding-left: 15px;
+/* Agregar nuevos estilos */
+.sidebar {
+    background-color: #fff;
+    padding: 20px;
 }
 
-.list-group-item {
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    margin-bottom: 10px;
     cursor: pointer;
+    font-weight: bold;
 }
 
-.list-group-item:hover {
+.sidebar li:hover {
     background-color: #f0f0f0;
 }
 

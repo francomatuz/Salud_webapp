@@ -3,7 +3,6 @@ package com.egg.salud_webapp.controladores;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
-import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.servicios.PacienteServicio;
 import java.time.LocalDate;
@@ -43,7 +42,7 @@ public class PortalControlador {
         modelo.put("obrasSociales", ObraSocial.values());
         return "registrarpaciente.html";
     }
-    
+
     @PostMapping("/registrar/paciente")
     public String registrarpaciente(@RequestParam String nombre, @RequestParam String apellido,
             @RequestParam String email, @RequestParam String dni,

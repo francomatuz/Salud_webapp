@@ -124,6 +124,19 @@
                 <option value="2">No</option>
             </select>
         </div>
+
+        <div class="col-md-7">
+          <label for="validationDefault08" class="form-label">Seleccione coberturas trabajadas</label>
+          <div class="checkbox-list">
+              <div th:each="obraSocial : ${obrasSociales}">
+                  <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="obraSocialCheck${obraSocial.id}" name="obrasSocialesSeleccionadas" value="${obraSocial.id}">
+                      <label class="form-check-label" for="obraSocialCheck${obraSocial.id}" th:text="${obraSocial.nombre}"></label>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
         
         <div class="col-12">
 
