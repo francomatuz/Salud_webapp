@@ -1,6 +1,7 @@
 package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.entidades.Profesional;
+import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.excepciones.MiException;
@@ -37,11 +38,16 @@ public class PerfilProfesionalControlador {
             // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir al inicio de sesión
             return "redirect:/login";
         }
+      
 
         
-        modelo.put("paciente", profesionalLogueado);
+        List<ObraSocial> obrasSocialesSeleccionadas = profesionalServicio.obtenerObrasSocialesPorIdProfesional(profesionalLogueado.getId());
+
+        modelo.put("profesional", profesionalLogueado);
         modelo.put("generos", GeneroEnum.values());
         modelo.put("obrasSociales", ObraSocial.values());
+        modelo.put("atencionVirtual", profesionalLogueado.getAtencionVirtual());
+        modelo.put("prestadores", obrasSocialesSeleccionadas);
 
         return "actualizarprofesional.html"; // Nombre del formulario de actualización de perfil
     }
@@ -70,14 +76,14 @@ public class PerfilProfesionalControlador {
 
             modelo.put("Exito", "Perfil actualizado exitosamente");
 
-            return "dashboardprofesional.html"; // Página de perfil actualizado
+            return "index.html"; // Página de perfil actualizado
 
         } catch (MiException ex) {
             // Manejar excepciones
-            Logger.getLogger(PerfilPacienteControlador.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
 
             modelo.put("Error", ex.getMessage());
-            modelo.put("paciente", profesionalLogueado);
+            modelo.put("profesional", profesionalLogueado);
 
             return "error.html"; // Página de error
         }

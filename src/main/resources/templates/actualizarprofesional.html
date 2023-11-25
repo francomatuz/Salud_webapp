@@ -8,7 +8,7 @@
 
         <h1>Actualizar/Modificar datos del Profesional</h1>
         <div class="container">
-            <form class="formulario" th:action="@{/perfil/actualizar}" method="POST" enctype="multipart/form-data"
+            <form class="formulario" th:action="@{/perfil2/actualizar}" method="POST" enctype="multipart/form-data"
                   style="margin: 0 20px;">
                 <input hidden th:value="${profesional.id}" name="id">
                 <div class="col-md-5">
@@ -33,7 +33,7 @@
                     <label for="validationDefaultUsername" class="form-label">Matricula</label>
                     <div class="input-group">
                         <span class="input-group-text" id="inputGroupPrepend2">MN/MP</span>
-                        <input type="text" name="dni" class="form-control" id="validationDefault03" th:value="${profesional.matricula}"
+                        <input type="text" name="matricula" class="form-control" id="validationDefault03" th:value="${profesional.matricula}"
                                aria-describedby="inputGroupPrepend2" required>
                     </div>
                 </div>
@@ -65,13 +65,14 @@
                     <div class="checkbox-list">
                         <div th:each="obraSocial : ${obrasSociales}">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="obrasSocialesCheck${obraSocial.id}" name="prestadores" th:value="${obraSocial}"
-                                 th:checked="${prestadores != null and prestadores.contains(obraSocial)}">
-                                <label class="form-check-label" for="obrasSocialesCheck${obrasSociales.id}" th:text="${obraSocial}"></label>
+                                <input class="form-check-input" type="checkbox" id="obrasSocialesCheck${obraSocial.id}" name="prestadores"
+                                    th:value="${obraSocial}" th:checked="${obrasSocialesAsociadas != null && obrasSocialesAsociadas.contains(obraSocial)}">
+                                <label class="form-check-label" for="obrasSocialesCheck${obraSocial.id}" th:text="${obraSocial}"></label>
                             </div>
                         </div>
                     </div>
                 </div>
+                
                 
                 <div class="col-12">
                     
