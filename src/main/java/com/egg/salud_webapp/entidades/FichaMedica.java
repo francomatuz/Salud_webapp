@@ -20,7 +20,7 @@ public class FichaMedica {
     private  LocalDate  fecha;
     private String diagnostico;
     private String tratamiento;
-    private String notas;
+    private String notas;  //Observaciones.
     
     @ManyToOne  
     @JoinColumn(name = "historia_clinica_id")    
