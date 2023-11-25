@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/perfil")
+@RequestMapping("/perfil2")
 public class PerfilProfesionalControlador {
 
 @Autowired
