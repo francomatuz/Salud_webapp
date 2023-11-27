@@ -1,6 +1,7 @@
 
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
@@ -134,8 +135,13 @@ public class ProfesionalServicio implements UserDetailsService {
 
     // Eliminar un profesional
     @Transactional
-    private void eliminar(Long id) throws MiException {
+    public void eliminar(Long id) throws MiException {
+        Optional<Profesional> profesionalExistente = profesionalRepositorio.buscarPorId(id);
         profesionalRepositorio.delete(getById(id));
+
+        if(profesional)
+
+
     }
 
     public boolean tieneBio(Long id) throws MiException {
@@ -147,6 +153,18 @@ public class ProfesionalServicio implements UserDetailsService {
             return true;
         }
 
+    }
+
+     @Transactional
+    public void eliminar(Long id) throws MiException {
+
+        Optional<Paciente> pacienteExistente = pacienteRepositorio.buscarPorId(id);
+
+        if (pacienteExistente.isPresent()) {
+            pacienteRepositorio.delete(pacienteExistente.get());
+        } else {
+            throw new MiException("No se encontro un paciente con los datos ingresados");
+        }
     }
 
     // Listar profesionales
