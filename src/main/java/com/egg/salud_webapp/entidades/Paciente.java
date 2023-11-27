@@ -27,8 +27,8 @@ public class Paciente extends Usuario{
     public Paciente() {
     }
 
-    public Paciente(Boolean activo, ObraSocial obraSocial, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
-        super(id, nombre, apellido, dni, fecha_nac, email, password, genero, rol);
+    public Paciente(Boolean activo, ObraSocial obraSocial, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
+        super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
         this.activo = activo;
         this.obraSocial = obraSocial;
 //        this.historiaClinica = historiaClinica;
