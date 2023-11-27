@@ -6,6 +6,7 @@ import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
+import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
@@ -52,7 +53,7 @@ public class ProfesionalServicio implements UserDetailsService {
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
         Profesional profesional = new Profesional(matricula, especialidad, atencionVirtual,
                 nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,
-                UsuarioEnum.USER);
+                UsuarioEnum.USER, Tipo.PROFESIONAL); // ARREGLAR EL TIPO PROFESIONAL QUE NO FUNCIONA, DA NULL
         profesionalRepositorio.save(profesional);
         for (String prestador : prestadoresList) {
             ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesional, prestador);

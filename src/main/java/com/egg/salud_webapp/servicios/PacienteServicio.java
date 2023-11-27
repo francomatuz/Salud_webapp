@@ -3,6 +3,7 @@ package com.egg.salud_webapp.servicios;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
+import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.PacienteRepositorio;
@@ -45,7 +46,8 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setObraSocial(obraSocial);
         paciente.setGenero(genero);
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
-        paciente.setRol(UsuarioEnum.USER); 
+        paciente.setRol(UsuarioEnum.USER);
+        paciente.setTipo(Tipo.PACIENTE);
 
         pacienteRepositorio.save(paciente);
     }
