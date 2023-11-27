@@ -5,8 +5,6 @@ import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -36,7 +34,7 @@ public class Profesional extends Usuario {
     private String bio;
     private Boolean alta = false;
 
-    @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "profesional", fetch = FetchType.EAGER)
     public List<ProfesionalPrestadores> prestadores;
 
     public Profesional(String matricula, Especialidades especialidad,

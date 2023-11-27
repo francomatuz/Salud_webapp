@@ -43,22 +43,21 @@ public class ProfesionalServicio implements UserDetailsService {
 
     @Transactional
     public void registrar(String matricula, Especialidades especialidad,
-             Boolean atencionVirtual,
-           String[] prestadores,  String nombre, String apellido, String dni,
+            Boolean atencionVirtual,
+            String[] prestadores, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
             String email, String password, String password2, GeneroEnum genero) throws MiException {
-        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2, matricula);
-                
+        validarAtributos(prestadores,nombre, apellido, email, dni, fecha_nac, password, password2, matricula);
+
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
-        Profesional profesional = new Profesional(matricula, especialidad,  atencionVirtual, 
+        Profesional profesional = new Profesional(matricula, especialidad, atencionVirtual,
                 nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,
                 UsuarioEnum.USER);
         profesionalRepositorio.save(profesional);
-        for (String prestador  : prestadoresList) {
-            ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesional,prestador);
+        for (String prestador : prestadoresList) {
+            ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesional, prestador);
             profesionalPrestadoresRepositorio.save(profesionalPrestadores);
 
-            
         }
     }
 
@@ -73,7 +72,8 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     public List<ObraSocial> obtenerObrasSocialesPorIdProfesional(Long idProfesional) {
-        List<ProfesionalPrestadores> obrasSociales = profesionalPrestadoresRepositorio.findByProfesionalId(idProfesional);
+        List<ProfesionalPrestadores> obrasSociales = profesionalPrestadoresRepositorio
+                .findByProfesionalId(idProfesional);
         List<ObraSocial> obrasSocialesList = new ArrayList<>();
 
         for (ProfesionalPrestadores profesionalPrestadores : obrasSociales) {
@@ -83,20 +83,15 @@ public class ProfesionalServicio implements UserDetailsService {
         return obrasSocialesList;
     }
 
-    
     @Transactional
     public void actualizar(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
-     List <ObraSocial> prestadores,GeneroEnum genero,
-            String password, String password2
-            )
-            throws MiException {
+            List<ObraSocial> prestadores, GeneroEnum genero,
+            String password, String password2) throws MiException {
 
-        validarAtributos2(id,email, password, password2);
-        
+        validarAtributos2(id, email, password, password2);
         Profesional profesionalAActualizar = getById(id);
 
         if (profesionalAActualizar != null) {
-
             profesionalAActualizar.setNombre(nombre != null ? nombre : profesionalAActualizar.getNombre());
             profesionalAActualizar.setApellido(apellido != null ? apellido : profesionalAActualizar.getApellido());
             profesionalAActualizar.setEmail(email != null ? email : profesionalAActualizar.getEmail());
@@ -105,25 +100,30 @@ public class ProfesionalServicio implements UserDetailsService {
             profesionalAActualizar.setGenero(genero != null ? genero : profesionalAActualizar.getGenero());
             profesionalAActualizar.setPassword(password != null ? new BCryptPasswordEncoder().encode(password)
                     : profesionalAActualizar.getPassword());
-            // profesionalAActualizar
-            //         .setPrestadores(prestadores != null ? prestadores : profesionalAActualizar.getPrestadores());
+
             // profesionalAActualizar.setAtencionFisicaDireccion(
-            //         direccion != null ? direccion : profesionalAActualizar.getAtencionFisicaDireccion());
+            // direccion != null ? direccion :
+            // profesionalAActualizar.getAtencionFisicaDireccion());
             // profesionalAActualizar.setAtencionVirtual(
-            //         atencionVirtual != null ? atencionVirtual : profesionalAActualizar.getAtencionVirtual());
-            // profesionalAActualizar.setBio(bio != null ? bio : profesionalAActualizar.getBio());
+            // atencionVirtual != null ? atencionVirtual :
+            // profesionalAActualizar.getAtencionVirtual());
+            // profesionalAActualizar.setBio(bio != null ? bio :
+            // profesionalAActualizar.getBio());
+            if (prestadores == null) {
+                throw new MiException("Se tiene que seleccionar al menos una opcion");
 
-          
-            // Actualizar obras sociales asociadas al profesional
-            if (prestadores != null) {
-                // Eliminar todas las obras sociales existentes
-                profesionalPrestadoresRepositorio.deleteByProfesionalId(id);
+            }
+            List<String> obrasSocialesList = new ArrayList<>(); // lista con las obras sociales nuevas
+            for (ObraSocial obraSocial : prestadores) {
+                obrasSocialesList.add(obraSocial.toString());
+            }
+            profesionalPrestadoresRepositorio.deleteByProfesionalId(id); // borra todas las obras sociales relacionadas
+                                                                         // al profesional
 
-                // Agregar las nuevas obras sociales
-                for (ObraSocial prestador : prestadores) {
-                    ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesionalAActualizar, prestador.name());
-                    profesionalPrestadoresRepositorio.save(profesionalPrestadores);
-                }
+            for (String prestador : obrasSocialesList) { // creo una nueva lista con los prestadores nuevos
+                ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesionalAActualizar,
+                        prestador);
+                profesionalPrestadoresRepositorio.save(profesionalPrestadores);
             }
 
             Hibernate.initialize(profesionalAActualizar.getPrestadores());
@@ -171,7 +171,8 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     // validar los atributos de creación
-    private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    private void validarAtributos(String[] prestadores, String nombre, String apellido, String email, String dni,
+            LocalDate fecha_nac,
             String password, String password2, String matricula)
             throws MiException {
 
@@ -179,7 +180,9 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
         // Optional<Profesional> matriculaExistente =
         // profesionalRepositorio.buscarPorMatricula(matricula);
-
+        if (prestadores == null) {
+            throw new MiException("Se tiene que seleccionar al menos una opcion");
+        }
         if (nombre.isEmpty() || nombre == null) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
@@ -210,64 +213,62 @@ public class ProfesionalServicio implements UserDetailsService {
         if (matricula.isEmpty() || matricula == null) {
             throw new MiException("La matrícula no puede estar vacía o ser nula");
         }
-        
-        
 
     }
 
     // validar atributos de actualización
-    private void validarAtributos2(Long id,String email, String password, String password2) throws MiException {
+    private void validarAtributos2(Long id, String email, String password, String password2) throws MiException {
 
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
 
-        if (emailExistente != null && !emailExistente.getId().equals(id) && emailExistente.getEmail().equalsIgnoreCase(email)) {
+        if (emailExistente != null && !emailExistente.getId().equals(id)
+                && emailExistente.getEmail().equalsIgnoreCase(email)) {
             throw new MiException("Ya hay un usuario existente con el Email ingresado");
         }
-    
+
         if (email == null || email.isEmpty()) {
             throw new MiException("El email no puede estar vacío o ser nulo");
         }
-        
 
         // if (password.isEmpty() || password == null || password.length() <= 5) {
-        //     throw new MiException("La contraseña no puede estar vacia y debe tener más de 5 dígitos");
+        // throw new MiException("La contraseña no puede estar vacia y debe tener más de
+        // 5 dígitos");
         // }
         // if (!password.equals(password2)) {
-        //     throw new MiException("La contraseñas ingresadas deben ser iguales");
+        // throw new MiException("La contraseñas ingresadas deben ser iguales");
         // }
         // if (direccion.isEmpty() || direccion == null) {
-        //     throw new MiException("El direccion no puede estar vacío o ser nulo");
+        // throw new MiException("El direccion no puede estar vacío o ser nulo");
         // }
         // if (bio.isEmpty() || bio == null) {
-        //     throw new MiException("La bio no puede estar vacía o ser nula");
+        // throw new MiException("La bio no puede estar vacía o ser nula");
         // }
 
     }
 
-    
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        
-            Profesional profesional = profesionalRepositorio.buscarPorEmail(email);
 
-            if (profesional != null) {
+        Profesional profesional = profesionalRepositorio.buscarPorEmail(email);
 
-                List<GrantedAuthority> permisos = new ArrayList<>();
-    
-                GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + profesional.getRol().toString());
-    
-                permisos.add(p);
-    
-                ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-    
-                HttpSession session = attr.getRequest().getSession(true);
-    
-                session.setAttribute("usuariosession", profesional);
-    
-                return new User(profesional.getEmail(), profesional.getPassword(), permisos);
-            } else {
-                return null;
-            }
+        if (profesional != null) {
+
+            List<GrantedAuthority> permisos = new ArrayList<>();
+
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + profesional.getRol().toString());
+
+            permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("usuariosession", profesional);
+
+            return new User(profesional.getEmail(), profesional.getPassword(), permisos);
+        } else {
+            return null;
+        }
 
     }
 }

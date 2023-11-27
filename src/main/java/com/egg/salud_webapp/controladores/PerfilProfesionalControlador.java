@@ -1,7 +1,6 @@
 package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.entidades.Profesional;
-import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.excepciones.MiException;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.egg.salud_webapp.servicios.ProfesionalServicio;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,16 +38,20 @@ public class PerfilProfesionalControlador {
             // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir al inicio de sesión
             return "redirect:/login";
         }
-      
-
-        
-        List<ObraSocial> obrasSocialesSeleccionadas = profesionalServicio.obtenerObrasSocialesPorIdProfesional(profesionalLogueado.getId());
+        List<String> obrasSocialesSelected = new ArrayList<>();
+        List<String> obrasSocialesList = new ArrayList<>();
+        for (ObraSocial obraSocial : profesionalServicio.obtenerObrasSocialesPorIdProfesional(profesionalLogueado.getId())) {
+            obrasSocialesSelected.add(obraSocial.toString());
+        }
+        for (ObraSocial obraSocial : ObraSocial.values()){
+            obrasSocialesList.add(obraSocial.toString());
+        }
 
         modelo.put("profesional", profesionalLogueado);
         modelo.put("generos", GeneroEnum.values());
-        modelo.put("obrasSociales", ObraSocial.values());
+        modelo.put("obrasSociales", obrasSocialesList);
         modelo.put("atencionVirtual", profesionalLogueado.getAtencionVirtual());
-        modelo.put("prestadores", obrasSocialesSeleccionadas);
+        modelo.put("prestadores", obrasSocialesSelected);
 
         return "actualizarprofesional.html"; // Nombre del formulario de actualización de perfil
     }
@@ -57,7 +61,7 @@ public class PerfilProfesionalControlador {
     public String actualizarPerfil(@RequestParam String nombre, @RequestParam String apellido,@RequestParam String dni,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam String email, 
             
-            @RequestParam List <ObraSocial> prestadores, @RequestParam GeneroEnum genero, ModelMap modelo, HttpSession session)
+            @RequestParam(value = "prestadores", required = false) List <ObraSocial> prestadores, @RequestParam GeneroEnum genero, ModelMap modelo, HttpSession session)
             throws MiException {
 
         // Obtener el usuario logueado desde la sesión
