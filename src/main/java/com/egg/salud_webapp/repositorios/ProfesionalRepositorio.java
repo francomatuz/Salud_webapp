@@ -16,7 +16,7 @@ public interface ProfesionalRepositorio extends JpaRepository<Profesional, Long>
     Optional<Profesional> buscarPorDni(@Param("dni") String dni);
     //Búsqueda del profesional por email
     @Query ("SELECT p FROM Profesional p WHERE p.email = :email")
-    Optional<Profesional> buscarPorEmail(@Param("email") String email);
+    public Profesional buscarPorEmail(@Param("email") String email);
     
     //Búsqueda del profesional por matrícula
     @Query ("SELECT p FROM Profesional p WHERE p.matricula = :matricula")

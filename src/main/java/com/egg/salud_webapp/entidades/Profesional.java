@@ -2,17 +2,16 @@ package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
-import com.egg.salud_webapp.enumeraciones.ObraSocial;
+import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
 import java.util.List;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
 
 @Entity
 public class Profesional extends Usuario {
@@ -22,7 +21,10 @@ public class Profesional extends Usuario {
     @Enumerated(EnumType.STRING)
     private Especialidades especialidad;
 
-    //@Column(columnDefinition = "TIMESTAMP")
+    @Enumerated(EnumType.STRING)
+    private Tipo tipo;
+
+    
     // private LocalDateTime agendaTurnos; no se usa
     // private Integer duracionTurno Se hace en la entity turno, y no necesariamente
     // se instancia , haces fecha de inicio y fecha fin
@@ -34,22 +36,21 @@ public class Profesional extends Usuario {
     private String atencionFisicaDireccion; // cambio de nombre, seguir un patron en el nombramiento de variables.
     private Boolean atencionVirtual;
     private String bio;
-    @ElementCollection(targetClass = ObraSocial.class)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "profesional_prestadores", joinColumns = @JoinColumn(name = "profesional_id"))
-    @Column(name = "obra_social")
-    private List<ObraSocial> prestadores; // esto es un array de obras sociales, por lo tanto se usa el enum para crear el array
-    private Boolean alta;
-    //private Double calificacion;
+    private Boolean alta = false;
 
-    public Profesional(String matricula, Especialidades especialidad, String atencionFisicaDireccion, Boolean atencionVirtual, String bio, List<ObraSocial> prestadores, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
+    @OneToMany(mappedBy = "profesional", fetch = FetchType.EAGER)
+    public List<ProfesionalPrestadores> prestadores;
+
+    public Profesional(String matricula, Especialidades especialidad,
+            Boolean atencionVirtual, String nombre, String apellido, String dni,
+            LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
         super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
         this.matricula = matricula;
         this.especialidad = especialidad;
-        this.atencionFisicaDireccion = atencionFisicaDireccion;
         this.atencionVirtual = atencionVirtual;
-        this.bio = bio;
-        this.prestadores = prestadores;
+        this.tipo =  Tipo.PROFESIONAL;
+        //setear aqui el activo
+            
     }
 
     public Profesional() {
@@ -87,13 +88,7 @@ public class Profesional extends Usuario {
         this.bio = bio;
     }
 
-    public List<ObraSocial> getPrestadores() {
-        return prestadores;
-    }
-
-    public void setPrestadores(List<ObraSocial> prestadores) {
-        this.prestadores = prestadores;
-    }
+  
 
     public Boolean getAlta() {
         return alta;
@@ -110,5 +105,24 @@ public class Profesional extends Usuario {
     public void setAtencionFisicaDireccion(String atencionFisicaDireccion) {
         this.atencionFisicaDireccion = atencionFisicaDireccion;
     }
+
+    public List<ProfesionalPrestadores> getPrestadores() {
+        return prestadores;
+    }
+
+    public void setPrestadores(List<ProfesionalPrestadores> prestadores) {
+        this.prestadores = prestadores;
+    }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
+  
+
 
 }

@@ -44,7 +44,7 @@ public class PortalControlador {
     }
 
     @PostMapping("/registrar/paciente")
-    public String registrarPaciente(@RequestParam String nombre, @RequestParam String apellido,
+    public String registrarpaciente(@RequestParam String nombre, @RequestParam String apellido,
             @RequestParam String email, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password,
@@ -76,6 +76,10 @@ public class PortalControlador {
         }
     }
 
+    
+
+
+
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error, ModelMap modelo) {
 
@@ -89,15 +93,16 @@ public class PortalControlador {
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/inicio")
     public String inicio(HttpSession session) {
+        Object usuarioSession = session.getAttribute("usuariosession");
 
-        Paciente logueado = (Paciente) session.getAttribute("usuariosession");
-
-        if (logueado.getRol().toString().equals("ADMIN")) {
-            return "redirect:/index";
+        if (usuarioSession instanceof Paciente) {
+            Paciente logueado = (Paciente) usuarioSession;
+            if (logueado.getRol().toString().equals("ADMIN")) {
+                return "redirect:/index";
+            }
         }
 
         return "index.html";
     }
-  
-
+   
 }

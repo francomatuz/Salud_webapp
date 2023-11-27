@@ -50,9 +50,9 @@ body {
 }
 
 .btn-register {
-  border: none;
-  border-radius: 50rem;
-  background-color: #04aa6d;
+  border: none !important;
+  border-radius: 50rem !important;
+  background-color: #04aa6d !important;
   color: white;
   cursor: pointer;
   padding: .75rem 1.25rem;

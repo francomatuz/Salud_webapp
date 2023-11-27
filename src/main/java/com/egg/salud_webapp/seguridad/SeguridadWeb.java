@@ -1,6 +1,9 @@
 package com.egg.salud_webapp.seguridad;
 
+import com.egg.salud_webapp.servicios.CustomUserDetailsService;
 import com.egg.salud_webapp.servicios.PacienteServicio;
+import com.egg.salud_webapp.servicios.ProfesionalServicio;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,12 +20,14 @@ public class SeguridadWeb extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public PacienteServicio pacienteServicio;
-    // @Autowired
-    // public ProfesionalServicio profesionalServicio;
+     @Autowired
+    public ProfesionalServicio profesionalServicio;
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(pacienteServicio)
+        auth.userDetailsService(customUserDetailsService)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 
@@ -31,10 +36,12 @@ public class SeguridadWeb extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests(requests -> requests
                         .antMatchers("/admin/*").hasRole("ADMIN")
+                        .antMatchers("/paciente/**").hasRole("USER")
+     .antMatchers("/profesional/**").hasRole("USER")
                         .antMatchers("/css/*", "/js/*", "/img/*", "/**")
                         .permitAll())
                 .sessionManagement(management -> management
-                        .maximumSessions(1)// Limita a un maximo de 1 sesion por usuario
+                        .maximumSessions(2)// Limita a un maximo de 1 sesion por usuario
                         .expiredUrl("/login?expired=true") // Pagina a la que se redirige si la sesion ha expirado
                         .maxSessionsPreventsLogin(true)// Evita que un usuario inice sesion en una nueva sesion si ya
                                                        // alcanzo el limite
