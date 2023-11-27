@@ -86,14 +86,14 @@
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-body">
-                        <h1 th:if="${session.usuariosession!=null}" th:text="${session.usuariosession.nombre}">Fernando Chiquito</h1>
+                        <h1 th:if="${session.usuariosession!=null}" th:text="${session.usuariosession.nombre}"></h1>
                         <div class="row">
                             <div class="col-md-6">
-                                <h2>Cardiologia</h2>
-                                <h3>MN:16065</h3>
+                                <h2 th:text="${session.profesionalsession.especialidad}"></h2>
+                                <h3 th:text="${session.profesionalsession.matricula}"></h3>
                             </div>
                             <div class="user-avatar-container">
-                                <img src="/src/main/resources/static/img/profilejpg.jpg" alt="Foto de perfile" class="img-fluid">
+                                <img src="/img/profilejpg.jpg" alt="Foto de perfil" class="img-fluid">
                             </div>
                         </div>
                     </div>
@@ -151,8 +151,8 @@
             </div>
             
 
-    <button id="editBiography" class="btn btn-danger btn-sm">Dar de Baja</button>
-    <button id="editBiography" class="btn btn-primary btn-sm">Editar Perfil</button>
+    <button id="editBiography" class="btn btn-danger btn-sm" th:href="@{perfil2/eliminar}">Dar de Baja</button>
+    <button id="editBiography" class="btn btn-primary btn-sm" th:href="@{/perfil2/actualizar}" >Editar Perfil</button>
 
 
     
