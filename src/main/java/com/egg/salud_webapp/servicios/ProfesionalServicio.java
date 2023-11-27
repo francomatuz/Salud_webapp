@@ -1,13 +1,11 @@
 
 package com.egg.salud_webapp.servicios;
 
-import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
-import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
@@ -16,9 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.http.HttpSession;
-
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,15 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+
 @Service
 public class ProfesionalServicio implements UserDetailsService {
     @Autowired
     ProfesionalRepositorio profesionalRepositorio;
-
     @Autowired
     ProfesionalPrestadoresRepositorio profesionalPrestadoresRepositorio;
-    // Metodos Crud
-    // Crear paciente
 
     @Transactional
     public void registrar(String matricula, Especialidades especialidad,
@@ -49,17 +43,19 @@ public class ProfesionalServicio implements UserDetailsService {
             String[] prestadores, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
             String email, String password, String password2, GeneroEnum genero) throws MiException {
-        validarAtributos(prestadores,nombre, apellido, email, dni, fecha_nac, password, password2, matricula);
+        validarAtributos(prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula);
 
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
-        Profesional profesional = new Profesional(matricula, especialidad, atencionVirtual,
+
+        Profesional profesional = new Profesional(matricula, especialidad,
+                atencionVirtual != null ? atencionVirtual : false,
                 nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,
-                UsuarioEnum.USER, Tipo.PROFESIONAL); // ARREGLAR EL TIPO PROFESIONAL QUE NO FUNCIONA, DA NULL
+                UsuarioEnum.USER);
         profesionalRepositorio.save(profesional);
+
         for (String prestador : prestadoresList) {
             ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesional, prestador);
             profesionalPrestadoresRepositorio.save(profesionalPrestadores);
-
         }
     }
 
@@ -81,7 +77,6 @@ public class ProfesionalServicio implements UserDetailsService {
         for (ProfesionalPrestadores profesionalPrestadores : obrasSociales) {
             obrasSocialesList.add(ObraSocial.valueOf(profesionalPrestadores.getObraSocial()));
         }
-
         return obrasSocialesList;
     }
 
@@ -111,52 +106,37 @@ public class ProfesionalServicio implements UserDetailsService {
             // profesionalAActualizar.getAtencionVirtual());
             // profesionalAActualizar.setBio(bio != null ? bio :
             // profesionalAActualizar.getBio());
-            if (prestadores == null) {
-                throw new MiException("Se tiene que seleccionar al menos una opcion");
-
-            }
+            if (prestadores == null)  throw new MiException("Se tiene que seleccionar al menos una opcion");
+            
             List<String> obrasSocialesList = new ArrayList<>(); // lista con las obras sociales nuevas
             for (ObraSocial obraSocial : prestadores) {
                 obrasSocialesList.add(obraSocial.toString());
             }
-            profesionalPrestadoresRepositorio.deleteByProfesionalId(id); // borra todas las obras sociales relacionadas
-                                                                         // al profesional
+            profesionalPrestadoresRepositorio.deleteByProfesionalId(id); 
 
             for (String prestador : obrasSocialesList) { // creo una nueva lista con los prestadores nuevos
                 ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesionalAActualizar,
                         prestador);
                 profesionalPrestadoresRepositorio.save(profesionalPrestadores);
             }
-
             Hibernate.initialize(profesionalAActualizar.getPrestadores());
             profesionalRepositorio.save(profesionalAActualizar);
         }
     }
 
-    // Eliminar un profesional
     @Transactional
-    public void eliminar(Long id) throws MiException { 
+    public void eliminar(Long id) throws MiException {
         profesionalRepositorio.delete(getById(id));
     }
 
     public boolean tieneBio(Long id) throws MiException {
         Profesional profesional = getById(id);
-
-        if (profesional.getBio() == null || profesional.getBio() == "" || profesional.getBio().isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
-
+        return !(profesional.getBio() == null || profesional.getBio() == "" || profesional.getBio().isEmpty());     
     }
-
-   
 
     // Listar profesionales
     public List<Profesional> listarProfesionales() {
-        List<Profesional> profesionales = new ArrayList<>();
-        profesionales = profesionalRepositorio.findAll();
-        return profesionales;
+        return profesionalRepositorio.findAll();
     }
 
     // Buscar un profesional por id

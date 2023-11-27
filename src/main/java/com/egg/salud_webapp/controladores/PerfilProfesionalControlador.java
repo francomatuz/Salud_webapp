@@ -1,6 +1,6 @@
 package com.egg.salud_webapp.controladores;
 
-import com.egg.salud_webapp.entidades.Paciente;
+
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
