@@ -47,10 +47,15 @@
                         </li>
                         <li class="nav-item">
                             <a th:href="@{/perfil/dashboard}" class="nav-link" aria-disabled="true"
-                               ><span class="fs-5 fw-bold nombreUsuario" th:if="${session.usuariosession!=null}" th:text="${session.usuariosession.nombre}"></span></a
+                               ><span class="fs-5 fw-bold nombreUsuario" th:if="${session.usuariosession != null and session.usuariosession.tipo.toString() == 'PACIENTE'}" th:text="${session.usuariosession.nombre}"></span></a
                            >
                         </li>
-
+                        <li class="nav-item">
+                            <a th:href="@{/perfil2/dashboard2}" class="nav-link" aria-disabled="true"
+                               ><span class="fs-5 fw-bold nombreUsuario" th:if="${session.usuariosession != null and session.usuariosession.tipo.toString() == 'PROFESIONAL'}" th:text="${session.usuariosession.nombre}"></span></a
+                           >
+                        </li>
+    
                     </ul>
                 </div>
             </nav>
