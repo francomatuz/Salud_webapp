@@ -1,6 +1,6 @@
 package com.egg.salud_webapp.controladores;
 
-
+import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
@@ -80,7 +80,7 @@ public class PerfilProfesionalControlador {
                     genero, null , null);
 
             modelo.put("Exito", "Perfil actualizado exitosamente");
-
+//TO DO : REDIRECT!
             return "index.html"; // Página de perfil actualizado
 
         } catch (MiException ex) {
@@ -115,4 +115,10 @@ public class PerfilProfesionalControlador {
         }
 
     }
+    
+    @GetMapping("/dashboard2")
+    public String dashboard() {
+        return "dashboardprofesional.html";
+    }
+    
 }
