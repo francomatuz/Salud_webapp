@@ -2,7 +2,7 @@
 package com.egg.salud_webapp.enumeraciones;
 
 
-public enum Rol {
+public enum Tipo {
     PACIENTE,
     PROFESIONAL;
 }
