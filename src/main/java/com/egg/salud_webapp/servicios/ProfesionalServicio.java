@@ -135,13 +135,8 @@ public class ProfesionalServicio implements UserDetailsService {
 
     // Eliminar un profesional
     @Transactional
-    public void eliminar(Long id) throws MiException {
-        Optional<Profesional> profesionalExistente = profesionalRepositorio.buscarPorId(id);
+    public void eliminar(Long id) throws MiException { 
         profesionalRepositorio.delete(getById(id));
-
-        if(profesional)
-
-
     }
 
     public boolean tieneBio(Long id) throws MiException {
@@ -155,17 +150,7 @@ public class ProfesionalServicio implements UserDetailsService {
 
     }
 
-     @Transactional
-    public void eliminar(Long id) throws MiException {
-
-        Optional<Paciente> pacienteExistente = pacienteRepositorio.buscarPorId(id);
-
-        if (pacienteExistente.isPresent()) {
-            pacienteRepositorio.delete(pacienteExistente.get());
-        } else {
-            throw new MiException("No se encontro un paciente con los datos ingresados");
-        }
-    }
+   
 
     // Listar profesionales
     public List<Profesional> listarProfesionales() {
