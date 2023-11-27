@@ -5,7 +5,7 @@ body {
 }
 
 .container-fluid {
-    padding-top: 60px; /* Ajustar según la altura de la barra de navegación */
+    padding-top: 60px; 
 }
 
 .card {
@@ -23,18 +23,33 @@ body {
 }
 
 .user-avatar-container {
-    width: 100px;
-    height: 100px;
-
+    width: fit-content;
+    margin: auto;
+    position: relative;
+    text-align: center;
 }
 
 .user-avatar-container img {
-    width: 100px;
-    height:100px;
-    border-radius: 50%; 
-    object-fit: cover
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: auto;
 }
-/* Agregar nuevos estilos */
+
+.user-avatar-container button {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    visibility: hidden;
+}
+
+.user-avatar-container:hover button {
+    visibility: visible;
+}
+
 .sidebar {
     background-color: #fff;
     padding: 20px;
@@ -56,18 +71,6 @@ body {
     background-color: #f0f0f0;
 }
 
-.btn-secondary {
-
-    background-color:darkgreen;
-    
-}
-
-.btn-success{
-
-    margin-top:auto;
-    margin-bottom:auto;
-}
-/* Navbar */
 .navbar {
     background-color:dodgerblue;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -77,7 +80,6 @@ body {
     margin-bottom: 0;
 }
 
-/* Footer */
 footer {
     text-align: center;
     padding: 20px 0;
