@@ -36,7 +36,7 @@ public class ProfesionalControlador {
     public String registrarProfesional(@RequestParam String matricula, @RequestParam Especialidades especialidad,
 
             
-            @RequestParam Boolean atencionVirtual,
+            @RequestParam(value = "atencionVirtual", required = false) Boolean atencionVirtual,
             @RequestParam(value = "prestadores", required = false) String[] prestadoresArray,  @RequestParam String nombre,
             @RequestParam String apellido, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate fecha_nac, @RequestParam String email, @RequestParam String password,
