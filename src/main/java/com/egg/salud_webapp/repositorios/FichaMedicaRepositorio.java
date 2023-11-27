@@ -8,10 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FichaMedicaRepositorio extends JpaRepository<FichaMedica,Long>{
-    
-   @Query ("SELECT fm FROM FichaMedica fm WHERE fm.id = :id")
+public interface FichaMedicaRepositorio extends JpaRepository<FichaMedica, Long> {
+
+    @Query("SELECT fm FROM FichaMedica fm WHERE fm.id = :id")
     public FichaMedica buscarPorId(@Param("id") Long id);
-    
-    
+
 }
