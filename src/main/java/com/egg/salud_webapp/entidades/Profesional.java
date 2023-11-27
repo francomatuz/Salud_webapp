@@ -5,11 +5,10 @@ import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 
@@ -35,8 +34,8 @@ public class Profesional extends Usuario {
     private String bio;
     private Boolean alta = false;
 
-    @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL)
-    private List<ProfesionalPrestadores> prestadores;
+    @OneToMany(mappedBy = "profesional", fetch = FetchType.EAGER)
+    public List<ProfesionalPrestadores> prestadores;
 
     public Profesional(String matricula, Especialidades especialidad,
             Boolean atencionVirtual, String nombre, String apellido, String dni,
@@ -101,7 +100,15 @@ public class Profesional extends Usuario {
         this.atencionFisicaDireccion = atencionFisicaDireccion;
     }
 
- 
+    public List<ProfesionalPrestadores> getPrestadores() {
+        return prestadores;
+    }
+
+    public void setPrestadores(List<ProfesionalPrestadores> prestadores) {
+        this.prestadores = prestadores;
+    }
+
+  
 
 
 }

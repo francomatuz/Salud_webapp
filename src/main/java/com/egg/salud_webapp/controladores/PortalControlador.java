@@ -93,11 +93,13 @@ public class PortalControlador {
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/inicio")
     public String inicio(HttpSession session) {
+        Object usuarioSession = session.getAttribute("usuariosession");
 
-        Paciente logueado = (Paciente) session.getAttribute("usuariosession");
-
-        if (logueado.getRol().toString().equals("ADMIN")) {
-            return "redirect:/index";
+        if (usuarioSession instanceof Paciente) {
+            Paciente logueado = (Paciente) usuarioSession;
+            if (logueado.getRol().toString().equals("ADMIN")) {
+                return "redirect:/index";
+            }
         }
 
         return "index.html";

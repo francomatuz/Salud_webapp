@@ -50,7 +50,7 @@ public class ProfesionalControlador {
 
             modelo.put("Exito", "Solicitud enviada exitosamente");
 
-            return "index.html";
+            return "login.html";
         } catch (MiException ex) {
             Logger.getLogger(ProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
             modelo.put("Error", ex.getMessage());
