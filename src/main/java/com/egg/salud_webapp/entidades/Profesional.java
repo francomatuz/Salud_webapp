@@ -2,6 +2,7 @@ package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
+import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +20,8 @@ public class Profesional extends Usuario {
 
     @Enumerated(EnumType.STRING)
     private Especialidades especialidad;
+    @Enumerated(EnumType.STRING)
+   private Tipo tipo;
 
     
     // private LocalDateTime agendaTurnos; no se usa
@@ -39,7 +42,7 @@ public class Profesional extends Usuario {
 
     public Profesional(String matricula, Especialidades especialidad,
             Boolean atencionVirtual, String nombre, String apellido, String dni,
-            LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
+            LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Tipo tipo) {
         super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
         this.matricula = matricula;
         this.especialidad = especialidad;
@@ -106,6 +109,14 @@ public class Profesional extends Usuario {
 
     public void setPrestadores(List<ProfesionalPrestadores> prestadores) {
         this.prestadores = prestadores;
+    }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
     }
 
   
