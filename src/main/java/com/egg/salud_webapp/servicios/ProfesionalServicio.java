@@ -1,6 +1,7 @@
 
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
@@ -134,7 +135,7 @@ public class ProfesionalServicio implements UserDetailsService {
 
     // Eliminar un profesional
     @Transactional
-    private void eliminar(Long id) throws MiException {
+    public void eliminar(Long id) throws MiException { 
         profesionalRepositorio.delete(getById(id));
     }
 
@@ -148,6 +149,8 @@ public class ProfesionalServicio implements UserDetailsService {
         }
 
     }
+
+   
 
     // Listar profesionales
     public List<Profesional> listarProfesionales() {
