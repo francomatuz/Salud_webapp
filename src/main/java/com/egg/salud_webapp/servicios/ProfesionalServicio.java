@@ -126,7 +126,9 @@ public class ProfesionalServicio implements UserDetailsService {
 
     @Transactional
     public void eliminar(Long id) throws MiException {
+        profesionalPrestadoresRepositorio.deleteById(id);
         profesionalRepositorio.delete(getById(id));
+
     }
 
     public boolean tieneBio(Long id) throws MiException {

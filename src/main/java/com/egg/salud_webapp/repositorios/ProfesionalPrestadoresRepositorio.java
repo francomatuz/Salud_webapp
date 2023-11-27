@@ -13,4 +13,5 @@ public interface ProfesionalPrestadoresRepositorio extends JpaRepository<Profesi
     
     // @Query("DELETE FROM ProfesionalPrestadores p WHERE p.profesional.id = :profesionalId")
     void deleteByProfesionalId(Long profesionalId);
+    
 }
