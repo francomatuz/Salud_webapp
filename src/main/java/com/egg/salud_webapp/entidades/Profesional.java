@@ -20,8 +20,9 @@ public class Profesional extends Usuario {
 
     @Enumerated(EnumType.STRING)
     private Especialidades especialidad;
+
     @Enumerated(EnumType.STRING)
-   private Tipo tipo;
+    private Tipo tipo;
 
     
     // private LocalDateTime agendaTurnos; no se usa
@@ -42,11 +43,13 @@ public class Profesional extends Usuario {
 
     public Profesional(String matricula, Especialidades especialidad,
             Boolean atencionVirtual, String nombre, String apellido, String dni,
-            LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Tipo tipo) {
+            LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
         super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
         this.matricula = matricula;
         this.especialidad = especialidad;
         this.atencionVirtual = atencionVirtual;
+        this.tipo =  Tipo.PROFESIONAL;
+        //setear aqui el activo
             
     }
 
