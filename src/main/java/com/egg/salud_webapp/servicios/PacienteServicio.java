@@ -3,6 +3,7 @@ package com.egg.salud_webapp.servicios;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
+import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.PacienteRepositorio;
@@ -30,8 +31,6 @@ public class PacienteServicio implements UserDetailsService {
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
 
-    // Metodos Crud
-    // Crear paciente
     @Transactional
     public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
@@ -47,11 +46,8 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setObraSocial(obraSocial);
         paciente.setGenero(genero);
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
-
         paciente.setRol(UsuarioEnum.USER);
-        // Creacion de historia clinica
-        // HistoriaClinica historiaClinica = new HistoriaClinica();
-        // paciente.setHistoriaClinica(historiaClinica);
+        paciente.setTipo(Tipo.PACIENTE);
 
         pacienteRepositorio.save(paciente);
     }
@@ -61,24 +57,25 @@ public class PacienteServicio implements UserDetailsService {
     public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
-        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
+        validarAtributosActualizar(id,nombre, apellido, email, dni, fecha_nac);
 
         Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
 
         if (respuesta.isPresent()) {
 
             Paciente paciente = respuesta.get();
-
-            paciente.setNombre(nombre);
-            paciente.setApellido(apellido);
-            paciente.setEmail(email);
-            paciente.setDni(dni);
-            paciente.setFecha_nac(fecha_nac);
-            paciente.setObraSocial(obraSocial);
-            paciente.setGenero(genero);
-            paciente.setPassword(new BCryptPasswordEncoder().encode(password));
-
-            paciente.setRol(UsuarioEnum.USER);
+             
+        
+    
+            paciente.setNombre(nombre != null && !nombre.isEmpty() ? nombre : paciente.getNombre());
+            paciente.setApellido(apellido != null && !apellido.isEmpty() ? apellido : paciente.getApellido());
+            paciente.setEmail(email != null && !email.isEmpty() ? email : paciente.getEmail());
+            paciente.setDni(dni != null && !dni.isEmpty() ? dni : paciente.getDni());
+            paciente.setFecha_nac(fecha_nac != null ? fecha_nac : paciente.getFecha_nac());
+            paciente.setObraSocial(obraSocial != null ? obraSocial : paciente.getObraSocial());
+            paciente.setGenero(genero != null ? genero : paciente.getGenero());
+            paciente.setPassword(password != null && !password.isEmpty() && password2 != null && !password2.isEmpty()? new BCryptPasswordEncoder().encode(password): paciente.getPassword());
+    
             pacienteRepositorio.save(paciente);
         }
     }
@@ -99,7 +96,6 @@ public class PacienteServicio implements UserDetailsService {
         return pacienteRepositorio.getById(id);
     }
 
-    // Metodo leer pacientes de la base de datos
     public List<Paciente> listarPacientes() {
         return pacienteRepositorio.findAll();
     }
@@ -157,6 +153,43 @@ public class PacienteServicio implements UserDetailsService {
         if (!password.equals(password2)) {
             throw new MiException("La contraseñas ingresadas deben ser iguales");
         }
+    }
+
+
+     private void validarAtributosActualizar(Long id,String nombre, String apellido, String email, String dni, LocalDate fecha_nac) throws MiException {
+
+        Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
+        Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
+
+        if (nombre.isEmpty() || nombre == null) {
+            throw new MiException("El nombre no puede estar vacío o ser nulo");
+        }
+        if (apellido.isEmpty() || apellido == null) {
+            throw new MiException("El apellido no puede estar vacío o ser nulo");
+        }
+        if (emailExistente != null && !emailExistente.getId().equals(id) && emailExistente.getEmail().equalsIgnoreCase(email)) {
+            throw new MiException("Ya hay un usuario existente con el Email ingresado");
+        }
+    
+        if (email == null || email.isEmpty()) {
+            throw new MiException("El email no puede estar vacío o ser nulo");
+        }
+        if (dniExistente != null && !dniExistente.getId().equals(id) && dniExistente.getDni().equals(dni)) {
+            throw new MiException("Ya hay un usuario existente con el dni ingresado");
+        }
+    
+        if (dni.isEmpty() || dni == null) {
+            throw new MiException("El dni no puede estar vacío o ser nulo");
+        }
+        if (fecha_nac == null) {
+            throw new MiException("La fecha de nacimiento no puede estar vacía ");
+        }
+        // if (password.isEmpty() || password == null || password.length() <= 5) {
+        //     throw new MiException("La contraseña no puede estar vacia y debe tener más de 5 dígitos");
+        // }
+        // if (!password.equals(password2)) {
+        //     throw new MiException("La contraseñas ingresadas deben ser iguales");
+        // } // HAY QUE HACER LA VERIFICACION DE LA PASS CUANDO ACTUALIZA
     }
 
     @Override

@@ -2,49 +2,56 @@ package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
+import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import javax.persistence.Column;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
 
 @Entity
-public class Profesional extends Usuario{
-    
+public class Profesional extends Usuario {
+
     private String matricula;
-    
+
     @Enumerated(EnumType.STRING)
     private Especialidades especialidad;
+    @Enumerated(EnumType.STRING)
+   private Tipo tipo;
+
     
-    @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime agendaTurnos;
-    private Integer duracionTurno;
-    private Double precio;
-    private Integer calificacion;
-    private String direccion;
+    // private LocalDateTime agendaTurnos; no se usa
+    // private Integer duracionTurno Se hace en la entity turno, y no necesariamente
+    // se instancia , haces fecha de inicio y fecha fin
+    // private Double precio; tambien se hace en la entity turno.
+    // private Integer calificacion; Seria un double. Pero, hay que crear una tabla
+    // Calificaciones que tenga idProfesional y la calificacion que le da el
+    // paciente al final del turno. Y aqui tiene que ser el promedio de las que
+    // tengan el id del profesional que quiero ver.
+    private String atencionFisicaDireccion; // cambio de nombre, seguir un patron en el nombramiento de variables.
     private Boolean atencionVirtual;
     private String bio;
-    private String[] prestadores;
+    private Boolean alta = false;
 
-    public Profesional(String matricula, Especialidades especialidad, LocalDateTime agendaTurnos, Integer duracionTurno, Double precio, Integer calificacion, String direccion, Boolean atencionVirtual, String bio, String[] prestadores, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
-        super(id, nombre, apellido, dni, fecha_nac, email, password, genero, rol);
+    @OneToMany(mappedBy = "profesional", fetch = FetchType.EAGER)
+    public List<ProfesionalPrestadores> prestadores;
+
+    public Profesional(String matricula, Especialidades especialidad,
+            Boolean atencionVirtual, String nombre, String apellido, String dni,
+            LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Tipo tipo) {
+        super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
         this.matricula = matricula;
         this.especialidad = especialidad;
-        this.agendaTurnos = agendaTurnos;
-        this.duracionTurno = duracionTurno;
-        this.precio = precio;
-        this.calificacion = calificacion;
-        this.direccion = direccion;
         this.atencionVirtual = atencionVirtual;
-        this.bio = bio;
-        this.prestadores = prestadores;
+            
     }
 
     public Profesional() {
     }
-
 
     public String getMatricula() {
         return matricula;
@@ -60,46 +67,6 @@ public class Profesional extends Usuario{
 
     public void setEspecialidad(Especialidades especialidad) {
         this.especialidad = especialidad;
-    }
-
-    public LocalDateTime getAgendaTurnos() {
-        return agendaTurnos;
-    }
-
-    public void setAgendaTurnos(LocalDateTime agendaTurnos) {
-        this.agendaTurnos = agendaTurnos;
-    }
-
-    public Integer getDuracionTurno() {
-        return duracionTurno;
-    }
-
-    public void setDuracionTurno(Integer duracionTurno) {
-        this.duracionTurno = duracionTurno;
-    }
-
-    public Double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
-    }
-
-    public Integer getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(Integer calificacion) {
-        this.calificacion = calificacion;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
     }
 
     public Boolean getAtencionVirtual() {
@@ -118,12 +85,41 @@ public class Profesional extends Usuario{
         this.bio = bio;
     }
 
-    public String[] getPrestadores() {
+  
+
+    public Boolean getAlta() {
+        return alta;
+    }
+
+    public void setAlta(Boolean alta) {
+        this.alta = alta;
+    }
+
+    public String getAtencionFisicaDireccion() {
+        return atencionFisicaDireccion;
+    }
+
+    public void setAtencionFisicaDireccion(String atencionFisicaDireccion) {
+        this.atencionFisicaDireccion = atencionFisicaDireccion;
+    }
+
+    public List<ProfesionalPrestadores> getPrestadores() {
         return prestadores;
     }
 
-    public void setPrestadores(String[] prestadores) {
+    public void setPrestadores(List<ProfesionalPrestadores> prestadores) {
         this.prestadores = prestadores;
     }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
+  
+
 
 }
