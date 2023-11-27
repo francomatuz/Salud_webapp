@@ -1,0 +1,12 @@
+/* .form-check-order{
+    float: initial !important;
+    margin-left: 0%;
+} */
+.btn-actualizar {
+    border: none;
+    border-radius: 50rem;
+    background-color: #04aa6d;
+    color: white;
+    cursor: pointer;
+    padding: .75rem 1.25rem;
+  }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.egg.salud_webapp.servicios.ProfesionalServicio;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/perfil")
+@RequestMapping("/perfil2")
 public class PerfilProfesionalControlador {
 
 @Autowired
@@ -37,11 +38,20 @@ public class PerfilProfesionalControlador {
             // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir al inicio de sesión
             return "redirect:/login";
         }
+        List<String> obrasSocialesSelected = new ArrayList<>();
+        List<String> obrasSocialesList = new ArrayList<>();
+        for (ObraSocial obraSocial : profesionalServicio.obtenerObrasSocialesPorIdProfesional(profesionalLogueado.getId())) {
+            obrasSocialesSelected.add(obraSocial.toString());
+        }
+        for (ObraSocial obraSocial : ObraSocial.values()){
+            obrasSocialesList.add(obraSocial.toString());
+        }
 
-        
-        modelo.put("paciente", profesionalLogueado);
+        modelo.put("profesional", profesionalLogueado);
         modelo.put("generos", GeneroEnum.values());
-        modelo.put("obrasSociales", ObraSocial.values());
+        modelo.put("obrasSociales", obrasSocialesList);
+        modelo.put("atencionVirtual", profesionalLogueado.getAtencionVirtual());
+        modelo.put("prestadores", obrasSocialesSelected);
 
         return "actualizarprofesional.html"; // Nombre del formulario de actualización de perfil
     }
@@ -51,7 +61,7 @@ public class PerfilProfesionalControlador {
     public String actualizarPerfil(@RequestParam String nombre, @RequestParam String apellido,@RequestParam String dni,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam String email, 
             
-            @RequestParam List <ObraSocial> prestadores, @RequestParam GeneroEnum genero, ModelMap modelo, HttpSession session)
+            @RequestParam(value = "prestadores", required = false) List <ObraSocial> prestadores, @RequestParam GeneroEnum genero, ModelMap modelo, HttpSession session)
             throws MiException {
 
         // Obtener el usuario logueado desde la sesión
@@ -70,14 +80,14 @@ public class PerfilProfesionalControlador {
 
             modelo.put("Exito", "Perfil actualizado exitosamente");
 
-            return "dashboardprofesional.html"; // Página de perfil actualizado
+            return "index.html"; // Página de perfil actualizado
 
         } catch (MiException ex) {
             // Manejar excepciones
-            Logger.getLogger(PerfilPacienteControlador.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
 
             modelo.put("Error", ex.getMessage());
-            modelo.put("paciente", profesionalLogueado);
+            modelo.put("profesional", profesionalLogueado);
 
             return "error.html"; // Página de error
         }

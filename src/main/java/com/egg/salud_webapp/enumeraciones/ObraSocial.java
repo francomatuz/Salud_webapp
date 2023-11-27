@@ -6,5 +6,11 @@ package com.egg.salud_webapp.enumeraciones;
 
 
 public enum ObraSocial {
-    OSDE, SWISS_MEDICAL,GALENO,SANCOR_SALUD,OMINT, NO_TIENE, OTRO;
+    OSDE, 
+    SWISS_MEDICAL,
+    GALENO,
+    SANCOR_SALUD,
+    OMINT, 
+    NO_TIENE, 
+    OTRO;
 }
