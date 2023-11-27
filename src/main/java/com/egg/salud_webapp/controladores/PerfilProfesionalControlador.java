@@ -115,4 +115,10 @@ public class PerfilProfesionalControlador {
         }
 
     }
+    
+    @GetMapping("/dashboard2")
+    public String dashboard() {
+        return "dashboardprofesional.html";
+    }
+    
 }

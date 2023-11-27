@@ -23,18 +23,16 @@ body {
 }
 
 .user-avatar-container {
-    width: 150px;
-    height: 150px;
-    margin-left: auto; /* Orienta hacia el margen derecho */
-    margin-top: -60px; /* Ajusta el margen superior para mover la imagen hacia arriba */
-    overflow: hidden; /* Recorta cualquier contenido que exceda el tamaño del contenedor */
+    width: 100px;
+    height: 100px;
+
 }
 
 .user-avatar-container img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%; /* Establece el formato redondo */
-    object-fit: cover;
+    width: 100px;
+    height:100px;
+    border-radius: 50%; 
+    object-fit: cover
 }
 /* Agregar nuevos estilos */
 .sidebar {
