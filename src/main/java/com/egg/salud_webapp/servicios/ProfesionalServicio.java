@@ -142,7 +142,7 @@ public class ProfesionalServicio implements UserDetailsService {
         return profesionalRepositorio.findAll();
     }
 
-    public List<Profesional> litaProfesionalesSinAprobar() {
+    public List<Profesional> listaProfesionalesSinAprobar() {
 
         return profesionalRepositorio.buscarProfesionalesNoAprobados();
     }
