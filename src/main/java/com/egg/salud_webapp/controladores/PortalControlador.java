@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/")
@@ -44,14 +45,14 @@ public class PortalControlador {
     }
 
     @PostMapping("/registrar/paciente")
-    public String registrarpaciente(@RequestParam String nombre, @RequestParam String apellido,
+    public String registrarpaciente(@RequestParam String nombre, @RequestParam MultipartFile archivo, @RequestParam String apellido,
             @RequestParam String email, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password,
             @RequestParam String password2, ModelMap modelo) throws MiException {
 
         try {
-            pacienteServicio.registrar(nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,
+            pacienteServicio.registrar(archivo,nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,
                     password2);
 
             modelo.put("Exito", "Paciente registrado exitosamente");
