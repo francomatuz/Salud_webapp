@@ -1,9 +1,9 @@
 package com.egg.salud_webapp.servicios;
 
-import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
+import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.PacienteRepositorio;
@@ -31,8 +31,6 @@ public class PacienteServicio implements UserDetailsService {
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
 
-    // Metodos Crud
-    // Crear paciente
     @Transactional
     public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
@@ -48,58 +46,39 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setObraSocial(obraSocial);
         paciente.setGenero(genero);
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
-
         paciente.setRol(UsuarioEnum.USER);
-       //  Creacion de historia clinica
-         HistoriaClinica historiaClinica = new HistoriaClinica();
-         paciente.setHistoriaClinica(historiaClinica);
+        paciente.setTipo(Tipo.PACIENTE);
 
         pacienteRepositorio.save(paciente);
     }
 
     // Actualizar paciente
-   @Transactional
-public void actualizar(Long id, String nuevoNombre, String nuevoApellido, String nuevoEmail, String nuevoDni, LocalDate nuevaFechaNac, ObraSocial nuevaObraSocial, GeneroEnum nuevoGenero, String nuevaPassword, String nuevaPassword2) throws MiException {
+    @Transactional
+    public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+            ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
-    Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
+        validarAtributosActualizar(id,nombre, apellido, email, dni, fecha_nac);
 
-    if (respuesta.isPresent()) {
+        Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
+
+        if (respuesta.isPresent()) {
+
+            Paciente paciente = respuesta.get();
+             
         
-        Paciente paciente = respuesta.get();
-
-       
-        if (nuevoNombre != null) {
-            paciente.setNombre(nuevoNombre);
+    
+            paciente.setNombre(nombre != null && !nombre.isEmpty() ? nombre : paciente.getNombre());
+            paciente.setApellido(apellido != null && !apellido.isEmpty() ? apellido : paciente.getApellido());
+            paciente.setEmail(email != null && !email.isEmpty() ? email : paciente.getEmail());
+            paciente.setDni(dni != null && !dni.isEmpty() ? dni : paciente.getDni());
+            paciente.setFecha_nac(fecha_nac != null ? fecha_nac : paciente.getFecha_nac());
+            paciente.setObraSocial(obraSocial != null ? obraSocial : paciente.getObraSocial());
+            paciente.setGenero(genero != null ? genero : paciente.getGenero());
+            paciente.setPassword(password != null && !password.isEmpty() && password2 != null && !password2.isEmpty()? new BCryptPasswordEncoder().encode(password): paciente.getPassword());
+    
+            pacienteRepositorio.save(paciente);
         }
-        if (nuevoApellido != null) {
-            paciente.setApellido(nuevoApellido);
-        }
-        if (nuevoEmail != null) {
-            paciente.setEmail(nuevoEmail);
-        }
-        if (nuevoDni != null) {
-            paciente.setDni(nuevoDni);
-        }
-        if (nuevaFechaNac != null) {
-            paciente.setFecha_nac(nuevaFechaNac);
-        }
-        if (nuevaObraSocial != null) {
-            paciente.setObraSocial(nuevaObraSocial);
-        }
-        if (nuevoGenero != null) {
-            paciente.setGenero(nuevoGenero);
-        }
-        if (nuevaPassword != null) {
-            paciente.setPassword(new BCryptPasswordEncoder().encode(nuevaPassword));
-        }
-
-        paciente.setRol(UsuarioEnum.USER);
-        pacienteRepositorio.save(paciente);
-        
-    } else {
-        throw new MiException("No está el ID");
     }
-}
 
     @Transactional
     public void eliminar(Long id) throws MiException {
@@ -117,7 +96,6 @@ public void actualizar(Long id, String nuevoNombre, String nuevoApellido, String
         return pacienteRepositorio.getById(id);
     }
 
-    // Metodo leer pacientes de la base de datos
     public List<Paciente> listarPacientes() {
         return pacienteRepositorio.findAll();
     }
@@ -175,6 +153,43 @@ public void actualizar(Long id, String nuevoNombre, String nuevoApellido, String
         if (!password.equals(password2)) {
             throw new MiException("La contraseñas ingresadas deben ser iguales");
         }
+    }
+
+
+     private void validarAtributosActualizar(Long id,String nombre, String apellido, String email, String dni, LocalDate fecha_nac) throws MiException {
+
+        Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
+        Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
+
+        if (nombre.isEmpty() || nombre == null) {
+            throw new MiException("El nombre no puede estar vacío o ser nulo");
+        }
+        if (apellido.isEmpty() || apellido == null) {
+            throw new MiException("El apellido no puede estar vacío o ser nulo");
+        }
+        if (emailExistente != null && !emailExistente.getId().equals(id) && emailExistente.getEmail().equalsIgnoreCase(email)) {
+            throw new MiException("Ya hay un usuario existente con el Email ingresado");
+        }
+    
+        if (email == null || email.isEmpty()) {
+            throw new MiException("El email no puede estar vacío o ser nulo");
+        }
+        if (dniExistente != null && !dniExistente.getId().equals(id) && dniExistente.getDni().equals(dni)) {
+            throw new MiException("Ya hay un usuario existente con el dni ingresado");
+        }
+    
+        if (dni.isEmpty() || dni == null) {
+            throw new MiException("El dni no puede estar vacío o ser nulo");
+        }
+        if (fecha_nac == null) {
+            throw new MiException("La fecha de nacimiento no puede estar vacía ");
+        }
+        // if (password.isEmpty() || password == null || password.length() <= 5) {
+        //     throw new MiException("La contraseña no puede estar vacia y debe tener más de 5 dígitos");
+        // }
+        // if (!password.equals(password2)) {
+        //     throw new MiException("La contraseñas ingresadas deben ser iguales");
+        // } // HAY QUE HACER LA VERIFICACION DE LA PASS CUANDO ACTUALIZA
     }
 
     @Override
