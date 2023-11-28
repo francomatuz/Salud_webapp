@@ -148,6 +148,12 @@ public class ProfesionalServicio implements UserDetailsService {
         return profesionales;
     }
 
+    public List<Profesional> listaProfesionalesAprobados() {
+        List<Profesional> profesionales = new ArrayList();
+        profesionales = profesionalRepositorio.buscarProfesionalesAprobados();
+        return profesionales;
+    }
+
     // Buscar un profesional por id
     public Profesional getById(Long id) throws MiException {
         Profesional profesional = profesionalRepositorio.getById(id);

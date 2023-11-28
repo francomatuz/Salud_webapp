@@ -35,6 +35,10 @@ public interface ProfesionalRepositorio extends JpaRepository<Profesional, Long>
     @Query("SELECT p FROM Profesional p WHERE p.alta = 0")
     public List<Profesional> buscarProfesionalesNoAprobados();
 
+    // Consulta para buscar profesionales  aprobados
+    @Query("SELECT p FROM Profesional p WHERE p.alta = 1")
+    public List<Profesional> buscarProfesionalesAprobados();
+
     //Búsqueda por precio
     //Búsqueda de profesionales por obra social
     //Búsqueda de profesionales por dirección

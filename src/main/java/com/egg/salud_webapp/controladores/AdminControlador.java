@@ -57,6 +57,20 @@ public class AdminControlador {
         return "profesionalesSinAprobar_list";
     }
 
+    @GetMapping("/profesionales")
+    public String listarProfesionales(ModelMap modelo) {
+        List<Profesional> profesionales = profesionalServicio.listarProfesionales();
+        modelo.addAttribute("Profesionales", profesionales);
+        return "profesionales_list";
+    }
+
+    @GetMapping("/profesionalesAprobados")
+    public String listarProfesionalesAprobados(ModelMap modelo) {
+        List<Profesional> profesionales = profesionalServicio.listaProfesionalesAprobados();
+        modelo.addAttribute("Profesionales", profesionales);
+        return "profesionalesAprobados_list";
+    }
+
     @GetMapping("/aprobarSolicitud/{id}")
     public String aprobarSolicitud(@PathVariable Long id, ModelMap modelo) {
         try {
