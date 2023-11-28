@@ -103,6 +103,10 @@ public class PacienteServicio implements UserDetailsService {
             throw new MiException("No se encontro un paciente con los datos ingresados");
         }
     }
+    
+      public Paciente getOne(Long id){
+        return pacienteRepositorio.getOne(id);
+    }
 
     public Paciente getById(Long id) {
         return pacienteRepositorio.getById(id);
