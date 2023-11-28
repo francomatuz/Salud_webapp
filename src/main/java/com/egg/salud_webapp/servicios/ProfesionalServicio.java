@@ -130,7 +130,14 @@ public class ProfesionalServicio implements UserDetailsService {
         profesionalRepositorio.delete(getById(id));
 
     }
-
+    //Boton para cambiar el estado de baja
+    public void darBaja(Long id) throws MiException{
+       Profesional profesional = getById(id);
+       if(profesional.getAlta()){
+           profesional.setAlta(false);
+           profesional.setRol(UsuarioEnum.BAJA);
+       }
+    }
     public boolean tieneBio(Long id) throws MiException {
         Profesional profesional = getById(id);
         return !(profesional.getBio() == null || profesional.getBio() == "" || profesional.getBio().isEmpty());     

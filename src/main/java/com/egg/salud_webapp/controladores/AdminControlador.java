@@ -3,6 +3,7 @@ package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
+import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
 import com.egg.salud_webapp.servicios.PacienteServicio;
 import java.util.List;
@@ -55,6 +56,7 @@ public class AdminControlador {
                     .orElseThrow(() -> new NoSuchElementException("Profesional no encontrado"));
 
             profesional.setAlta(true);
+            profesional.setRol(UsuarioEnum.USER);
             profesionalRepositorio.save(profesional);
             modelo.put("Exito!", "La solicitud ha sido aprobada correctamente.");
 
