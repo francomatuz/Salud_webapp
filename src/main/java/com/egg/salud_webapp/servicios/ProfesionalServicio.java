@@ -143,8 +143,9 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     public List<Profesional> listaProfesionalesSinAprobar() {
-
-        return profesionalRepositorio.buscarProfesionalesNoAprobados();
+        List<Profesional> profesionales = new ArrayList();
+        profesionales = profesionalRepositorio.buscarProfesionalesNoAprobados();
+        return profesionales;
     }
 
     // Buscar un profesional por id
