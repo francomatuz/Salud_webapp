@@ -52,9 +52,9 @@ public class AdminControlador {
 
     @GetMapping("/profesionalesSinAprobar")
     public String listarProfesionalesSinAprobar(ModelMap modelo) {
-        List<Profesional> profesionales = profesionalServicio.litaProfesionalesSinAprobar();
+        List<Profesional> profesionales = profesionalServicio.listaProfesionalesSinAprobar();
         modelo.addAttribute("Profesionales", profesionales);
-        return "profesionalesSinAprobar_list";
+        return "profesionalesSinAprobar_list.html";
     }
 
     @GetMapping("/aprobarSolicitud/{id}")
