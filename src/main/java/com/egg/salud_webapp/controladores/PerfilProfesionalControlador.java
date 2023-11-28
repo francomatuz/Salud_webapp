@@ -94,11 +94,22 @@ public class PerfilProfesionalControlador {
         }
     }
 
+    //DAR DE BAJA
+    @GetMapping("/baja")
+    public String darBaja(HttpSession session, ModelMap modelo) throws MiException {
+        
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        profesionalServicio.darBaja(profesionalLogueado.getId());
+       //logica para logout
+       return "index.html";   
+    }
+    
     //ELIMINAR
     @GetMapping("/eliminar")
     public String eliminar(HttpSession session, ModelMap modelo) throws MiException {
         
         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        
 
         try {
             
