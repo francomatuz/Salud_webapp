@@ -30,7 +30,7 @@ public class SaludWebappApplication implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    // crearFichaMedica();
+     crearFichaMedica();
     mostrarFichaMedica();
     // leerPaciente(12L);
     // eliminarPaciente(4L);
