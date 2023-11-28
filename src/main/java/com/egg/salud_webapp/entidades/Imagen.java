@@ -1,74 +1,53 @@
 package com.egg.salud_webapp.entidades;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-
-import javax.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Imagen {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator="uuid")
+    @GenericGenerator(name="uuid",strategy="uuid2")
+    private String id;
+    private String mime;
+    private String name;
+    @Lob @Basic(fetch=FetchType.LAZY)
+    private byte[] contenido;
 
-    @Lob
-    private byte[] data; // Almacenar la imagen como un array de bytes
-
-    // Relación OneToOne con Paciente
-    @OneToOne(mappedBy = "imagen", cascade = CascadeType.ALL)
-    private Paciente paciente;
-
-    // Relación OneToOne con Profesional
-    @OneToOne(mappedBy = "imagen", cascade = CascadeType.ALL)
-    private Profesional profesional;
-
-// Constructor sin argumentos requerido por JPA
     public Imagen() {
-
-    }
-    // Constructores, getters y setters
-    
-    // Constructor con parámetros
-    public Imagen(byte[] data, Paciente paciente, Profesional profesional) {
-        this.data = data;
-        this.paciente = paciente;
-        this.profesional = profesional;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getMime() {
+        return mime;
     }
 
-    public byte[] getData() {
-        return data;
+    public void setMime(String mime) {
+        this.mime = mime;
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
+    public String getName() {
+        return name;
     }
 
-    public Paciente getPaciente() {
-        return paciente;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
+    public byte[] getContenido() {
+        return contenido;
     }
 
-    public Profesional getProfesional() {
-        return profesional;
+    public void setContenido(byte[] contenido) {
+        this.contenido = contenido;
     }
-
-    public void setProfesional(Profesional profesional) {
-        this.profesional = profesional;
-    }
-
 }
 

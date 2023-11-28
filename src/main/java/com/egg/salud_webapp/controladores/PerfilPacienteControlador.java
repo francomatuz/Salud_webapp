@@ -18,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/perfil")
@@ -46,7 +47,7 @@ public class PerfilPacienteControlador {
     }
 
     @PostMapping("/actualizar")
-    public String actualizarPerfil(@RequestParam String nombre, @RequestParam String apellido,
+    public String actualizarPerfil(@RequestParam MultipartFile archivo,@RequestParam String nombre, @RequestParam String apellido,
             @RequestParam String email, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, ModelMap modelo, HttpSession session)
@@ -63,7 +64,7 @@ public class PerfilPacienteControlador {
 
         try {
             // Actualizar el perfil del paciente (sin cambiar la contraseña)
-            pacienteServicio.actualizar(pacienteLogueado.getId(), nombre, apellido, email, dni, fecha_nac, obraSocial,
+            pacienteServicio.actualizar(archivo,pacienteLogueado.getId(), nombre, apellido, email, dni, fecha_nac, obraSocial,
                     genero, null, null);
 
             modelo.put("Exito", "Perfil actualizado exitosamente");
