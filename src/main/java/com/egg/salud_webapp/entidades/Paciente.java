@@ -6,9 +6,11 @@ import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Paciente extends Usuario {
@@ -17,11 +19,12 @@ public class Paciente extends Usuario {
 
     @Enumerated(EnumType.STRING)
     private ObraSocial obraSocial;
+    
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
 
-    // @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
-    // private HistoriaClinica historiaClinica;
+     @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
+     private HistoriaClinica historiaClinica;
 
     /*
      * @OneToOne
@@ -37,7 +40,7 @@ public class Paciente extends Usuario {
         super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
         this.activo = activo;
         this.obraSocial = obraSocial;
-        // this.historiaClinica = historiaClinica;
+        this.historiaClinica = historiaClinica;
     }
 
     public Boolean getActivo() {
@@ -56,13 +59,13 @@ public class Paciente extends Usuario {
         this.obraSocial = obraSocial;
     }
 
-    // public HistoriaClinica getHistoriaClinica() {
-    // return historiaClinica;
-    // }
-    //
-    // public void setHistoriaClinica(HistoriaClinica historiaClinica) {
-    // this.historiaClinica = historiaClinica;
-    // }
+     public HistoriaClinica getHistoriaClinica() {
+     return historiaClinica;
+     }
+    
+     public void setHistoriaClinica(HistoriaClinica historiaClinica) {
+     this.historiaClinica = historiaClinica;
+     }
 
     public Tipo getTipo() {
         return tipo;
