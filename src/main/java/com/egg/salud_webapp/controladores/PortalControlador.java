@@ -52,7 +52,7 @@ public class PortalControlador {
             @RequestParam String password2, ModelMap modelo) throws MiException {
 
         try {
-            pacienteServicio.registrar(nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,
+            pacienteServicio.registrar(archivo,nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,
                     password2);
 
             modelo.put("Exito", "Paciente registrado exitosamente");

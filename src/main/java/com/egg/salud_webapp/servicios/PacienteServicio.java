@@ -40,7 +40,7 @@ public class PacienteServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    public void registrar(MultipartFile archivo,String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
@@ -54,8 +54,10 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setObraSocial(obraSocial);
         paciente.setGenero(genero);
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
-        paciente.setRol(UsuarioEnum.USER); 
-
+        paciente.setRol(UsuarioEnum.USER);
+        
+        Imagen imagen = imagenServicio.cargar(archivo);
+        paciente.setImagen(imagen);
         pacienteRepositorio.save(paciente);
     }
 

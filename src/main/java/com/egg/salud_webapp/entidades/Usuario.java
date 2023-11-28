@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -26,9 +25,6 @@ public class Usuario {
     protected LocalDate fecha_nac;
     protected String email;
     protected String password;
-
-    @OneToOne
-    private Imagen imagen;
 
     @Enumerated(EnumType.STRING)
     protected GeneroEnum genero;
@@ -105,14 +101,6 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Imagen getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(Imagen imagen) {
-        this.imagen = imagen;
     }
 
     public UsuarioEnum getRol() {

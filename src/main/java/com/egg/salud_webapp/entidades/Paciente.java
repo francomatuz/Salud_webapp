@@ -39,10 +39,11 @@ public class Paciente extends Usuario{
     public Paciente() {
     }
 
-    public Paciente(Boolean activo, ObraSocial obraSocial, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
+    public Paciente(Imagen imagen,Boolean activo, ObraSocial obraSocial, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
         super(id, nombre, apellido, dni, fecha_nac, email, password, genero, rol);
         this.activo = activo;
         this.obraSocial = obraSocial;
+        this.imagen = imagen;
 //        this.historiaClinica = historiaClinica;
     }
 
@@ -78,8 +79,8 @@ public class Paciente extends Usuario{
 
     public void setImagen(Imagen imagen) {
         this.imagen = imagen;
-    }
-     
+    }  
+    
 }
 
 //    public HistoriaClinica getHistoriaClinica() {
