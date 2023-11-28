@@ -1,10 +1,10 @@
-
 package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
 import com.egg.salud_webapp.servicios.PacienteServicio;
+import com.egg.salud_webapp.servicios.ProfesionalServicio;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
@@ -23,6 +23,9 @@ public class AdminControlador {
 
     @Autowired
     private PacienteServicio pacienteServicio;
+
+    @Autowired
+    private ProfesionalServicio profesionalServicio;
 
     @Autowired
     private ProfesionalRepositorio profesionalRepositorio;
@@ -45,6 +48,13 @@ public class AdminControlador {
         pacienteServicio.cambiarRol(id);
 
         return "redirect:/admin/usuarios";
+    }
+
+    @GetMapping("/profesionalesSinAprobar")
+    public String listarProfesionalesSinAprobar(ModelMap modelo) {
+        List<Profesional> profesionales = profesionalServicio.litaProfesionalesSinAprobar();
+        modelo.addAttribute("Profesionales", profesionales);
+        return "profesionalesSinAprobar_list";
     }
 
     @GetMapping("/aprobarSolicitud/{id}")

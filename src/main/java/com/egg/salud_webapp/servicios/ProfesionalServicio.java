@@ -1,4 +1,3 @@
-
 package com.egg.salud_webapp.servicios;
 
 import com.egg.salud_webapp.entidades.Profesional;
@@ -29,9 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-
 @Service
 public class ProfesionalServicio implements UserDetailsService {
+
     @Autowired
     ProfesionalRepositorio profesionalRepositorio;
     @Autowired
@@ -106,13 +105,15 @@ public class ProfesionalServicio implements UserDetailsService {
             // profesionalAActualizar.getAtencionVirtual());
             // profesionalAActualizar.setBio(bio != null ? bio :
             // profesionalAActualizar.getBio());
-            if (prestadores == null)  throw new MiException("Se tiene que seleccionar al menos una opcion");
-            
+            if (prestadores == null) {
+                throw new MiException("Se tiene que seleccionar al menos una opcion");
+            }
+
             List<String> obrasSocialesList = new ArrayList<>(); // lista con las obras sociales nuevas
             for (ObraSocial obraSocial : prestadores) {
                 obrasSocialesList.add(obraSocial.toString());
             }
-            profesionalPrestadoresRepositorio.deleteByProfesionalId(id); 
+            profesionalPrestadoresRepositorio.deleteByProfesionalId(id);
 
             for (String prestador : obrasSocialesList) { // creo una nueva lista con los prestadores nuevos
                 ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesionalAActualizar,
@@ -133,12 +134,17 @@ public class ProfesionalServicio implements UserDetailsService {
 
     public boolean tieneBio(Long id) throws MiException {
         Profesional profesional = getById(id);
-        return !(profesional.getBio() == null || profesional.getBio() == "" || profesional.getBio().isEmpty());     
+        return !(profesional.getBio() == null || profesional.getBio() == "" || profesional.getBio().isEmpty());
     }
 
     // Listar profesionales
     public List<Profesional> listarProfesionales() {
         return profesionalRepositorio.findAll();
+    }
+
+    public List<Profesional> litaProfesionalesSinAprobar() {
+
+        return profesionalRepositorio.buscarProfesionalesNoAprobados();
     }
 
     // Buscar un profesional por id
@@ -229,7 +235,6 @@ public class ProfesionalServicio implements UserDetailsService {
         // if (bio.isEmpty() || bio == null) {
         // throw new MiException("La bio no puede estar vacía o ser nula");
         // }
-
     }
 
     @Override
