@@ -75,11 +75,7 @@ public class PortalControlador {
 
         }
     }
-
-    
-
-
-
+     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error, ModelMap modelo) {
 

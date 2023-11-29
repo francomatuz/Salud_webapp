@@ -88,8 +88,6 @@ public class Profesional extends Usuario {
         this.bio = bio;
     }
 
-  
-
     public Boolean getAlta() {
         return alta;
     }
