@@ -135,7 +135,7 @@ public class ProfesionalServicio implements UserDetailsService {
        Profesional profesional = getById(id);
        if(profesional.getAlta()){
            profesional.setAlta(false);
-           profesional.setRol(UsuarioEnum.BAJA);
+//           profesional.setRol(UsuarioEnum.BAJA);
        }
     }
     public boolean tieneBio(Long id) throws MiException {
