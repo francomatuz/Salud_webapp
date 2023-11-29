@@ -75,4 +75,14 @@ public class Paciente extends Usuario {
         this.tipo = tipo;
     }
 
+@Override
+public String toString() {
+    return "Paciente{" +
+            super.toString() +
+            ", activo=" + activo +
+            ", obraSocial=" + obraSocial +
+            ", tipo=" + tipo +
+            ", historiaClinica=" + historiaClinica +
+            '}';
+}
 }

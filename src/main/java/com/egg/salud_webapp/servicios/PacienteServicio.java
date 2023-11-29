@@ -58,10 +58,8 @@ public class PacienteServicio implements UserDetailsService {
 
         HistoriaClinica historiaClinica = new HistoriaClinica();
 
-        
         historiaClinica.setPaciente(paciente);
 
-       
         historiaClinicaRepositorio.save(historiaClinica);
 
     }

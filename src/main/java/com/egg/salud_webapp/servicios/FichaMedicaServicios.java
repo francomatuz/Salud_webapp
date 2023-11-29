@@ -85,7 +85,7 @@ public class FichaMedicaServicios implements UserDetailsService {
       if (!fichasMedicas.isEmpty()) {
         // Puedes iterar sobre la colección o seleccionar la ficha médica que necesitas
         for (FichaMedica fichaMedica : fichasMedicas) {
-          if (fichaMedica.getId() == 1L) { // Cambia esto según tu lógica de búsqueda
+          if (fichaMedica.getId() == 2L) { // Cambia esto según tu lógica de búsqueda
             System.out.println(fichaMedica);
             return;
           }
@@ -102,10 +102,8 @@ public class FichaMedicaServicios implements UserDetailsService {
     }
   }
 
-  @Override
-  public UserDetails loadUserByUsername(String username)
-    throws UsernameNotFoundException {
-    throw new UnsupportedOperationException("Not supported yet."); // Generated from
-    // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-  }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

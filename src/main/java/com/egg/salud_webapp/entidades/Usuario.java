@@ -123,5 +123,19 @@ public class Usuario {
         this.genero = genero;
     }
 
+    @Override
+public String toString() {
+    return "Usuario{" +
+            "id=" + id +
+            ", nombre='" + nombre + '\'' +
+            ", apellido='" + apellido + '\'' +
+            ", dni='" + dni + '\'' +
+            ", fecha_nac=" + fecha_nac +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", genero=" + genero +
+            ", rol=" + rol +
+            '}';
+}
       
 }
