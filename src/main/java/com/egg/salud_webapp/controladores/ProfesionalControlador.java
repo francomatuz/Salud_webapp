@@ -37,6 +37,7 @@ public class ProfesionalControlador {
 
             
             @RequestParam(value = "atencionVirtual", required = false) Boolean atencionVirtual,
+            Double precio,
             @RequestParam(value = "prestadores", required = false) String[] prestadoresArray,  @RequestParam String nombre,
             @RequestParam String apellido, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate fecha_nac, @RequestParam String email, @RequestParam String password,
@@ -45,7 +46,7 @@ public class ProfesionalControlador {
         try {
           
             profesionalServicio.registrar(matricula, especialidad,
-                     atencionVirtual,prestadoresArray,  nombre, apellido, dni, fecha_nac,
+                     atencionVirtual, precio,prestadoresArray,  nombre, apellido, dni, fecha_nac,
                     email, password, password2, genero);
 
             modelo.put("Exito", "Solicitud enviada exitosamente");

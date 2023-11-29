@@ -1,7 +1,9 @@
+
 package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
+import com.egg.salud_webapp.enumeraciones.SolicitudEnum;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
 import com.egg.salud_webapp.servicios.PacienteServicio;
@@ -24,52 +26,42 @@ public class AdminControlador {
 
     @Autowired
     private PacienteServicio pacienteServicio;
-
+    
     @Autowired
     private ProfesionalServicio profesionalServicio;
-
+    
     @Autowired
     private ProfesionalRepositorio profesionalRepositorio;
 
     @GetMapping("/dashboard")
     public String panelAdministrativo() {
-        return "dashboardadmin.html";
+        return "panel.html";
     }
 
-    @GetMapping("/listapacientes")
+    @GetMapping("/usuarios")
     public String listar(ModelMap modelo) {
         List<Paciente> pacientes = pacienteServicio.listarPacientes();
         modelo.addAttribute("Pacientes", pacientes);
-
-        return "listapacientes.html";
+        return "paciente_list";
     }
-
+    
+    @GetMapping("/solicitudes")
+    public String listarProfesionalesSolicitudes (ModelMap modelo){
+        List<Profesional> profesionalesSolicitud = profesionalServicio.listarProfesionalesSolicitud();
+        return "profesionales_list";
+    }
+    
+    @GetMapping("/sinSolicitudes")
+    public String listarProfesionalesSinSolicitudes (ModelMap modelo){
+        List<Profesional> profesionalesSolicitud = profesionalServicio.listarProfesionalesSinSolicitud();
+        return "profesionales_list";
+    }
+    
     @GetMapping("/modificarRol/{id}")
     public String cambiarRol(@PathVariable Long id) {
         pacienteServicio.cambiarRol(id);
 
         return "redirect:/admin/usuarios";
-    }
-
-    @GetMapping("/solicitudes")
-    public String listarProfesionalesSinAprobar(ModelMap modelo) {
-        List<Profesional> profesionales = profesionalServicio.listaProfesionalesSinAprobar();
-        modelo.addAttribute("Profesionales", profesionales);
-        return "solicitudes.html";
-    }
-
-    @GetMapping("/profesionales")
-    public String listarProfesionales(ModelMap modelo) {
-        List<Profesional> profesionales = profesionalServicio.listarProfesionales();
-        modelo.addAttribute("Profesionales", profesionales);
-        return "listaprofesionales.html";
-    }
-
-    @GetMapping("/profesionalesAprobados")
-    public String listarProfesionalesAprobados(ModelMap modelo) {
-        List<Profesional> profesionales = profesionalServicio.listaProfesionalesAprobados();
-        modelo.addAttribute("Profesionales", profesionales);
-        return "profesionalesAprobados_list";
     }
 
     @GetMapping("/aprobarSolicitud/{id}")
@@ -79,7 +71,7 @@ public class AdminControlador {
             Profesional profesional = profesionalRepositorio.findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Profesional no encontrado"));
 
-            profesional.setAlta(true);
+            profesional.setAlta(SolicitudEnum.ACTIVO);
 //            profesional.setRol(UsuarioEnum.USER);
             profesionalRepositorio.save(profesional);
             modelo.put("Exito!", "La solicitud ha sido aprobada correctamente.");
@@ -92,4 +84,5 @@ public class AdminControlador {
         }
         return "redirect:/admin/solicitudes";
     }
+    
 }
