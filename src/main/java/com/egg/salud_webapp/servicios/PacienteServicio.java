@@ -1,5 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.Imagen;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
@@ -24,15 +25,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class PacienteServicio implements UserDetailsService {
 
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
+    @Autowired
+    private ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    public void registrar(MultipartFile archivo,String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
@@ -47,8 +51,8 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setGenero(genero);
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
         paciente.setRol(UsuarioEnum.USER);
-        paciente.setTipo(Tipo.PACIENTE);
-
+        Imagen imagen = imagenServicio.guardar(archivo);
+        paciente.setImagen(imagen);
         pacienteRepositorio.save(paciente);
     }
 
@@ -217,4 +221,8 @@ public class PacienteServicio implements UserDetailsService {
         }
 
     }
+        public Paciente getOne(Long id){
+        return pacienteRepositorio.getOne(id);
+    }
+    
 }

@@ -20,11 +20,19 @@ public class ImagenControlador {
     private PacienteServicio pacienteServicio;
 
     @GetMapping("/paciente/{id}")
-    public ResponseEntity<byte[]>Imagen(@PathVariable long id){
+    public ResponseEntity<byte[]> obtenerImagen(@PathVariable Long id) {
         Paciente paciente = pacienteServicio.getOne(id);
-        byte[] imagen = paciente.getImagen().getContenido();
+
+        if (paciente == null || paciente.getImagen() == null || paciente.getImagen().getContenido() == null) {
+            // Manejo si el paciente no tiene imagen o si la imagen es nula
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] imagenBytes = paciente.getImagen().getContenido();
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity<>(imagen,headers,HttpStatus.OK);
+
+        return new ResponseEntity<>(imagenBytes, headers, HttpStatus.OK);
     }
 }

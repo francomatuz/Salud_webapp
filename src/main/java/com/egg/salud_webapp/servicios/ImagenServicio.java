@@ -11,23 +11,29 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class ImagenServicio {
-
+    @Autowired
      private ImagenRepositorio imagenRepositorio;
-
     @Transactional
-    public Imagen cargar(MultipartFile archivo)throws MiException{
-        if (archivo!=null) {
-            try{
+    public Imagen guardar(MultipartFile archivo) throws MiException {
+        if (archivo != null) {
+            try {
+
                 Imagen imagen = new Imagen();
+
                 imagen.setMime(archivo.getContentType());
+
                 imagen.setName(archivo.getName());
+
                 imagen.setContenido(archivo.getBytes());
+
                 return imagenRepositorio.save(imagen);
-            }catch(Exception ex){
-                System.out.println(ex.getMessage());  
+
+            } catch (Exception e) {
+                System.err.println(e.getMessage()); //err: el mensaje va a ser de color rojo
             }
         }
         return null;

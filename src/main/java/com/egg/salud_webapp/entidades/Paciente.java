@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Paciente extends Usuario {
@@ -23,10 +24,10 @@ public class Paciente extends Usuario {
     // @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
     // private HistoriaClinica historiaClinica;
 
-    /*
-     * @OneToOne
-     * private Imagen imagen;
-     */
+    
+     @OneToOne
+     private Imagen imagen;
+     
 
     public Paciente() {
     }
@@ -70,6 +71,14 @@ public class Paciente extends Usuario {
 
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
+    }
+
+    public Imagen getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Imagen imagen) {
+        this.imagen = imagen;
     }
 
 }
