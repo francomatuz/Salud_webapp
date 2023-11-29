@@ -35,12 +35,12 @@ public class AdminControlador {
         return "dashboardadmin.html";
     }
 
-    @GetMapping("/usuarios")
+    @GetMapping("/listapacientes")
     public String listar(ModelMap modelo) {
         List<Paciente> pacientes = pacienteServicio.listarPacientes();
         modelo.addAttribute("Pacientes", pacientes);
 
-        return "paciente_list";
+        return "listapacientes.html";
     }
 
     @GetMapping("/modificarRol/{id}")
@@ -50,11 +50,11 @@ public class AdminControlador {
         return "redirect:/admin/usuarios";
     }
 
-    @GetMapping("/profesionalesSinAprobar")
+    @GetMapping("/solicitudes")
     public String listarProfesionalesSinAprobar(ModelMap modelo) {
         List<Profesional> profesionales = profesionalServicio.listaProfesionalesSinAprobar();
         modelo.addAttribute("Profesionales", profesionales);
-        return "profesionalesSinAprobar_list.html";
+        return "solicitudes.html";
     }
 
     @GetMapping("/aprobarSolicitud/{id}")

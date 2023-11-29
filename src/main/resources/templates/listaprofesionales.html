@@ -48,26 +48,35 @@
    
     <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Profesionales</h5>
+        <h5 class="card-title">Listado de Pacientes</h5>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>DNI</th>
-                        <!-- Otros encabezados -->
+                        <th>Género</th>
+                        <th>Fecha de Nacimiento</th>
+                        <th>Obra Social </th>
+                        <th>Correo Electrónico</th>
+
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="profesional : ${profesionales}">
+                    <tr th:each="profesional: ${Profesionales}">
+                        <td th:text="${profesional.id}"></td>
                         <td th:text="${profesional.nombre}"></td>
                         <td th:text="${profesional.apellido}"></td>
                         <td th:text="${profesional.dni}"></td>
+                        <td th:text="${profesional.genero}"></td>
+                        <td th:text="${profesional.fecha_nac}"></td>
+                        <td th:text="${profesional.ObraSocial}"></td>
+                        <td th:text="${profesional.email}"></td>
                         <!-- Otros campos -->
                         <td>
-                            <button type="button" class="btn btn-warning btn-sm">Reprogramar</button>
-                            <button type="button" class="btn btn-danger btn-sm">Cancelar</button>
+                            <button type="button" class="btn btn-warning btn-sm">Acción?</button>
                         </td>
                     </tr>
                     <!-- Otras filas -->
