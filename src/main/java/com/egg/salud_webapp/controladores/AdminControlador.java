@@ -61,7 +61,7 @@ public class AdminControlador {
     public String listarProfesionales(ModelMap modelo) {
         List<Profesional> profesionales = profesionalServicio.listarProfesionales();
         modelo.addAttribute("Profesionales", profesionales);
-        return "profesionales_list";
+        return "listaprofesionales.html";
     }
 
     @GetMapping("/profesionalesAprobados")

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+DOCTYPE html>
 <html lang="en">
 
     <meta charset="UTF-8">
@@ -48,36 +48,42 @@
    
     <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Listado de Pacientes</h5>
+        <h5 class="card-title">Listado total de Profesionales</h5>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Especialidad</th>
+                         <th>Matricula</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>DNI</th>
                         <th>Género</th>
                         <th>Fecha de Nacimiento</th>
-                        <th>Obra Social </th>
+                         <th>Dirección</th>
+                         <th>Atención Virtual</th>
+                        <th>Prestadores</th>
                         <th>Correo Electrónico</th>
+                         <th>Estado</th>
 
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="profesional: ${Profesionales}">
                         <td th:text="${profesional.id}"></td>
+                        <td th:text="${profesional.especialidad}"></td>
+                        <td th:text="${profesional.matricula}"></td>
                         <td th:text="${profesional.nombre}"></td>
                         <td th:text="${profesional.apellido}"></td>
                         <td th:text="${profesional.dni}"></td>
                         <td th:text="${profesional.genero}"></td>
                         <td th:text="${profesional.fecha_nac}"></td>
-                        <td th:text="${profesional.ObraSocial}"></td>
+                        <td th:text="${profesional.atencionFisicaDireccion}"></td>
+                        <td th:text="${profesional.atencionVirtual}"></td>
+                        <td th:text="${profesional.prestadores}"></td>
                         <td th:text="${profesional.email}"></td>
-                        <!-- Otros campos -->
-                        <td>
-                            <button type="button" class="btn btn-warning btn-sm">Acción?</button>
-                        </td>
+                <a><td th:text="${profesional.alta}"></td></a>
                     </tr>
                     <!-- Otras filas -->
                 </tbody>
