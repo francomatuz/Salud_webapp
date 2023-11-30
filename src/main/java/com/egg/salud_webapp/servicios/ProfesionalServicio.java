@@ -1,11 +1,13 @@
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.Imagen;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.SolicitudEnum;
+import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
@@ -32,14 +34,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ProfesionalServicio implements UserDetailsService {
-
+    
+    @Autowired
+    ImagenServicio imagenServicio;
     @Autowired
     ProfesionalRepositorio profesionalRepositorio;
     @Autowired
     ProfesionalPrestadoresRepositorio profesionalPrestadoresRepositorio;
 
     @Transactional
-    public void registrar(String matricula, Especialidades especialidad,
+    public void registrar(MultipartFile archivo,String matricula, Especialidades especialidad, Tipo tipo,
             Boolean atencionVirtual, Double precio,
             String[] prestadores, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
@@ -47,12 +51,15 @@ public class ProfesionalServicio implements UserDetailsService {
         validarAtributos(prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula /*precio*/);
 
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
+       
         
-
+        Imagen imagen = imagenServicio.guardar(archivo);
+        
         Profesional profesional = new Profesional(matricula, especialidad,
                 atencionVirtual != null ? atencionVirtual : false, precio,
                 nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,
-                UsuarioEnum.USER);
+                UsuarioEnum.USER,imagen);
+
                
         profesionalRepositorio.save(profesional);
 

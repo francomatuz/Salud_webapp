@@ -49,8 +49,8 @@ public class Profesional extends Usuario {
 
     public Profesional(String matricula, Especialidades especialidad,
             Boolean atencionVirtual, Double precio, String nombre, String apellido, String dni,
-            LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
-        super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
+            LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {
+        super(nombre, apellido, dni, fecha_nac, email, password, genero, rol,imagen);
         this.matricula = matricula;
         this.especialidad = especialidad;
         this.atencionVirtual = atencionVirtual;
@@ -58,7 +58,6 @@ public class Profesional extends Usuario {
         this.tipo =  Tipo.PROFESIONAL;
         
         //setear aqui el activo
-            
     }
 
     public Profesional() {
