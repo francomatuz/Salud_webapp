@@ -11,6 +11,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 
 @Entity
@@ -37,6 +38,7 @@ public class Profesional extends Usuario {
     private Boolean atencionVirtual;
     private String bio;
     private Boolean alta = false;
+
 
     @OneToMany(mappedBy = "profesional", fetch = FetchType.EAGER)
     public List<ProfesionalPrestadores> prestadores;
@@ -121,8 +123,4 @@ public class Profesional extends Usuario {
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
-
-  
-
-
 }
