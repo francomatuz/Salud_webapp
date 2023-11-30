@@ -41,7 +41,7 @@ public class SaludWebappApplication implements CommandLineRunner {
     // leerPaciente(3L);
     // eliminarPaciente(4L);
     // modificarPaciente(10L);
-     listarPaciente();
+     //listarPaciente();
 	
   }
   
