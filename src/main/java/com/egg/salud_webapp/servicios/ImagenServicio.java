@@ -13,6 +13,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 @Service
+@Transactional
+@Autow
 public class ImagenServicio {
 
      private ImagenRepositorio imagenRepositorio;
@@ -25,8 +27,9 @@ public class ImagenServicio {
                 imagen.setMime(archivo.getContentType());
                 imagen.setName(archivo.getName());
                 imagen.setContenido(archivo.getBytes());
-                return imagenRepositorio.save(imagen);
-            }catch(Exception ex){
+                imagen = imagenRepositorio.save(imagen); // Guardar la imagen en el repositorio
+                return imagen;
+            }catch(IOException ex){
                 System.out.println(ex.getMessage());  
             }
         }
@@ -49,7 +52,7 @@ public class ImagenServicio {
                 imagen.setName(archivo.getName());
                 imagen.setContenido(archivo.getBytes());
                 return imagenRepositorio.save(imagen);
-            }catch(Exception ex){
+            }catch(IOException ex){
                 System.out.println(ex.getMessage());
             }
         }
