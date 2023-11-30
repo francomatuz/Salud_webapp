@@ -16,12 +16,10 @@ import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.servicios.ProfesionalServicio;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping
 public class ProfesionalControlador {
-    
     @Autowired
     private ProfesionalServicio profesionalServicio;
 
@@ -35,10 +33,11 @@ public class ProfesionalControlador {
     }
 
     @PostMapping("/registrar/profesional")
-    public String registrarProfesional(@RequestParam MultipartFile archivo,@RequestParam String matricula, @RequestParam Especialidades especialidad,
+    public String registrarProfesional(@RequestParam String matricula, @RequestParam Especialidades especialidad,
 
             
             @RequestParam(value = "atencionVirtual", required = false) Boolean atencionVirtual,
+            Double precio,
             @RequestParam(value = "prestadores", required = false) String[] prestadoresArray,  @RequestParam String nombre,
             @RequestParam String apellido, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate fecha_nac, @RequestParam String email, @RequestParam String password,
@@ -46,8 +45,8 @@ public class ProfesionalControlador {
              ModelMap modelo) throws MiException {
         try {
           
-            profesionalServicio.registrar( matricula, especialidad,
-                     atencionVirtual,prestadoresArray,  nombre, apellido, dni, fecha_nac,
+            profesionalServicio.registrar(matricula, especialidad,
+                     atencionVirtual, precio,prestadoresArray,  nombre, apellido, dni, fecha_nac,
                     email, password, password2, genero);
 
             modelo.put("Exito", "Solicitud enviada exitosamente");

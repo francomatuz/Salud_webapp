@@ -2,6 +2,7 @@ package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
+import com.egg.salud_webapp.enumeraciones.SolicitudEnum;
 import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
@@ -11,7 +12,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 
 @Entity
@@ -29,42 +29,37 @@ public class Profesional extends Usuario {
     // private LocalDateTime agendaTurnos; no se usa
     // private Integer duracionTurno Se hace en la entity turno, y no necesariamente
     // se instancia , haces fecha de inicio y fecha fin
-    // private Double precio; tambien se hace en la entity turno.
     // private Integer calificacion; Seria un double. Pero, hay que crear una tabla
     // Calificaciones que tenga idProfesional y la calificacion que le da el
     // paciente al final del turno. Y aqui tiene que ser el promedio de las que
     // tengan el id del profesional que quiero ver.
+    
     private String atencionFisicaDireccion; // cambio de nombre, seguir un patron en el nombramiento de variables.
     private Boolean atencionVirtual;
     private String bio;
-    private Boolean alta = false;
-
+    //ENUM PARA DIFERENCIAR ALTA/BAJA/SOLICITUD
+    private SolicitudEnum alta = SolicitudEnum.SOLICITUD;
+    private Double precio = 3000d;
+    private Double calificacion = null; 
 
     @OneToMany(mappedBy = "profesional", fetch = FetchType.EAGER)
     public List<ProfesionalPrestadores> prestadores;
+    
+    
 
-    public Profesional(String matricula, Especialidades especialidad, Tipo tipo, String atencionFisicaDireccion, Boolean atencionVirtual, String bio, List<ProfesionalPrestadores> prestadores) {
+    public Profesional(String matricula, Especialidades especialidad,
+            Boolean atencionVirtual, Double precio, String nombre, String apellido, String dni,
+            LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
+        super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
         this.matricula = matricula;
         this.especialidad = especialidad;
-        this.tipo = tipo;
-        this.atencionFisicaDireccion = atencionFisicaDireccion;
         this.atencionVirtual = atencionVirtual;
-        this.bio = bio;
-        this.prestadores = prestadores;
-    }
-
-    public Profesional(String matricula, Especialidades especialidad, Tipo tipo, String atencionFisicaDireccion, Boolean atencionVirtual, String bio, List<ProfesionalPrestadores> prestadores, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {
-        super(id, nombre, apellido, dni, fecha_nac, email, password, genero, rol, imagen);
-        this.matricula = matricula;
-        this.especialidad = especialidad;
-        this.tipo = tipo;
-        this.atencionFisicaDireccion = atencionFisicaDireccion;
-        this.atencionVirtual = atencionVirtual;
-        this.bio = bio;
-        this.prestadores = prestadores;
+        this.precio = precio;
+        this.tipo =  Tipo.PROFESIONAL;
+        
         //setear aqui el activo
+            
     }
-
 
     public Profesional() {
     }
@@ -101,13 +96,11 @@ public class Profesional extends Usuario {
         this.bio = bio;
     }
 
-  
-
-    public Boolean getAlta() {
+    public SolicitudEnum getAlta() {
         return alta;
     }
 
-    public void setAlta(Boolean alta) {
+    public void setAlta(SolicitudEnum alta) {
         this.alta = alta;
     }
 
@@ -134,4 +127,22 @@ public class Profesional extends Usuario {
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
+
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
+
+    public Double getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(Double calificacion) {
+        this.calificacion = calificacion;
+    }
+
+    
 }

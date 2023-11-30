@@ -89,11 +89,7 @@ public class PortalControlador {
 
         }
     }
-
     
-
-
-
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error, ModelMap modelo) {
 
