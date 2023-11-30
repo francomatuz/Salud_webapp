@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -31,12 +32,14 @@ public class Usuario {
 
     @Enumerated(EnumType.STRING)
     protected UsuarioEnum rol;
+     @OneToOne
+     private Imagen imagen;
 
     public Usuario() {
     }
 
-    public Usuario(String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
-        
+    public Usuario(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -45,7 +48,10 @@ public class Usuario {
         this.password = password;
         this.genero = genero;
         this.rol = rol;
+        this.imagen = imagen;
     }
+
+
 
     public Long getId() {
         return id;
@@ -119,4 +125,11 @@ public class Usuario {
         this.genero = genero;
     }
 
+    public Imagen getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Imagen imagen) {
+        this.imagen = imagen;
+    }
 }

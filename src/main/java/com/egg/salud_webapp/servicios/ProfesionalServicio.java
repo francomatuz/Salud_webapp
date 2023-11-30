@@ -47,6 +47,7 @@ public class ProfesionalServicio implements UserDetailsService {
         validarAtributos(prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula);
 
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
+        
 
         Profesional profesional = new Profesional(matricula, especialidad,
                 atencionVirtual != null ? atencionVirtual : false,

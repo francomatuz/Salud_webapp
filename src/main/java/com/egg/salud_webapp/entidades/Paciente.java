@@ -24,21 +24,23 @@ public class Paciente extends Usuario {
     // @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
     // private HistoriaClinica historiaClinica;
 
-    
-     @OneToOne
-     private Imagen imagen;
      
 
     public Paciente() {
     }
-
-    public Paciente(Boolean activo, ObraSocial obraSocial, String nombre, String apellido, String dni,
-            LocalDate fecha_nac,
-            String email, String password, GeneroEnum genero, UsuarioEnum rol, Tipo tipo) {
-        super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
+    
+    public Paciente(Boolean activo, ObraSocial obraSocial, Tipo tipo) {
         this.activo = activo;
         this.obraSocial = obraSocial;
-        // this.historiaClinica = historiaClinica;
+        this.tipo = tipo;
+    }
+
+    public Paciente(Boolean activo, ObraSocial obraSocial, Tipo tipo, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {
+        super(id, nombre, apellido, dni, fecha_nac, email, password, genero, rol, imagen);
+        this.activo = activo;
+        this.obraSocial = obraSocial;
+        this.tipo = tipo;
+         // this.HistoriaClinica = historiaClinica;
     }
 
     public Boolean getActivo() {
@@ -71,14 +73,6 @@ public class Paciente extends Usuario {
 
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
-    }
-
-    public Imagen getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(Imagen imagen) {
-        this.imagen = imagen;
     }
 
 }

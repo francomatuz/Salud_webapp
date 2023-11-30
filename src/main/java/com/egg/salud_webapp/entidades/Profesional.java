@@ -43,17 +43,28 @@ public class Profesional extends Usuario {
     @OneToMany(mappedBy = "profesional", fetch = FetchType.EAGER)
     public List<ProfesionalPrestadores> prestadores;
 
-    public Profesional(String matricula, Especialidades especialidad,
-            Boolean atencionVirtual, String nombre, String apellido, String dni,
-            LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
-        super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
+    public Profesional(String matricula, Especialidades especialidad, Tipo tipo, String atencionFisicaDireccion, Boolean atencionVirtual, String bio, List<ProfesionalPrestadores> prestadores) {
         this.matricula = matricula;
         this.especialidad = especialidad;
+        this.tipo = tipo;
+        this.atencionFisicaDireccion = atencionFisicaDireccion;
         this.atencionVirtual = atencionVirtual;
-        this.tipo =  Tipo.PROFESIONAL;
-        //setear aqui el activo
-            
+        this.bio = bio;
+        this.prestadores = prestadores;
     }
+
+    public Profesional(String matricula, Especialidades especialidad, Tipo tipo, String atencionFisicaDireccion, Boolean atencionVirtual, String bio, List<ProfesionalPrestadores> prestadores, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {
+        super(id, nombre, apellido, dni, fecha_nac, email, password, genero, rol, imagen);
+        this.matricula = matricula;
+        this.especialidad = especialidad;
+        this.tipo = tipo;
+        this.atencionFisicaDireccion = atencionFisicaDireccion;
+        this.atencionVirtual = atencionVirtual;
+        this.bio = bio;
+        this.prestadores = prestadores;
+        //setear aqui el activo
+    }
+
 
     public Profesional() {
     }
