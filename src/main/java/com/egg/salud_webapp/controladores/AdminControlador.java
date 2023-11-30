@@ -35,26 +35,28 @@ public class AdminControlador {
 
     @GetMapping("/dashboard")
     public String panelAdministrativo() {
-        return "panel.html";
+        return "dashboardadmin.html";
     }
 
-    @GetMapping("/usuarios")
+    @GetMapping("/pacientes")
     public String listar(ModelMap modelo) {
         List<Paciente> pacientes = pacienteServicio.listarPacientes();
         modelo.addAttribute("Pacientes", pacientes);
-        return "paciente_list";
+        return "listapacientes.html";
     }
     
     @GetMapping("/solicitudes")
     public String listarProfesionalesSolicitudes (ModelMap modelo){
         List<Profesional> profesionalesSolicitud = profesionalServicio.listarProfesionalesSolicitud();
-        return "profesionales_list";
+        modelo.addAttribute("Profesionales",profesionalesSolicitud);
+        return "solicitudes.html";
     }
     
-    @GetMapping("/sinSolicitudes")
+    @GetMapping("/profesionales")
     public String listarProfesionalesSinSolicitudes (ModelMap modelo){
-        List<Profesional> profesionalesSolicitud = profesionalServicio.listarProfesionalesSinSolicitud();
-        return "profesionales_list";
+        List<Profesional> profesionalesSinSolicitud = profesionalServicio.listarProfesionalesSinSolicitud();
+        modelo.addAttribute("Profesionales",profesionalesSinSolicitud);
+        return "listaprofesionales.html";
     }
     
     @GetMapping("/modificarRol/{id}")

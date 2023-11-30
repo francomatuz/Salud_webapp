@@ -83,14 +83,13 @@
                         <td th:text="${profesional.atencionVirtual}"></td>
                         <td th:text="${profesional.prestadores}"></td>
                         <td th:text="${profesional.email}"></td>
-                <a><td th:text="${profesional.alta}"></td></a>
+                        <td th:text="${profesional.alta}"></td>
                         
                         <!-- Otros campos -->
                         <td>
-                            <button type="button" class="btn btn-success btn-sm">Aprobar</button>
+                            <a class="btn-sm" th:href="@{/admin/aprobarSolicitud/__${profesional.id}__}"> Aprobar</a>
                         </td>
                     </tr>
-                    <!-- Otras filas -->
                 </tbody>
             </table>
         </div>
