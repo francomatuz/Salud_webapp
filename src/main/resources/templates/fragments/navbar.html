@@ -26,11 +26,13 @@
                     >
                     <ul class="navbar-nav">
                         <li th:if="${session.usuariosession==null}" class="nav-item">
+                        <!--DAR LOS PERMISOS PARA QUE PUEDE VER O NO (para la alta del profesional)-->
                             <a class="nav-link active" aria-current="page" th:href="@{/login}"
                                ><span class="fs-5 fw-bold">Login</span></a
                             >
                         </li>
-                                                <li th:if="${session.usuariosession!=null}" class="nav-item">
+                        <li th:if="${session.usuariosession!=null}" class="nav-item"> 
+
                             <a href="/logout" class="nav-link" aria-current="page"
                                ><span class="fs-5 fw-bold">Logout</span></a
                             >

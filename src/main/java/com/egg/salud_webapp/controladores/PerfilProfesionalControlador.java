@@ -62,7 +62,7 @@ public class PerfilProfesionalControlador {
     public String actualizarPerfil(@RequestParam String nombre, @RequestParam String apellido,@RequestParam String dni,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam String email, 
             
-            @RequestParam(value = "prestadores", required = false) List <ObraSocial> prestadores, @RequestParam GeneroEnum genero, ModelMap modelo, HttpSession session)
+            @RequestParam(value = "prestadores", required = false) List <ObraSocial> prestadores, @RequestParam GeneroEnum genero, Double precio, ModelMap modelo, HttpSession session)
             throws MiException {
 
         // Obtener el usuario logueado desde la sesión
@@ -77,7 +77,7 @@ public class PerfilProfesionalControlador {
         try {
             // Actualizar el perfil del paciente (sin cambiar la contraseña)
             profesionalServicio.actualizar(profesionalLogueado.getId(), nombre, apellido, dni, fecha_nac, email, prestadores,
-                    genero, null , null);
+                    genero, null , null, precio);
 
             modelo.put("Exito", "Perfil actualizado exitosamente");
 //TO DO : REDIRECT!
@@ -94,11 +94,21 @@ public class PerfilProfesionalControlador {
         }
     }
 
+    //DAR DE BAJA
+    @GetMapping("/darBaja")
+    public String darBaja(HttpSession session, ModelMap modelo) throws MiException {       
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        profesionalServicio.darBaja(profesionalLogueado.getId());
+       //logica para logout
+       return "index.html";   
+    }
+    
     //ELIMINAR
     @GetMapping("/eliminar")
     public String eliminar(HttpSession session, ModelMap modelo) throws MiException {
         
         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        
 
         try {
             

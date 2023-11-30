@@ -1,4 +1,3 @@
-
 package com.egg.salud_webapp.servicios;
 
 import com.egg.salud_webapp.entidades.Profesional;
@@ -6,6 +5,7 @@ import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
+import com.egg.salud_webapp.enumeraciones.SolicitudEnum;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
@@ -29,9 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-
 @Service
 public class ProfesionalServicio implements UserDetailsService {
+
     @Autowired
     ProfesionalRepositorio profesionalRepositorio;
     @Autowired
@@ -39,18 +39,19 @@ public class ProfesionalServicio implements UserDetailsService {
 
     @Transactional
     public void registrar(String matricula, Especialidades especialidad,
-            Boolean atencionVirtual,
+            Boolean atencionVirtual, Double precio,
             String[] prestadores, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
             String email, String password, String password2, GeneroEnum genero) throws MiException {
-        validarAtributos(prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula);
+        validarAtributos(prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula /*precio*/);
 
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
 
         Profesional profesional = new Profesional(matricula, especialidad,
-                atencionVirtual != null ? atencionVirtual : false,
+                atencionVirtual != null ? atencionVirtual : false, precio,
                 nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,
                 UsuarioEnum.USER);
+               
         profesionalRepositorio.save(profesional);
 
         for (String prestador : prestadoresList) {
@@ -83,7 +84,7 @@ public class ProfesionalServicio implements UserDetailsService {
     @Transactional
     public void actualizar(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
             List<ObraSocial> prestadores, GeneroEnum genero,
-            String password, String password2) throws MiException {
+            String password, String password2, Double precio) throws MiException {
 
         validarAtributos2(id, email, password, password2);
         Profesional profesionalAActualizar = getById(id);
@@ -97,6 +98,7 @@ public class ProfesionalServicio implements UserDetailsService {
             profesionalAActualizar.setGenero(genero != null ? genero : profesionalAActualizar.getGenero());
             profesionalAActualizar.setPassword(password != null ? new BCryptPasswordEncoder().encode(password)
                     : profesionalAActualizar.getPassword());
+            profesionalAActualizar.setPrecio(precio != null ? precio : profesionalAActualizar.getPrecio());
 
             // profesionalAActualizar.setAtencionFisicaDireccion(
             // direccion != null ? direccion :
@@ -106,13 +108,15 @@ public class ProfesionalServicio implements UserDetailsService {
             // profesionalAActualizar.getAtencionVirtual());
             // profesionalAActualizar.setBio(bio != null ? bio :
             // profesionalAActualizar.getBio());
-            if (prestadores == null)  throw new MiException("Se tiene que seleccionar al menos una opcion");
-            
+            if (prestadores == null) {
+                throw new MiException("Se tiene que seleccionar al menos una opcion");
+            }
+
             List<String> obrasSocialesList = new ArrayList<>(); // lista con las obras sociales nuevas
             for (ObraSocial obraSocial : prestadores) {
                 obrasSocialesList.add(obraSocial.toString());
             }
-            profesionalPrestadoresRepositorio.deleteByProfesionalId(id); 
+            profesionalPrestadoresRepositorio.deleteByProfesionalId(id);
 
             for (String prestador : obrasSocialesList) { // creo una nueva lista con los prestadores nuevos
                 ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesionalAActualizar,
@@ -136,10 +140,30 @@ public class ProfesionalServicio implements UserDetailsService {
     profesionalRepositorio.deleteById(id);
 
     }
-
+    //Boton para cambiar el estado de baja
+    public void darBaja(Long id) throws MiException{
+       Profesional profesional = getById(id);
+       if(profesional.getAlta()==SolicitudEnum.ACTIVO){
+           profesional.setAlta(SolicitudEnum.INACTIVO);
+       }
+    }
+    
+    public void darAlta(Long id) throws MiException{
+        Profesional profesional = getById(id);
+        profesional.setAlta(SolicitudEnum.SOLICITUD);
+    }
+    
+    public List<Profesional> listarProfesionalesSolicitud(){
+        return profesionalRepositorio.buscarProfesionalesConSolicitud();
+    }
+    
+    public List<Profesional> listarProfesionalesSinSolicitud(){
+        return profesionalRepositorio.buscarProfesionalesSinSolicitud();
+    }
+    
     public boolean tieneBio(Long id) throws MiException {
         Profesional profesional = getById(id);
-        return !(profesional.getBio() == null || profesional.getBio() == "" || profesional.getBio().isEmpty());     
+        return !(profesional.getBio() == null || profesional.getBio() == "" || profesional.getBio().isEmpty());
     }
 
     // Listar profesionales
@@ -165,7 +189,7 @@ public class ProfesionalServicio implements UserDetailsService {
     // validar los atributos de creación
     private void validarAtributos(String[] prestadores, String nombre, String apellido, String email, String dni,
             LocalDate fecha_nac,
-            String password, String password2, String matricula)
+            String password, String password2, String matricula /*Double precio*/)
             throws MiException {
 
         Optional<Profesional> dniExistente = profesionalRepositorio.buscarPorDni(dni);
@@ -205,6 +229,9 @@ public class ProfesionalServicio implements UserDetailsService {
         if (matricula.isEmpty() || matricula == null) {
             throw new MiException("La matrícula no puede estar vacía o ser nula");
         }
+   /*     if (precio.isNaN() || precio == null || precio<0){
+            throw new MiException("El precio no es válido");
+        }*/
 
     }
 
@@ -235,7 +262,6 @@ public class ProfesionalServicio implements UserDetailsService {
         // if (bio.isEmpty() || bio == null) {
         // throw new MiException("La bio no puede estar vacía o ser nula");
         // }
-
     }
 
     @Override
