@@ -33,6 +33,7 @@ public class Profesional extends Usuario {
     // Calificaciones que tenga idProfesional y la calificacion que le da el
     // paciente al final del turno. Y aqui tiene que ser el promedio de las que
     // tengan el id del profesional que quiero ver.
+    
     private String atencionFisicaDireccion; // cambio de nombre, seguir un patron en el nombramiento de variables.
     private Boolean atencionVirtual;
     private String bio;

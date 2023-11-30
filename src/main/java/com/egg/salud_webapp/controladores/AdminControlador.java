@@ -74,7 +74,7 @@ public class AdminControlador {
                     .orElseThrow(() -> new NoSuchElementException("Profesional no encontrado"));
 
             profesional.setAlta(SolicitudEnum.ACTIVO);
-//            profesional.setRol(UsuarioEnum.USER);
+
             profesionalRepositorio.save(profesional);
             modelo.put("Exito!", "La solicitud ha sido aprobada correctamente.");
 
