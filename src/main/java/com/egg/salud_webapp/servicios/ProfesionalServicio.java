@@ -1,5 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.Imagen;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
@@ -37,9 +38,11 @@ public class ProfesionalServicio implements UserDetailsService {
     ProfesionalRepositorio profesionalRepositorio;
     @Autowired
     ProfesionalPrestadoresRepositorio profesionalPrestadoresRepositorio;
+    @Autowired
+    ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(String matricula, Especialidades especialidad,
+    public void registrar(MultipartFile archivo,String matricula, Especialidades especialidad,
             Boolean atencionVirtual, Double precio,
             String[] prestadores, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
@@ -48,12 +51,12 @@ public class ProfesionalServicio implements UserDetailsService {
 
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
         
+        Imagen imagen = imagenServicio.guardar(archivo);        
 
         Profesional profesional = new Profesional(matricula, especialidad,
                 atencionVirtual != null ? atencionVirtual : false, precio,
-                nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,
-                UsuarioEnum.USER);
-               
+                nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero, UsuarioEnum.USER, imagen);
+                     
         profesionalRepositorio.save(profesional);
 
         for (String prestador : prestadoresList) {

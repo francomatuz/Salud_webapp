@@ -40,6 +40,7 @@ public class PacienteServicio implements UserDetailsService {
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
+        
         Paciente paciente = new Paciente();
 
         paciente.setNombre(nombre);
@@ -53,6 +54,7 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setRol(UsuarioEnum.USER);
         Imagen imagen = imagenServicio.guardar(archivo);
         paciente.setImagen(imagen);
+        
         pacienteRepositorio.save(paciente);
     }
 

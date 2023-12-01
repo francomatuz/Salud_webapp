@@ -32,14 +32,14 @@ public class Usuario {
 
     @Enumerated(EnumType.STRING)
     protected UsuarioEnum rol;
-     @OneToOne
-     private Imagen imagen;
+
+    @OneToOne
+    private Imagen imagen;
 
     public Usuario() {
     }
 
-    public Usuario(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {
-        this.id = id;
+    public Usuario(String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {       
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -50,8 +50,6 @@ public class Usuario {
         this.rol = rol;
         this.imagen = imagen;
     }
-
-
 
     public Long getId() {
         return id;

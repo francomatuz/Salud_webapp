@@ -1,4 +1,3 @@
-
 package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
@@ -23,24 +22,15 @@ public class Paciente extends Usuario {
 
     // @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
     // private HistoriaClinica historiaClinica;
-
-     
-
     public Paciente() {
     }
-    
-    public Paciente(Boolean activo, ObraSocial obraSocial, Tipo tipo) {
-        this.activo = activo;
-        this.obraSocial = obraSocial;
-        this.tipo = tipo;
-    }
 
-    public Paciente(Boolean activo, ObraSocial obraSocial, Tipo tipo, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {
-        super(id, nombre, apellido, dni, fecha_nac, email, password, genero, rol, imagen);
+    public Paciente(Boolean activo, ObraSocial obraSocial, Tipo tipo, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {
+        super( nombre, apellido, dni, fecha_nac, email, password, genero, rol, imagen);
         this.activo = activo;
         this.obraSocial = obraSocial;
         this.tipo = tipo;
-         // this.HistoriaClinica = historiaClinica;
+        // this.HistoriaClinica = historiaClinica;
     }
 
     public Boolean getActivo() {
@@ -66,7 +56,6 @@ public class Paciente extends Usuario {
     // public void setHistoriaClinica(HistoriaClinica historiaClinica) {
     // this.historiaClinica = historiaClinica;
     // }
-
     public Tipo getTipo() {
         return tipo;
     }
