@@ -1,6 +1,7 @@
 package com.egg.salud_webapp.servicios;
 
 import com.egg.salud_webapp.entidades.Imagen;
+import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
@@ -287,5 +288,9 @@ public class ProfesionalServicio implements UserDetailsService {
             return null;
         }
 
+    }
+
+    public Profesional getOne(Long id) {
+        return profesionalRepositorio.getOne(id);
     }
 }
