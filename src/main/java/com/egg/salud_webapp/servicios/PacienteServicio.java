@@ -52,6 +52,7 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setGenero(genero);
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
         paciente.setRol(UsuarioEnum.USER);
+        paciente.setTipo(Tipo.PACIENTE);
         Imagen imagen = imagenServicio.guardar(archivo);
         paciente.setImagen(imagen);
         
@@ -60,7 +61,7 @@ public class PacienteServicio implements UserDetailsService {
 
     // Actualizar paciente
     @Transactional
-    public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    public void actualizar(MultipartFile archivo,Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         validarAtributosActualizar(id,nombre, apellido, email, dni, fecha_nac);
@@ -81,7 +82,12 @@ public class PacienteServicio implements UserDetailsService {
             paciente.setObraSocial(obraSocial != null ? obraSocial : paciente.getObraSocial());
             paciente.setGenero(genero != null ? genero : paciente.getGenero());
             paciente.setPassword(password != null && !password.isEmpty() && password2 != null && !password2.isEmpty()? new BCryptPasswordEncoder().encode(password): paciente.getPassword());
-    
+                       String idImagen=null;
+            if (paciente.getImagen()!=null) {
+                idImagen=paciente.getImagen().getId();
+            }
+            Imagen imagen =imagenServicio.actualizar(archivo, idImagen);
+            paciente.setImagen(imagen);
             pacienteRepositorio.save(paciente);
         }
     }

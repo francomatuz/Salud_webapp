@@ -51,18 +51,6 @@ public class PortalControlador {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password,
             @RequestParam String password2, ModelMap modelo) throws MiException, IOException {
-        if (archivo.getName() != null) {
-            System.out.println("El nombre llega");
-            System.out.println(archivo.getName());
-        }
-        if (archivo.getBytes() != null) {
-            System.out.println("los bytes llega");
-            System.out.println(archivo.getBytes());
-        }
-        if (archivo.getContentType() != null) {
-            System.out.println("El contenido llega");
-            System.out.println(archivo.getContentType());
-        }
 
         try {
             pacienteServicio.registrar(archivo,nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,

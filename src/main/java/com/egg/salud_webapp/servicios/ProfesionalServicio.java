@@ -88,7 +88,7 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizar(Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
+    public void actualizar(MultipartFile archivo,Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
             List<ObraSocial> prestadores, GeneroEnum genero,
             String password, String password2, Double precio) throws MiException {
 
@@ -129,6 +129,12 @@ public class ProfesionalServicio implements UserDetailsService {
                         prestador);
                 profesionalPrestadoresRepositorio.save(profesionalPrestadores);
             }
+                       String idImagen=null;
+            if (profesionalAActualizar.getImagen()!=null) {
+                idImagen=profesionalAActualizar.getImagen().getId();
+            }
+            Imagen imagen =imagenServicio.actualizar(archivo, idImagen);
+            profesionalAActualizar.setImagen(imagen);
             Hibernate.initialize(profesionalAActualizar.getPrestadores());
             profesionalRepositorio.save(profesionalAActualizar);
         }

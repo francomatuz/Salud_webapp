@@ -90,7 +90,7 @@ public class PerfilPacienteControlador {
 
         try {
             // Actualizar el perfil del paciente (sin cambiar la contraseña)
-            pacienteServicio.actualizar(pacienteLogueado.getId(), nombre, apellido, email, dni, fecha_nac, obraSocial,
+            pacienteServicio.actualizar( archivo, pacienteLogueado.getId(), nombre, apellido, email, dni, fecha_nac, obraSocial,
                     genero, null, null);
 
             modelo.put("Exito", "Perfil actualizado exitosamente");
