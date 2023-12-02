@@ -5,7 +5,7 @@ import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.PacienteRepositorio;
-import com.egg.salud_webapp.servicios.FichaMedicaServicios;
+import com.egg.salud_webapp.servicios.FichaMedicaServicio;
 import com.egg.salud_webapp.servicios.PacienteServicio;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +28,7 @@ public class SaludWebappApplication implements CommandLineRunner {
     private PacienteRepositorio pacienteRepositorio;
     
   @Autowired
-  private FichaMedicaServicios fichaMedicaServicios;
+  private FichaMedicaServicio fichaMedicaServicios;
 
   public static void main(String[] args) {
     SpringApplication.run(SaludWebappApplication.class, args);
@@ -41,7 +41,7 @@ public class SaludWebappApplication implements CommandLineRunner {
     // leerPaciente(3L);
     // eliminarPaciente(4L);
     // modificarPaciente(10L);
-     //listarPaciente();
+   //  listarPaciente();
 	
   }
   
