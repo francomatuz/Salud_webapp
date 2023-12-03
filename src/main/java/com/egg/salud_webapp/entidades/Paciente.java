@@ -1,4 +1,3 @@
-
 package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
@@ -9,6 +8,7 @@ import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Paciente extends Usuario {
@@ -22,22 +22,15 @@ public class Paciente extends Usuario {
 
     // @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
     // private HistoriaClinica historiaClinica;
-
-    /*
-     * @OneToOne
-     * private Imagen imagen;
-     */
-
     public Paciente() {
     }
 
-    public Paciente(Boolean activo, ObraSocial obraSocial, String nombre, String apellido, String dni,
-            LocalDate fecha_nac,
-            String email, String password, GeneroEnum genero, UsuarioEnum rol, Tipo tipo) {
-        super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
+    public Paciente(Boolean activo, ObraSocial obraSocial, Tipo tipo, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {
+        super( nombre, apellido, dni, fecha_nac, email, password, genero, rol, imagen);
         this.activo = activo;
         this.obraSocial = obraSocial;
-        // this.historiaClinica = historiaClinica;
+        this.tipo = tipo;
+        // this.HistoriaClinica = historiaClinica;
     }
 
     public Boolean getActivo() {
@@ -63,7 +56,6 @@ public class Paciente extends Usuario {
     // public void setHistoriaClinica(HistoriaClinica historiaClinica) {
     // this.historiaClinica = historiaClinica;
     // }
-
     public Tipo getTipo() {
         return tipo;
     }
