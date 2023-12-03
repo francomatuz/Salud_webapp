@@ -1,5 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.Imagen;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
@@ -24,18 +25,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class PacienteServicio implements UserDetailsService {
 
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
+    @Autowired
+    private ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    public void registrar(MultipartFile archivo,String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
+        
         Paciente paciente = new Paciente();
 
         paciente.setNombre(nombre);
@@ -48,13 +53,15 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
         paciente.setRol(UsuarioEnum.USER);
         paciente.setTipo(Tipo.PACIENTE);
-
+        Imagen imagen = imagenServicio.guardar(archivo);
+        paciente.setImagen(imagen);
+        
         pacienteRepositorio.save(paciente);
     }
 
     // Actualizar paciente
     @Transactional
-    public void actualizar(Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    public void actualizar(MultipartFile archivo,Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         validarAtributosActualizar(id,nombre, apellido, email, dni, fecha_nac);
@@ -75,7 +82,12 @@ public class PacienteServicio implements UserDetailsService {
             paciente.setObraSocial(obraSocial != null ? obraSocial : paciente.getObraSocial());
             paciente.setGenero(genero != null ? genero : paciente.getGenero());
             paciente.setPassword(password != null && !password.isEmpty() && password2 != null && !password2.isEmpty()? new BCryptPasswordEncoder().encode(password): paciente.getPassword());
-    
+                       String idImagen=null;
+            if (paciente.getImagen()!=null) {
+                idImagen=paciente.getImagen().getId();
+            }
+            Imagen imagen =imagenServicio.actualizar(archivo, idImagen);
+            paciente.setImagen(imagen);
             pacienteRepositorio.save(paciente);
         }
     }
@@ -217,4 +229,8 @@ public class PacienteServicio implements UserDetailsService {
         }
 
     }
+        public Paciente getOne(Long id){
+        return pacienteRepositorio.getOne(id);
+    }
+    
 }
