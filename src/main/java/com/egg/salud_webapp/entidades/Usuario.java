@@ -1,4 +1,3 @@
-
 package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
@@ -12,11 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Usuario {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -26,21 +26,20 @@ public class Usuario {
     protected LocalDate fecha_nac;
     protected String email;
     protected String password;
-    
-    
-    //@OneToOne
-    //private Imagen imagen;
+
     @Enumerated(EnumType.STRING)
     protected GeneroEnum genero;
-    
+
     @Enumerated(EnumType.STRING)
     protected UsuarioEnum rol;
+
+    @OneToOne
+    private Imagen imagen;
 
     public Usuario() {
     }
 
-    public Usuario(String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol) {
-        
+    public Usuario(String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {       
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -49,6 +48,7 @@ public class Usuario {
         this.password = password;
         this.genero = genero;
         this.rol = rol;
+        this.imagen = imagen;
     }
 
     public Long getId() {
@@ -123,19 +123,11 @@ public class Usuario {
         this.genero = genero;
     }
 
-    @Override
-public String toString() {
-    return "Usuario{" +
-            "id=" + id +
-            ", nombre='" + nombre + '\'' +
-            ", apellido='" + apellido + '\'' +
-            ", dni='" + dni + '\'' +
-            ", fecha_nac=" + fecha_nac +
-            ", email='" + email + '\'' +
-            ", password='" + password + '\'' +
-            ", genero=" + genero +
-            ", rol=" + rol +
-            '}';
-}
-      
+    public Imagen getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Imagen imagen) {
+        this.imagen = imagen;
+    }
 }
