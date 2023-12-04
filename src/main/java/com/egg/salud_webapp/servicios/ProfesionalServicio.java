@@ -152,14 +152,14 @@ public class ProfesionalServicio implements UserDetailsService {
     profesionalRepositorio.deleteById(id);
 
     }
-    //Boton para cambiar el estado de baja
+    @Transactional
     public void darBaja(Long id) throws MiException{
        Profesional profesional = getById(id);
        if(profesional.getAlta()==SolicitudEnum.ACTIVO){
            profesional.setAlta(SolicitudEnum.INACTIVO);
        }
     }
-    
+    @Transactional
     public void darAlta(Long id) throws MiException{
         Profesional profesional = getById(id);
         profesional.setAlta(SolicitudEnum.SOLICITUD);

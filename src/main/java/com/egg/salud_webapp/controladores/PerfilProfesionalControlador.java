@@ -9,14 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.egg.salud_webapp.servicios.ProfesionalServicio;
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -101,8 +107,39 @@ public class PerfilProfesionalControlador {
         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
         profesionalServicio.darBaja(profesionalLogueado.getId());
        //logica para logout
-       return "index.html";   
+       return "dashboardprofesional.html";   
     }
+    
+   @PostMapping("/darBaja")
+    public String darBajaPost(HttpSession session, ModelMap modelo, HttpServletRequest request, HttpServletResponse response) throws MiException {
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        profesionalServicio.darBaja(profesionalLogueado.getId());
+
+        invalidateSession(request);
+
+        return "redirect:/darBaja"; 
+    }
+        
+    private void invalidateSession(HttpServletRequest request) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, null, auth);
+        }
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+    }
+    
+    
+    @GetMapping ("/solicitarAlta")
+    public String solicitarAlta(HttpSession session, ModelMap modelo) throws MiException {    
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+         profesionalServicio.darAlta(profesionalLogueado.getId());
+         
+         return "dashboardprofesional.html";
+    }
+    
     
     //ELIMINAR
     @GetMapping("/eliminar")
