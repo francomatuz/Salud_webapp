@@ -5,6 +5,7 @@ import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.servicios.PacienteServicio;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/")
@@ -44,14 +46,14 @@ public class PortalControlador {
     }
 
     @PostMapping("/registrar/paciente")
-    public String registrarpaciente(@RequestParam String nombre, @RequestParam String apellido,
+    public String registrarpaciente(@RequestParam String nombre, @RequestParam MultipartFile archivo, @RequestParam String apellido,
             @RequestParam String email, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password,
-            @RequestParam String password2, ModelMap modelo) throws MiException {
+            @RequestParam String password2, ModelMap modelo) throws MiException, IOException {
 
         try {
-            pacienteServicio.registrar(nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,
+            pacienteServicio.registrar(archivo,nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,
                     password2);
 
             modelo.put("Exito", "Paciente registrado exitosamente");
@@ -75,11 +77,7 @@ public class PortalControlador {
 
         }
     }
-
     
-
-
-
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error, ModelMap modelo) {
 

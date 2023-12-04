@@ -26,11 +26,13 @@
                     >
                     <ul class="navbar-nav">
                         <li th:if="${session.usuariosession==null}" class="nav-item">
+                        <!--DAR LOS PERMISOS PARA QUE PUEDE VER O NO (para la alta del profesional)-->
                             <a class="nav-link active" aria-current="page" th:href="@{/login}"
                                ><span class="fs-5 fw-bold">Login</span></a
                             >
                         </li>
-                                                <li th:if="${session.usuariosession!=null}" class="nav-item">
+                        <li th:if="${session.usuariosession!=null}" class="nav-item"> 
+
                             <a href="/logout" class="nav-link" aria-current="page"
                                ><span class="fs-5 fw-bold">Logout</span></a
                             >
@@ -54,6 +56,11 @@
                             <a th:href="@{/perfil2/dashboard2}" class="nav-link" aria-disabled="true"
                                ><span class="fs-5 fw-bold nombreUsuario" th:if="${session.usuariosession != null and session.usuariosession.tipo.toString() == 'PROFESIONAL'}" th:text="${session.usuariosession.nombre}"></span></a
                            >
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/dashboard}" class="nav-link" aria-disabled="true"
+                               ><span class="fs-5 fw-bold nombreUsuario" th:if="${session.usuariosession != null and session.usuariosession.rol.toString() == 'ADMIN'}">ADMIN</span></a
+                            >
                         </li>
     
                     </ul>

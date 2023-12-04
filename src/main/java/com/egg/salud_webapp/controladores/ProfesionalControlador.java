@@ -1,5 +1,6 @@
 package com.egg.salud_webapp.controladores;
 
+import com.egg.salud_webapp.entidades.Imagen;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.servicios.ProfesionalServicio;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping
@@ -37,16 +39,15 @@ public class ProfesionalControlador {
 
             
             @RequestParam(value = "atencionVirtual", required = false) Boolean atencionVirtual,
-            @RequestParam(value = "prestadores", required = false) String[] prestadoresArray,  @RequestParam String nombre,
+            Double precio,
+            @RequestParam(value = "prestadores", required = false) String[] prestadoresArray, @RequestParam MultipartFile archivo,  @RequestParam String nombre,
             @RequestParam String apellido, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate fecha_nac, @RequestParam String email, @RequestParam String password,
             @RequestParam String password2, @RequestParam GeneroEnum genero, 
              ModelMap modelo) throws MiException {
         try {
           
-            profesionalServicio.registrar(matricula, especialidad,
-                     atencionVirtual,prestadoresArray,  nombre, apellido, dni, fecha_nac,
-                    email, password, password2, genero);
+            profesionalServicio.registrar(archivo, matricula, especialidad, atencionVirtual, precio, prestadoresArray, nombre, apellido, dni, fecha_nac, email, password, password2, genero);
 
             modelo.put("Exito", "Solicitud enviada exitosamente");
 
