@@ -26,18 +26,14 @@ public class Paciente extends Usuario {
      @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
      private HistoriaClinica historiaClinica;
 
-    /*
-     * @OneToOne
-     * private Imagen imagen;
-     */
 
     public Paciente() {
     }
 
     public Paciente(Boolean activo, ObraSocial obraSocial, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
-            String email, String password, GeneroEnum genero, UsuarioEnum rol, Tipo tipo) {
-        super(nombre, apellido, dni, fecha_nac, email, password, genero, rol);
+            String email, String password, GeneroEnum genero, UsuarioEnum rol, Tipo tipo, Imagen imagen) {
+        super(nombre, apellido, dni, fecha_nac, email, password, genero, rol, imagen);
         this.activo = activo;
         this.obraSocial = obraSocial;
         this.historiaClinica = historiaClinica;
