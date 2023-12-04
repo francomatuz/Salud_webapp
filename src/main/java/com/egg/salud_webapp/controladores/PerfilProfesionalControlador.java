@@ -21,6 +21,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/perfil2")
@@ -59,7 +60,7 @@ public class PerfilProfesionalControlador {
 
 
     @PostMapping("/actualizar")
-    public String actualizarPerfil(@RequestParam String nombre, @RequestParam String apellido,@RequestParam String dni,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
+    public String actualizarPerfil(@RequestParam MultipartFile archivo,@RequestParam String nombre, @RequestParam String apellido,@RequestParam String dni,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam String email, 
             
             @RequestParam(value = "prestadores", required = false) List <ObraSocial> prestadores, @RequestParam GeneroEnum genero, Double precio, ModelMap modelo, HttpSession session)
@@ -76,7 +77,7 @@ public class PerfilProfesionalControlador {
 
         try {
             // Actualizar el perfil del paciente (sin cambiar la contraseña)
-            profesionalServicio.actualizar(profesionalLogueado.getId(), nombre, apellido, dni, fecha_nac, email, prestadores,
+            profesionalServicio.actualizar(archivo,profesionalLogueado.getId(), nombre, apellido, dni, fecha_nac, email, prestadores,
                     genero, null , null, precio);
 
             modelo.put("Exito", "Perfil actualizado exitosamente");
@@ -130,5 +131,8 @@ public class PerfilProfesionalControlador {
     public String dashboard() {
         return "dashboardprofesional.html";
     }
+    
+    
+    
     
 }
