@@ -1,5 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Imagen;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
@@ -55,6 +56,11 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setTipo(Tipo.PACIENTE);
         Imagen imagen = imagenServicio.guardar(archivo);
         paciente.setImagen(imagen);
+        
+        
+        HistoriaClinica historiaClinica = new HistoriaClinica();
+        historiaClinica.setPaciente(paciente);
+        paciente.setHistoriaClinica(historiaClinica);
         
         pacienteRepositorio.save(paciente);
     }

@@ -36,7 +36,7 @@ public class Paciente extends Usuario {
         super(nombre, apellido, dni, fecha_nac, email, password, genero, rol, imagen);
         this.activo = activo;
         this.obraSocial = obraSocial;
-        this.historiaClinica = historiaClinica;
+        this.historiaClinica =  new HistoriaClinica();
     }
 
     public Boolean getActivo() {
