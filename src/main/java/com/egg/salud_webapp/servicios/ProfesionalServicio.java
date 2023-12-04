@@ -142,8 +142,14 @@ public class ProfesionalServicio implements UserDetailsService {
 
     @Transactional
     public void eliminar(Long id) throws MiException {
-        profesionalPrestadoresRepositorio.deleteById(id);
-        profesionalRepositorio.delete(getById(id));
+       // profesionalPrestadoresRepositorio.deleteById(id);
+      //  profesionalRepositorio.delete(getById(id));
+      
+       // Eliminar registros dependientes en profesional_prestadores
+    profesionalPrestadoresRepositorio.deleteByProfesionalId(id);
+
+    // Eliminar el registro en la tabla principal (profesional)
+    profesionalRepositorio.deleteById(id);
 
     }
     @Transactional
