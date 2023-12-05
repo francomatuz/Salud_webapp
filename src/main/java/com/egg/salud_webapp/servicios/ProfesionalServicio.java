@@ -344,4 +344,15 @@ public class ProfesionalServicio implements UserDetailsService {
     public Profesional getOne(Long id) {
         return profesionalRepositorio.getOne(id);
     }
+    
+    public void calificacionProfesional(Long idProfesional, Integer calif) {
+        Profesional profesional = profesionalRepositorio.getById(idProfesional);
+        
+        profesional.setCantCalificaciones(profesional.getCantCalificaciones() + 1);
+        
+        profesional.setCalificacion((profesional.getCalificacion() + calif)/profesional.getCantCalificaciones());
+        
+        
+    }
+    
 }
