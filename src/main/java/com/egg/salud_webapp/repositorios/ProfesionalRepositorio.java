@@ -2,6 +2,7 @@
 package com.egg.salud_webapp.repositorios;
 
 import com.egg.salud_webapp.entidades.Profesional;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,14 +35,36 @@ public interface ProfesionalRepositorio extends JpaRepository<Profesional, Long>
     @Query("SELECT p FROM Profesional p WHERE p.alta = 2")
     public List<Profesional> buscarProfesionalesConSolicitud();
 
-    @Query("SELECT p FROM Profesional p WHERE p.alta = 0 OR p.alta = 1")
+    @Query("SELECT p FROM Profesional p WHERE p.alta = 0 OR p.alta = 1 ORDER BY p.alta DESC")
     public List<Profesional> buscarProfesionalesSinSolicitud();
 
+        
+    //Busqueda profesional por precio "A verificar"
+    @Query("SELECT p FROM Profesional p WHERE p.precio BETWEEN :minPrecio AND :maxPrecio")
+    public List<Profesional> buscarProfesionalesPorRangoDePrecio(@Param("minPrecio") double minPrecio, @Param("maxPrecio") double maxPrecio);
+           
+    /*
+    //Query de chat en caso de fallas
+    //@Query("SELECT p FROM Profesional p " +
+    //   "JOIN p.prestadores pp " +
+    //   "JOIN pp.paciente pa " +
+    //   "WHERE pa.id = :pacienteId " +
+    //   "AND pp.obraSocial = :obraSocial")
+    //public List<Profesional> buscarProfesionalesPorObraSocial(@Param("pacienteId") Long pacienteId, @Param("obraSocial") String obraSocial);
+    */
     
-    
-    //Búsqueda por precio
     //Búsqueda de profesionales por obra social
-    //Búsqueda de profesionales por dirección
-    //Búsqueda de profesionales por atención virtual
+    @Query("SELECT p FROM Profesional p WHERE p.id IN (SELECT pp.profesional FROM ProfesionalPrestadores pp WHERE pp.obraSocial = :obraSocial)")
+    public List<Profesional> buscarProfesionalesPorObra(@Param("obraSocial") String obraSocial);
+    
+    
+    //Busqueda por Apellido
+    @Query ("SELECT p FROM Profesional p WHERE p.apellido = :apellido")
+    public List<Profesional> buscarPorApellido(@Param("apellido") String apellido);
+    
+                 
+    @Query("SELECT p FROM Profesional p WHERE FUNCTION('BIT', p.atencionVirtual) = 1")
+    public List<Profesional> buscarProfesionalesConAtencionVirtual();
+    
 
 }

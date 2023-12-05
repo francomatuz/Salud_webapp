@@ -12,6 +12,7 @@ import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -181,6 +182,44 @@ public class ProfesionalServicio implements UserDetailsService {
     // Listar profesionales
     public List<Profesional> listarProfesionales() {
         return profesionalRepositorio.findAll();
+    }
+    
+    // Listar profesionales por precio
+    public List<Profesional> listarProfesionalesPorPrecio(int num) {
+        
+        switch (num) {
+            case 1:
+                return profesionalRepositorio.buscarProfesionalesPorRangoDePrecio(0d, 3000d);
+                
+            case 2:
+                return profesionalRepositorio.buscarProfesionalesPorRangoDePrecio(3001d, 5000d);
+                
+            case 3:
+                return profesionalRepositorio.buscarProfesionalesPorRangoDePrecio(5001d, Double.MAX_VALUE);
+                              
+        }
+        return null;
+        
+    }
+    
+    // Listar profesionales por especialidad
+    public List<Profesional> listarProfesionalesEspecialidad(String especialidad) {
+        return profesionalRepositorio.buscarPorEspecialidad(especialidad);
+    }
+    
+    // Listar profesionales por atecion virtual
+    public List<Profesional> listarProfesionalesAtencionVirtual() {
+        return profesionalRepositorio.buscarProfesionalesConAtencionVirtual();
+    }
+    
+    // Listar profesionales por apellido
+    public List<Profesional> listarProfesionalesPorApellido(String apellido) {
+        return profesionalRepositorio.buscarPorApellido(apellido);
+    }
+    
+    // Listar profesionales por obra social
+    public List<Profesional> listarProfesionalesPorObraSocial(String obraSocial) {
+        return profesionalRepositorio.buscarProfesionalesPorObra(obraSocial);
     }
 
     // Buscar un profesional por id
