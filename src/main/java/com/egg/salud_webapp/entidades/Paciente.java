@@ -1,3 +1,4 @@
+
 package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
@@ -5,6 +6,7 @@ import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,20 +19,24 @@ public class Paciente extends Usuario {
 
     @Enumerated(EnumType.STRING)
     private ObraSocial obraSocial;
+    
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
 
-    // @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
-    // private HistoriaClinica historiaClinica;
+     @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL)
+     private HistoriaClinica historiaClinica;
+
+
     public Paciente() {
     }
 
-    public Paciente(Boolean activo, ObraSocial obraSocial, Tipo tipo, String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {
-        super( nombre, apellido, dni, fecha_nac, email, password, genero, rol, imagen);
+    public Paciente(Boolean activo, ObraSocial obraSocial, String nombre, String apellido, String dni,
+            LocalDate fecha_nac,
+            String email, String password, GeneroEnum genero, UsuarioEnum rol, Tipo tipo, Imagen imagen) {
+        super(nombre, apellido, dni, fecha_nac, email, password, genero, rol, imagen);
         this.activo = activo;
         this.obraSocial = obraSocial;
-        this.tipo = tipo;
-        // this.HistoriaClinica = historiaClinica;
+        this.historiaClinica = historiaClinica;
     }
 
     public Boolean getActivo() {
@@ -49,13 +55,14 @@ public class Paciente extends Usuario {
         this.obraSocial = obraSocial;
     }
 
-    // public HistoriaClinica getHistoriaClinica() {
-    // return historiaClinica;
-    // }
-    //
-    // public void setHistoriaClinica(HistoriaClinica historiaClinica) {
-    // this.historiaClinica = historiaClinica;
-    // }
+     public HistoriaClinica getHistoriaClinica() {
+     return historiaClinica;
+     }
+    
+     public void setHistoriaClinica(HistoriaClinica historiaClinica) {
+     this.historiaClinica = historiaClinica;
+     }
+
     public Tipo getTipo() {
         return tipo;
     }
@@ -64,4 +71,14 @@ public class Paciente extends Usuario {
         this.tipo = tipo;
     }
 
+@Override
+public String toString() {
+    return "Paciente{" +
+            super.toString() +
+            ", activo=" + activo +
+            ", obraSocial=" + obraSocial +
+            ", tipo=" + tipo +
+            ", historiaClinica=" + historiaClinica +
+            '}';
+}
 }
