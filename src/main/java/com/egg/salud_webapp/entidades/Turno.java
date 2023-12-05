@@ -25,6 +25,7 @@ public class Turno {
     private Paciente paciente;
     @Column(name = "duracion_minutos")
     private int duracionEnMinutos;
+    private boolean isFinalizado;
 
     public Turno() {
     }
@@ -35,6 +36,18 @@ public class Turno {
         this.duracionEnMinutos = duracionEnMinutos;
         this.disponible = true;
     }
+
+    public Turno(Long id, LocalDateTime fechaHora, boolean disponible, Profesional profesional, Paciente paciente, int duracionEnMinutos, boolean finalizado) {
+        this.id = id;
+        this.fechaHora = fechaHora;
+        this.disponible = true;
+        this.profesional = profesional;
+        this.paciente = paciente;
+        this.duracionEnMinutos = duracionEnMinutos;
+        this.finalizado = false;
+    }
+
+
 
     public Turno(Paciente paciente) {
         this.paciente = paciente;
@@ -79,5 +92,6 @@ public class Turno {
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
+
 
 }
