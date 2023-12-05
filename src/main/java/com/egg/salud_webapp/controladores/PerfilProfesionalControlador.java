@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.egg.salud_webapp.servicios.ProfesionalServicio;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -129,8 +130,72 @@ public class PerfilProfesionalControlador {
     public String dashboard() {
         return "dashboardprofesional.html";
     }
-    
-    
-    
-    
+     @GetMapping("/generar-turnos")
+    public String mostrarFormularioGenerarTurnos(ModelMap modelo, HttpSession session) {
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        if (profesionalLogueado == null) {
+            return "redirect:/login";
+        }
+
+        LocalDate fechaInicio = LocalDate.now();
+        LocalDate fechaFin = fechaInicio.plusDays(1);
+        int horarioInicio = 8; // Ejemplo: 8 AM
+        int horarioFin = 17; // Ejemplo: 5 PM
+        int duracionTurnoEnMinutos = 30; // Ejemplo: 30 minutos
+
+        modelo.put("fechaInicio", fechaInicio);
+        modelo.put("fechaFin", fechaFin);
+        modelo.put("horarioInicio", horarioInicio);
+        modelo.put("horarioFin", horarioFin);
+        modelo.put("duracionTurnoEnMinutos", duracionTurnoEnMinutos);
+        modelo.put("profesional", profesionalLogueado);
+
+        return "generarTurnos.html";
+    }
+
+    @PostMapping("/generar-turnos")
+    public String generarTurnosDisponibles(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime horarioInicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime horarioFin,
+            @RequestParam int duracionTurnoEnMinutos,
+            ModelMap modelo,
+            HttpSession session) throws MiException {
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+
+        if (profesionalLogueado == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            // Validaciones
+            if (fechaFin.isBefore(fechaInicio) ||
+                    (fechaFin.isEqual(fechaInicio) && horarioInicio.isAfter(horarioFin)) ||
+                    duracionTurnoEnMinutos <= 0) {
+                modelo.put("Error", "Parámetros de entrada inválidos.");
+                modelo.put("profesional", profesionalLogueado);
+                return "error.html";
+            }
+
+            profesionalServicio.generarTurnosDisponibles(
+                    profesionalLogueado.getId(),
+                    fechaInicio,
+                    fechaFin,
+                    horarioInicio,
+                    horarioFin,
+                    duracionTurnoEnMinutos);
+
+            modelo.put("Exito", "Turnos agregados correctamente");
+            return "dashboardprofesional.html"; // Página de éxito
+
+        } catch (MiException ex) {
+            Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
+
+            modelo.put("Error", ex.getMessage());
+            modelo.put("profesional", profesionalLogueado);
+
+            return "error.html"; // Página de error
+        }
+    }           
 }

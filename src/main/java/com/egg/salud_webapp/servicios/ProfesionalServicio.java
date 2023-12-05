@@ -4,6 +4,7 @@ import com.egg.salud_webapp.entidades.Imagen;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
+import com.egg.salud_webapp.entidades.Turno;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
@@ -12,7 +13,12 @@ import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
+import com.egg.salud_webapp.repositorios.TurnoRepositorio;
+
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +47,8 @@ public class ProfesionalServicio implements UserDetailsService {
     ProfesionalPrestadoresRepositorio profesionalPrestadoresRepositorio;
     @Autowired
     ImagenServicio imagenServicio;
+    @Autowired
+    TurnoRepositorio turnoRepositorio;
 
     @Transactional
     public void registrar(MultipartFile archivo,String matricula, Especialidades especialidad,
@@ -304,5 +312,37 @@ public class ProfesionalServicio implements UserDetailsService {
 
     public Profesional getOne(Long id) {
         return profesionalRepositorio.getOne(id);
+    }
+
+
+    // Logica de los turnos
+    @Transactional
+    public List<Turno> generarTurnosDisponibles(Long id, LocalDate fechaInicio, LocalDate fechaFin,
+            LocalTime horarioInicio, LocalTime horarioFin, int duracionTurnoEnMinutos) throws MiException 
+    {
+        Profesional profesional = getById(id);
+        List<Turno> turnosDisponibles = new ArrayList<>();
+
+        DayOfWeek[] diasLaborables = { DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
+                DayOfWeek.FRIDAY };
+
+        for (LocalDate fecha = fechaInicio; !fecha.isAfter(fechaFin); fecha = fecha.plusDays(1)) {
+            for (DayOfWeek diaLaborable : diasLaborables) {
+                if (fecha.getDayOfWeek() == diaLaborable) {
+                    LocalDateTime fechaHoraInicio = LocalDateTime.of(fecha, horarioInicio.minusHours(3));
+                    LocalDateTime fechaHoraFin = fecha.atTime(horarioFin.minusHours(3));
+
+                    while (fechaHoraInicio.isBefore(fechaHoraFin)) {
+                        turnosDisponibles.add(new Turno(profesional, fechaHoraInicio, duracionTurnoEnMinutos));
+                        fechaHoraInicio = fechaHoraInicio.plusMinutes(duracionTurnoEnMinutos);
+                    }
+                }
+            }
+        }
+
+        // Guardar los turnos en la base de datos
+        turnosDisponibles.forEach(turnoRepositorio::save);
+       
+        return turnosDisponibles;
     }
 }
