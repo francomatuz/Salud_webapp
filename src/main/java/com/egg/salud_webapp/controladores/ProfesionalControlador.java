@@ -49,22 +49,26 @@ public class ProfesionalControlador {
           
             profesionalServicio.registrar(archivo, matricula, especialidad, atencionVirtual, precio, prestadoresArray, nombre, apellido, dni, fecha_nac, email, password, password2, genero);
 
-            modelo.put("Exito", "Solicitud enviada exitosamente");
+            modelo.put("exito", "Solicitud enviada exitosamente");
 
             return "login.html";
         } catch (MiException ex) {
             Logger.getLogger(ProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
-            modelo.put("Error", ex.getMessage());
+            modelo.put("error", ex.getMessage());
             modelo.put("nombre", nombre);
             modelo.put("apellido", apellido);
             modelo.put("email", email);
             modelo.put("dni", dni);
             modelo.put("fecha de nacimiento", fecha_nac);
-            modelo.put("genero", genero);
+            
             modelo.put("matricula", matricula);
             
+            modelo.put("generos", GeneroEnum.values());
+            modelo.put("especialidades", Especialidades.values());
+            modelo.put("obrasSociales", ObraSocial.values());
+            
 
-            return "error.html";
+            return "registrarprofesional.html";
         }
     }
 

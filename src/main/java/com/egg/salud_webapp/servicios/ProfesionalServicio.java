@@ -266,8 +266,8 @@ public class ProfesionalServicio implements UserDetailsService {
         if (dniExistente.isPresent()) {
             throw new MiException("Ya hay un usuario existente con el Dni ingresado");
         }
-        if (dni.isEmpty() || dni == null) {
-            throw new MiException("El dni no puede estar vacío o ser nulo");
+        if (dni.isEmpty() || dni == null || dni.length() < 7 || dni.length() > 8) {
+            throw new MiException("El dni no puede estar vacío, ser nulo o debe tener 7 u 8 dígitos");
         }
         if (fecha_nac == null) {
             throw new MiException("La fecha de nacimiento no puede estar vacía ");

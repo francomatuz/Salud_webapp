@@ -56,7 +56,7 @@ public class PortalControlador {
             pacienteServicio.registrar(archivo,nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,
                     password2);
 
-            modelo.put("Exito", "Paciente registrado exitosamente");
+            modelo.put("exito", "Paciente registrado exitosamente");
 
             return "login.html";
 

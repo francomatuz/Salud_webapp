@@ -46,12 +46,7 @@
                 <p class="card-text" th:text="${error}"></p>
             </div>
         </div>
-        <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
-            <div class="card-body">
-                <h5 class="card-title">Exito!</h5>
-                <p class="card-text" th:text="${exito}"></p>
-            </div>
-        </div>
+        
 
         <div class="container">
             <form class="formulario" th:action="@{/registrar/paciente}" method="POST" enctype="multipart/form-data"
@@ -90,7 +85,7 @@
                 <div class="col-md-7">
                     <label for="validationDefault01" class="form-label">Correo electrónico</label>
                     <input type="text" name="email" class="form-control" id="validationDefault01"
-                           value="Ingrese su correo electrónico" th:value="${email}" >
+                           value="Ingrese su correo electrónico" th:value="${email}" required>
                 </div>
 
                 <div class="col-md-5">
