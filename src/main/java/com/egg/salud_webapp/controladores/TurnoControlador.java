@@ -18,6 +18,8 @@ import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.Turno;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.servicios.TurnoServicio;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @RequestMapping("/turnos")
@@ -81,6 +83,19 @@ public class TurnoControlador {
         }
         return "redirect:/turnos/mis-turnos";
     }
+
+    @PostMapping("/marcar-finalizado")
+    public String marcarTurnoComoFinalizado(@RequestParam Long idTurno, ModelMap modelo) {
+        try {
+            turnoServicio.marcarTurnoComoFinalizado(idTurno);
+            modelo.addAttribute("Turno marcado como finalizado", true);
+        } catch (MiException ex) {
+            modelo.addAttribute("error", "Error al intentar marcar el turno como finalizado: " + ex.getMessage());
+        }
+        
+        return "redirect:/turnos/profesional-turnos";
+    }
+    
 
     @PostMapping("/modificar-turno")
     public String modificarTurno(

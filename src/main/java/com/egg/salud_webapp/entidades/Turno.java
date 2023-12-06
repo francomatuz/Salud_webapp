@@ -44,7 +44,7 @@ public class Turno {
         this.profesional = profesional;
         this.paciente = paciente;
         this.duracionEnMinutos = duracionEnMinutos;
-        this.finalizado = false;
+        this.isFinalizado = false;
     }
 
 
@@ -91,6 +91,22 @@ public class Turno {
 
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
+    }
+
+    public int getDuracionEnMinutos() {
+        return duracionEnMinutos;
+    }
+
+    public void setDuracionEnMinutos(int duracionEnMinutos) {
+        this.duracionEnMinutos = duracionEnMinutos;
+    }
+
+    public boolean isIsFinalizado() {
+        return isFinalizado;
+    }
+
+    public void setIsFinalizado(boolean isFinalizado) {
+        this.isFinalizado = isFinalizado;
     }
 
 

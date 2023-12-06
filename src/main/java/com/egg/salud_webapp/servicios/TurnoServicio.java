@@ -77,37 +77,52 @@ public class TurnoServicio {
     }
 
     @Transactional
-public void modificarTurno(Long idTurno, LocalDate nuevaFecha, LocalTime nuevoHorario) throws MiException {
-    Turno turnoAModificar = getById(idTurno);
+    public void modificarTurno(Long idTurno, LocalDate nuevaFecha, LocalTime nuevoHorario) throws MiException {
+        Turno turnoAModificar = getById(idTurno);
 
-    if (turnoAModificar != null) {
-        LocalDateTime nuevaFechaHora = null;
+        if (turnoAModificar != null) {
+            LocalDateTime nuevaFechaHora = null;
 
-        // Modificar la fecha si se proporciona una nueva
-        if (nuevaFecha != null) {
-            // Mantener la misma hora y minutos, pero con la nueva fecha
-            nuevaFechaHora = LocalDateTime.of(nuevaFecha, turnoAModificar.getFechaHora().toLocalTime());
+            // Modificar la fecha si se proporciona una nueva
+            if (nuevaFecha != null) {
+                // Mantener la misma hora y minutos, pero con la nueva fecha
+                nuevaFechaHora = LocalDateTime.of(nuevaFecha, turnoAModificar.getFechaHora().toLocalTime());
+            }
+
+            // Modificar el horario si se proporciona uno nuevo
+            if (nuevoHorario != null) {
+                // Mantener la misma fecha, pero con la nueva hora y minutos
+                nuevaFechaHora = LocalDateTime.of(turnoAModificar.getFechaHora().toLocalDate(), nuevoHorario);
+            }
+
+            // Actualizar la fecha y hora del turno si se proporciona alguna modificación
+            if (nuevaFechaHora != null) {
+                turnoAModificar.setFechaHora(nuevaFechaHora);
+            }
+
+            // Guardar la modificación en el repositorio
+            turnoRepositorio.save(turnoAModificar);
+        } else {
+            throw new MiException("Turno no encontrado para ser modificado.");
         }
+    }
 
-        // Modificar el horario si se proporciona uno nuevo
-        if (nuevoHorario != null) {
-            // Mantener la misma fecha, pero con la nueva hora y minutos
-            nuevaFechaHora = LocalDateTime.of(turnoAModificar.getFechaHora().toLocalDate(), nuevoHorario);
-        }
+    @Transactional
+public void marcarTurnoComoFinalizado(Long idTurno) throws MiException {
+    // Obtener el turno por ID
+    Turno turno = getById(idTurno);
 
-        // Actualizar la fecha y hora del turno si se proporciona alguna modificación
-        if (nuevaFechaHora != null) {
-            turnoAModificar.setFechaHora(nuevaFechaHora);
-        }
+    // Verificar si el turno existe y no está finalizado
+    if (turno != null && !turno.isIsFinalizado()) {
+        // Marcar el turno como finalizado
+        turno.setIsFinalizado(true);
+        turnoRepositorio.save(turno);
 
-        // Guardar la modificación en el repositorio
-        turnoRepositorio.save(turnoAModificar);
+        // Guardar el turno actualizado en la base de datos
+        turnoRepositorio.save(turno);
     } else {
-        throw new MiException("Turno no encontrado para ser modificado.");
+        // El turno no existe o ya está finalizado
+        throw new MiException("No se puede marcar el turno como finalizado.");
     }
 }
-
-    
-    
-
 }
