@@ -32,6 +32,10 @@ public class PortalControlador {
     public String index() {
         return "index.html";
     }
+    @GetMapping("/historia")
+    public String historia() {
+        return "historiaclinica.html";
+    }
 
     @GetMapping("/registrar")
     public String registrar() {

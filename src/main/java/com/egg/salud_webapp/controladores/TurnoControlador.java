@@ -1,5 +1,6 @@
 package com.egg.salud_webapp.controladores;
 
+import com.egg.salud_webapp.entidades.Paciente;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -40,8 +41,9 @@ public class TurnoControlador {
             @RequestParam Long idPaciente,
             HttpSession session,
             ModelMap modelo) {
+        Paciente pacienteLogueado = (Paciente) session.getAttribute("usuariosession");
         try {
-            turnoServicio.tomarTurno(idTurno, idPaciente);
+            turnoServicio.tomarTurno(idTurno, pacienteLogueado.getId());
             modelo.addAttribute("tomado", true); // Añadir parámetro de éxito
         } catch (MiException ex) {
             modelo.addAttribute("error", "Error al intentar tomar el turno: " + ex.getMessage());

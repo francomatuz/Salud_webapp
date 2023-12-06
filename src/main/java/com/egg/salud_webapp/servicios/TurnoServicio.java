@@ -39,7 +39,7 @@ public class TurnoServicio {
             if (paciente != null) {
                 turnoATomar.setPaciente(paciente);
                 turnoRepositorio.save(turnoATomar);
-            } else {
+            } else { 
                 throw new MiException("Paciente no encontrado.");
             }
         } else {

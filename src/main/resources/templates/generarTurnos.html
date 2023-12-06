@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/head :: head"></head>
+
+<body>
+    <nav th:replace="/fragments/navbar :: nav"></nav>
+    <h2>Generar Turnos Disponibles</h2>
+    <div class="container">
+        <form class="formulario" th:action="@{/perfil2/generar-turnos}" th:method="post"
+            enctype="multipart/form-data">
+
+            <input hidden th:value="${profesional.id}" name="id">
+
+            <div class="col-md-12">
+                <label for="fechaInicio" class="form-label">Fecha de Inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" class="form-control"
+                    th:value="${fechaInicio}" required>
+            </div>
+
+            <div class="col-md-12">
+                <label for="fechaFin">Fecha de Fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" class="form-control" th:value="${fechaFin}" required>
+            </div>
+
+            <div class="col-md-12">
+                <label for="horarioInicio">Horario de Inicio:</label>
+                <input type="time" id="horarioInicio" name="horarioInicio" class="form-control"
+                    th:value="${horarioInicio}" required>
+            </div>
+
+            <div class="col-md-12">
+                <label for="horarioFin">Horario de Fin:</label>
+                <input type="time" id="horarioFin" name="horarioFin" class="form-control" th:value="${horarioFin}"
+                    required>
+            </div>
+
+            <div class="col-md-12">
+                <label for="duracionTurnoEnMinutos">Duración de Turno (minutos):</label>
+                <input type="number" id="duracionTurnoEnMinutos" name="duracionTurnoEnMinutos" class="form-control"
+                    th:value="${duracionTurnoEnMinutos}" required min="1" max="120"> <!-- Establecer el rango según tus necesidades -->
+                <span th:if="${#fields.hasErrors('duracionTurnoEnMinutos')}" th:errors="*{duracionTurnoEnMinutos}"
+                    class="error-message"></span>
+            </div>
+
+            <button type="submit">Generar Turnos</button>
+        </form>
+    </div>
+</body>
+
+</html>
+<script>
+    document.getElementById('horarioFin').addEventListener('change', function() {
+      var input = this;
+      var localDate = new Date(input.value);
+      
+      // Ajustar la hora para reflejar la zona horaria de Buenos Aires (UTC-3)
+      var offset = -3; // Ajuste en horas
+      localDate.setHours(localDate.getHours() + offset);
+  
+      var utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000);
+      input.value = utcDate.toISOString().slice(0, 16); // Formato "yyyy-MM-ddTHH:mm"
+    });
+  </script>
