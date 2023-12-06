@@ -8,8 +8,10 @@ import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.PacienteRepositorio;
+import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
@@ -146,17 +148,19 @@ public class PacienteServicio implements UserDetailsService {
             throw new MiException("Ya hay un usuario existente con el Email ingresado");
         }
 
-        if (email == null || email.isEmpty()) {
-            throw new MiException("El email no puede estar vacío o ser nulo");
+        if (email == null || email.isEmpty() || !email.contains("@")) {
+            throw new MiException("El email no puede estar vacío, ser nulo y debe contener '@'");
         }
+        
         if (dniExistente != null && dniExistente.getDni().equals(dni)) {
             throw new MiException("Ya hay un usuario existente con el dni ingresado");
         }
 
-        if (dni.isEmpty() || dni == null) {
-            throw new MiException("El dni no puede estar vacío o ser nulo");
+        if (dni.isEmpty() || dni == null || dni.length() < 7 || dni.length() > 8) {
+            throw new MiException("El dni no puede estar vacío, ser nulo o debe tener 7 u 8 dígitos");
         }
-        if (fecha_nac == null) {
+        
+        if (fecha_nac == null ) {
             throw new MiException("La fecha de nacimiento no puede estar vacía ");
         }
         if (password.isEmpty() || password == null || password.length() <= 5) {

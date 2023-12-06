@@ -66,5 +66,10 @@ public interface ProfesionalRepositorio extends JpaRepository<Profesional, Long>
     @Query("SELECT p FROM Profesional p WHERE FUNCTION('BIT', p.atencionVirtual) = 1")
     public List<Profesional> buscarProfesionalesConAtencionVirtual();
     
+    //Busqueda por calificacion
+    @Query("SELECT p FROM Profesional p ORDER BY p.calificacion DESC")
+    public List<Profesional> buscarProfesionalesPorCalificacion();
+    
+    //Posibilidad de hacer filtros o busquedas combinadas
 
 }

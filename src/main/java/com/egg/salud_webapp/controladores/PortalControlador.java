@@ -64,16 +64,16 @@ public class PortalControlador {
 
             Logger.getLogger(PortalControlador.class.getName()).log(Level.SEVERE, null, ex);
 
-            modelo.put("Error", ex.getMessage());
+            modelo.put("error", ex.getMessage());
             modelo.put("nombre", nombre);
             modelo.put("apellido", apellido);
             modelo.put("email", email);
             modelo.put("dni", dni);
-            modelo.put("fecha de nacimiento", fecha_nac);
-            modelo.put("obra social", obraSocial);
-            modelo.put("genero", genero);
+            modelo.put("fecha de nacimiento", fecha_nac);            
+            modelo.put("generos", GeneroEnum.values());
+            modelo.put("obrasSociales", ObraSocial.values());
 
-            return "error.html";
+            return "registrarpaciente.html";
 
         }
     }

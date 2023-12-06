@@ -39,6 +39,7 @@ public class Profesional extends Usuario {
     private Double precio = 3000d;
     private Double calificacion = null;
     private Integer cantCalificaciones = 0;
+    private Integer sumaCalificaciones = 0;
 
     @OneToMany(mappedBy = "profesional", fetch = FetchType.EAGER)
     public List<ProfesionalPrestadores> prestadores;
@@ -145,6 +146,14 @@ public class Profesional extends Usuario {
 
     public void setCantCalificaciones(Integer cantCalificaciones) {
         this.cantCalificaciones = cantCalificaciones;
+    }
+
+    public Integer getSumaCalificaciones() {
+        return sumaCalificaciones;
+    }
+
+    public void setSumaCalificaciones(Integer sumaCalificaciones) {
+        this.sumaCalificaciones = sumaCalificaciones;
     }
 
 }

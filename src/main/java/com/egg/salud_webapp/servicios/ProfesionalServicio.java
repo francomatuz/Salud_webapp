@@ -44,7 +44,7 @@ public class ProfesionalServicio implements UserDetailsService {
     ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(MultipartFile archivo,String matricula, Especialidades especialidad,
+    public void registrar(MultipartFile archivo, String matricula, Especialidades especialidad,
             Boolean atencionVirtual, Double precio,
             String[] prestadores, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
@@ -52,13 +52,13 @@ public class ProfesionalServicio implements UserDetailsService {
         validarAtributos(prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula /*precio*/);
 
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
-        
-        Imagen imagen = imagenServicio.guardar(archivo);        
+
+        Imagen imagen = imagenServicio.guardar(archivo);
 
         Profesional profesional = new Profesional(matricula, especialidad,
                 atencionVirtual != null ? atencionVirtual : false, precio,
                 nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero, UsuarioEnum.USER, imagen);
-                     
+
         profesionalRepositorio.save(profesional);
 
         for (String prestador : prestadoresList) {
@@ -89,7 +89,7 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizar(MultipartFile archivo,Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
+    public void actualizar(MultipartFile archivo, Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
             List<ObraSocial> prestadores, GeneroEnum genero,
             String password, String password2, Double precio) throws MiException {
 
@@ -130,11 +130,11 @@ public class ProfesionalServicio implements UserDetailsService {
                         prestador);
                 profesionalPrestadoresRepositorio.save(profesionalPrestadores);
             }
-                       String idImagen=null;
-            if (profesionalAActualizar.getImagen()!=null) {
-                idImagen=profesionalAActualizar.getImagen().getId();
+            String idImagen = null;
+            if (profesionalAActualizar.getImagen() != null) {
+                idImagen = profesionalAActualizar.getImagen().getId();
             }
-            Imagen imagen =imagenServicio.actualizar(archivo, idImagen);
+            Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
             profesionalAActualizar.setImagen(imagen);
             Hibernate.initialize(profesionalAActualizar.getPrestadores());
             profesionalRepositorio.save(profesionalAActualizar);
@@ -143,37 +143,38 @@ public class ProfesionalServicio implements UserDetailsService {
 
     @Transactional
     public void eliminar(Long id) throws MiException {
-       // profesionalPrestadoresRepositorio.deleteById(id);
-      //  profesionalRepositorio.delete(getById(id));
-      
-       // Eliminar registros dependientes en profesional_prestadores
-    profesionalPrestadoresRepositorio.deleteByProfesionalId(id);
+        // profesionalPrestadoresRepositorio.deleteById(id);
+        //  profesionalRepositorio.delete(getById(id));
 
-    // Eliminar el registro en la tabla principal (profesional)
-    profesionalRepositorio.deleteById(id);
+        // Eliminar registros dependientes en profesional_prestadores
+        profesionalPrestadoresRepositorio.deleteByProfesionalId(id);
+
+        // Eliminar el registro en la tabla principal (profesional)
+        profesionalRepositorio.deleteById(id);
 
     }
+
     //Boton para cambiar el estado de baja
-    public void darBaja(Long id) throws MiException{
-       Profesional profesional = getById(id);
-       if(profesional.getAlta()==SolicitudEnum.ACTIVO){
-           profesional.setAlta(SolicitudEnum.INACTIVO);
-       }
+    public void darBaja(Long id) throws MiException {
+        Profesional profesional = getById(id);
+        if (profesional.getAlta() == SolicitudEnum.ACTIVO) {
+            profesional.setAlta(SolicitudEnum.INACTIVO);
+        }
     }
-    
-    public void darAlta(Long id) throws MiException{
+
+    public void darAlta(Long id) throws MiException {
         Profesional profesional = getById(id);
         profesional.setAlta(SolicitudEnum.SOLICITUD);
     }
-    
-    public List<Profesional> listarProfesionalesSolicitud(){
+
+    public List<Profesional> listarProfesionalesSolicitud() {
         return profesionalRepositorio.buscarProfesionalesConSolicitud();
     }
-    
-    public List<Profesional> listarProfesionalesSinSolicitud(){
+
+    public List<Profesional> listarProfesionalesSinSolicitud() {
         return profesionalRepositorio.buscarProfesionalesSinSolicitud();
     }
-    
+
     public boolean tieneBio(Long id) throws MiException {
         Profesional profesional = getById(id);
         return !(profesional.getBio() == null || profesional.getBio() == "" || profesional.getBio().isEmpty());
@@ -183,40 +184,40 @@ public class ProfesionalServicio implements UserDetailsService {
     public List<Profesional> listarProfesionales() {
         return profesionalRepositorio.findAll();
     }
-    
+
     // Listar profesionales por precio
     public List<Profesional> listarProfesionalesPorPrecio(int num) {
-        
+
         switch (num) {
             case 1:
                 return profesionalRepositorio.buscarProfesionalesPorRangoDePrecio(0d, 3000d);
-                
+
             case 2:
                 return profesionalRepositorio.buscarProfesionalesPorRangoDePrecio(3001d, 5000d);
-                
+
             case 3:
                 return profesionalRepositorio.buscarProfesionalesPorRangoDePrecio(5001d, Double.MAX_VALUE);
-                              
+
         }
         return null;
-        
+
     }
-    
+
     // Listar profesionales por especialidad
     public List<Profesional> listarProfesionalesEspecialidad(String especialidad) {
         return profesionalRepositorio.buscarPorEspecialidad(especialidad);
     }
-    
+
     // Listar profesionales por atecion virtual
     public List<Profesional> listarProfesionalesAtencionVirtual() {
         return profesionalRepositorio.buscarProfesionalesConAtencionVirtual();
     }
-    
+
     // Listar profesionales por apellido
     public List<Profesional> listarProfesionalesPorApellido(String apellido) {
         return profesionalRepositorio.buscarPorApellido(apellido);
     }
-    
+
     // Listar profesionales por obra social
     public List<Profesional> listarProfesionalesPorObraSocial(String obraSocial) {
         return profesionalRepositorio.buscarProfesionalesPorObra(obraSocial);
@@ -280,7 +281,7 @@ public class ProfesionalServicio implements UserDetailsService {
         if (matricula.isEmpty() || matricula == null) {
             throw new MiException("La matrícula no puede estar vacía o ser nula");
         }
-   /*     if (precio.isNaN() || precio == null || precio<0){
+        /*     if (precio.isNaN() || precio == null || precio<0){
             throw new MiException("El precio no es válido");
         }*/
 
@@ -344,15 +345,18 @@ public class ProfesionalServicio implements UserDetailsService {
     public Profesional getOne(Long id) {
         return profesionalRepositorio.getOne(id);
     }
-    
+
     public void calificacionProfesional(Long idProfesional, Integer calif) {
         Profesional profesional = profesionalRepositorio.getById(idProfesional);
-        
+
         profesional.setCantCalificaciones(profesional.getCantCalificaciones() + 1);
-        
-        profesional.setCalificacion((profesional.getCalificacion() + calif)/profesional.getCantCalificaciones());
-        
-        
+
+        profesional.setSumaCalificaciones(profesional.getSumaCalificaciones() + calif);
+
+        Integer calificacionTotal = (profesional.getSumaCalificaciones() / profesional.getCantCalificaciones());
+
+        profesional.setCalificacion(calificacionTotal.doubleValue());
+
     }
-    
+
 }
