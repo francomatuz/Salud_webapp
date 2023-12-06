@@ -6,7 +6,10 @@ import com.egg.salud_webapp.enumeraciones.SolicitudEnum;
 import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -45,6 +48,8 @@ public class Profesional extends Usuario {
     @OneToMany(mappedBy = "profesional", fetch = FetchType.EAGER)
     public List<ProfesionalPrestadores> prestadores;
     
+    @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Turno> turnos = new ArrayList<>();
     
 
     public Profesional(String matricula, Especialidades especialidad,
@@ -142,6 +147,14 @@ public class Profesional extends Usuario {
 
     public void setCalificacion(Double calificacion) {
         this.calificacion = calificacion;
+    }
+
+    public List<Turno> getTurnos() {
+        return turnos;
+    }
+
+    public void setTurnos(List<Turno> turnos) {
+        this.turnos = turnos;
     }
 
     

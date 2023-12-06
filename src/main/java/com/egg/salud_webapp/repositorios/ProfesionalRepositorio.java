@@ -2,6 +2,8 @@
 package com.egg.salud_webapp.repositorios;
 
 import com.egg.salud_webapp.entidades.Profesional;
+import com.egg.salud_webapp.enumeraciones.Especialidades;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,6 +38,10 @@ public interface ProfesionalRepositorio extends JpaRepository<Profesional, Long>
 
     @Query("SELECT p FROM Profesional p WHERE p.alta = 0 OR p.alta = 1")
     public List<Profesional> buscarProfesionalesSinSolicitud();
+
+
+     @Query("SELECT p.id FROM Profesional p WHERE p.especialidad = :especialidad")
+    List<Long> findIdsByEspecialidad(@Param("especialidad") Especialidades especialidad);
 
     
     

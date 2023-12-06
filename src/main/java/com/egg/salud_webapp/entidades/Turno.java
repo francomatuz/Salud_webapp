@@ -6,7 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -17,15 +21,18 @@ public class Turno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @DateTimeFormat(iso = ISO.TIME)
+    
     private LocalDateTime fechaHora;
     private boolean disponible;
     @ManyToOne
     private Profesional profesional;
     @ManyToOne
+    @JoinColumn(name = "paciente_id")
     private Paciente paciente;
     @Column(name = "duracion_minutos")
     private int duracionEnMinutos;
     private boolean isFinalizado;
+    private boolean isCancelado;
 
     public Turno() {
     }
@@ -40,11 +47,12 @@ public class Turno {
     public Turno(Long id, LocalDateTime fechaHora, boolean disponible, Profesional profesional, Paciente paciente, int duracionEnMinutos, boolean finalizado) {
         this.id = id;
         this.fechaHora = fechaHora;
-        this.disponible = true;
+        this.disponible = true; // se inicialia en true ya que esta disponible para que un paciente lo tome
         this.profesional = profesional;
         this.paciente = paciente;
         this.duracionEnMinutos = duracionEnMinutos;
-        this.isFinalizado = false;
+        this.isFinalizado = false;  // se inicializa en false ya que no esta finalizado
+        this.isCancelado=false;//se incializa en falso porque el turno no ha sido cancelado aun
     }
 
 
@@ -107,6 +115,14 @@ public class Turno {
 
     public void setIsFinalizado(boolean isFinalizado) {
         this.isFinalizado = isFinalizado;
+    }
+
+    public boolean isIsCancelado() {
+        return isCancelado;
+    }
+
+    public void setIsCancelado(boolean isCancelado) {
+        this.isCancelado = isCancelado;
     }
 
 
