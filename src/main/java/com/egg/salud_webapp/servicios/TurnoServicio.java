@@ -173,6 +173,9 @@ public void cancelarTurno(Long turnoId) throws MiException {
             // Marcar el turno como disponible nuevamente
             turno.setDisponible(true);
 
+            // BORRAR EL PACIENTE QUE SE HABIA ASIGNADO
+            turno.setPaciente(null);
+
             // Guardar el turno actualizado en la base de datos
             turnoRepositorio.save(turno);
         } else {
