@@ -58,7 +58,7 @@ public class PacienteServicio implements UserDetailsService {
         Imagen imagen = imagenServicio.guardar(archivo);
         paciente.setImagen(imagen);
         
-        pacienteRepositorio.save(paciente);
+        pacienteRepositorio.save(paciente);       
     }
 
     // Actualizar paciente
