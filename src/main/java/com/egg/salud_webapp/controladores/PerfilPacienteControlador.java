@@ -83,13 +83,13 @@ public class PerfilPacienteControlador {
 
         // Verificar si el usuario está logueado
         if (pacienteLogueado == null) {
-            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir al inicio de sesión
+
             return "redirect:/login";
         }
 
         try {
             // Actualizar el perfil del paciente (sin cambiar la contraseña)
-            pacienteServicio.actualizar(pacienteLogueado, archivo, pacienteLogueado.getId(), nombre, apellido, email, dni, fecha_nac, obraSocial,
+            pacienteServicio.actualizar(pacienteLogueado, archivo, nombre, apellido, email, dni, fecha_nac, obraSocial,
                     genero, null, null);
 
             Paciente pacienteActualizado = pacienteServicio.getById(pacienteLogueado.getId());
@@ -99,7 +99,7 @@ public class PerfilPacienteControlador {
             modelo.put("paciente", pacienteActualizado);
             modelo.put("exito", "Perfil actualizado exitosamente");
 
-            return "login.html"; // Página de perfil actualizado CAMBIAR A DASHBOARD
+            return "login.html"; //Se cierra sesión para poder actualizar los datos en el front
 
         } catch (MiException ex) {
             // Manejar excepciones

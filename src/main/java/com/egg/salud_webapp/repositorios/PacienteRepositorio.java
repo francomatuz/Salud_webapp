@@ -1,4 +1,3 @@
-
 package com.egg.salud_webapp.repositorios;
 
 import com.egg.salud_webapp.entidades.Paciente;
@@ -10,14 +9,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PacienteRepositorio extends JpaRepository<Paciente, Long> {
-    
-    @Query ("SELECT p FROM Paciente p WHERE p.email = :email")
+
+    @Query("SELECT p FROM Paciente p WHERE p.email = :email")
     public Paciente buscarPorEmail(@Param("email") String email);
-    
-   @Query ("SELECT p FROM Paciente p WHERE p.dni = :dni")
-    public Paciente buscarPorDni(@Param("dni") String dni);    
-   /* @Query ("SELECT p FROM Paciente p WHERE p.apellido = :apellido")
-    public Optional<Paciente> buscarPorApellido(@Param("apellido") String apellido);*/   
-    @Query ("SELECT p FROM Paciente p WHERE p.id = :id")
-     Optional<Paciente> buscarPorId(@Param("id") Long id);     
+
+    @Query("SELECT p FROM Paciente p WHERE p.dni = :dni")
+    public Paciente buscarPorDni(@Param("dni") String dni);
+
+    @Query("SELECT p FROM Paciente p WHERE p.id = :id")
+    Optional<Paciente> buscarPorId(@Param("id") Long id);
 }

@@ -8,10 +8,8 @@ import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.PacienteRepositorio;
-import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
@@ -63,12 +61,12 @@ public class PacienteServicio implements UserDetailsService {
 
     // Actualizar paciente
     @Transactional
-    public void actualizar(Paciente pacienteUsuario, MultipartFile archivo, Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    public void actualizar(Paciente pacienteUsuario, MultipartFile archivo, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         validarAtributosActualizar(pacienteUsuario, nombre, apellido, email, dni, fecha_nac);
 
-        Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
+        Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(pacienteUsuario.getId());
 
         if (respuesta.isPresent()) {
 
@@ -135,11 +133,12 @@ public class PacienteServicio implements UserDetailsService {
 
         Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
+        LocalDate fechaActual = LocalDate.now();
 
-        if (nombre.isEmpty() || nombre == null) {
+        if (nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
-        if (apellido.isEmpty() || apellido == null) {
+        if (apellido.isEmpty()) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
         if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
@@ -154,14 +153,14 @@ public class PacienteServicio implements UserDetailsService {
             throw new MiException("Ya hay un usuario existente con el dni ingresado");
         }
 
-        if (dni.isEmpty() || dni == null || dni.length() < 7 || dni.length() > 8) {
+        if (dni.isEmpty() || dni.length() < 7 || dni.length() > 8) {
             throw new MiException("El dni no puede estar vacío, ser nulo o debe tener 7 u 8 dígitos");
         }
 
-        if (fecha_nac == null) {
-            throw new MiException("La fecha de nacimiento no puede estar vacía ");
+        if (fecha_nac == null || fecha_nac.isAfter(fechaActual)) {
+            throw new MiException("La fecha de nacimiento no puede estar vacía o ser posterior a la actual");
         }
-        if (password.isEmpty() || password == null || password.length() <= 5) {
+        if (password.isEmpty() || password.length() <= 5) {
             throw new MiException("La contraseña no puede estar vacia y debe tener más de 5 dígitos");
         }
         if (!password.equals(password2)) {
@@ -173,11 +172,11 @@ public class PacienteServicio implements UserDetailsService {
 
         Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
-
-        if (nombre.isEmpty() || nombre == null) {
+        LocalDate fechaActual = LocalDate.now();
+        if (nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
-        if (apellido.isEmpty() || apellido == null) {
+        if (apellido.isEmpty()) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
 
@@ -188,13 +187,13 @@ public class PacienteServicio implements UserDetailsService {
                 throw new MiException("Ya hay un usuario existente con el dni ingresado");
             }
 
-            if (dni.isEmpty() || dni == null || dni.length() < 7 || dni.length() > 8) {
+            if (dni.isEmpty() || dni.length() < 7 || dni.length() > 8) {
                 throw new MiException("El dni no puede estar vacío, ser nulo o debe tener 7 u 8 dígitos");
             }
         }
 
-        if (fecha_nac == null) {
-            throw new MiException("La fecha de nacimiento no puede estar vacía ");
+        if (fecha_nac == null || fecha_nac.isAfter(fechaActual)) {
+            throw new MiException("La fecha de nacimiento no puede estar vacía o ser posterior a la actual");
         }
 
         if (PacienteUsuario.getEmail().equals(email)) {
