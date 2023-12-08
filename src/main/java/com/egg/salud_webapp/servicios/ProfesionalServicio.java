@@ -93,7 +93,7 @@ public class ProfesionalServicio implements UserDetailsService {
             List<ObraSocial> prestadores, GeneroEnum genero,
             String password, String password2, Double precio) throws MiException {
 
-        validarAtributos2(id, email, password, password2);
+        validarAtributos2(email);
         Profesional profesionalAActualizar = getById(id);
 
         if (profesionalAActualizar != null) {
@@ -288,15 +288,13 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     // validar atributos de actualización
-    private void validarAtributos2(Long id, String email, String password, String password2) throws MiException {
+    private void validarAtributos2(String email) throws MiException {
 
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
 
-        if (emailExistente != null && !emailExistente.getId().equals(id)
-                && emailExistente.getEmail().equalsIgnoreCase(email)) {
+       if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
             throw new MiException("Ya hay un usuario existente con el Email ingresado");
         }
-
         if (email == null || email.isEmpty()) {
             throw new MiException("El email no puede estar vacío o ser nulo");
         }
