@@ -8,6 +8,7 @@ import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.SolicitudEnum;
+import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
@@ -49,11 +50,14 @@ public class ProfesionalServicio implements UserDetailsService {
             String[] prestadores, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
             String email, String password, String password2, GeneroEnum genero) throws MiException {
-        validarAtributos(prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula /*precio*/);
+        validarAtributos(archivo, prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula /*precio*/);
 
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
 
-        Imagen imagen = imagenServicio.guardar(archivo);
+        Imagen imagen = null;
+        Tipo tipoUsuario = Tipo.PROFESIONAL;
+
+        imagen = imagenServicio.guardar(archivo, tipoUsuario);
 
         Profesional profesional = new Profesional(matricula, especialidad,
                 atencionVirtual != null ? atencionVirtual : false, precio,
@@ -239,7 +243,7 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     // validar los atributos de creación
-    private void validarAtributos(String[] prestadores, String nombre, String apellido, String email, String dni,
+    private void validarAtributos(MultipartFile archivo, String[] prestadores, String nombre, String apellido, String email, String dni,
             LocalDate fecha_nac,
             String password, String password2, String matricula /*Double precio*/)
             throws MiException {
@@ -248,6 +252,10 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
         // Optional<Profesional> matriculaExistente =
         // profesionalRepositorio.buscarPorMatricula(matricula);
+        if (archivo.getSize() > 5 * 1024 * 1024 || archivo.getContentType().startsWith("image")) {
+            throw new MiException("El archivo debe ser un imagen y no debe superar los 5MB");
+        }
+        
         if (prestadores == null) {
             throw new MiException("Se tiene que seleccionar al menos una opcion");
         }

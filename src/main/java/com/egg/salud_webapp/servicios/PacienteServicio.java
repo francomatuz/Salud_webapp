@@ -41,7 +41,7 @@ public class PacienteServicio implements UserDetailsService {
     public void registrar(MultipartFile archivo,String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
-        validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
+        validarAtributos(archivo, nombre, apellido, email, dni, fecha_nac, password, password2);
         
         Paciente paciente = new Paciente();
 
@@ -55,7 +55,7 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setPassword(new BCryptPasswordEncoder().encode(password));
         paciente.setRol(UsuarioEnum.USER);
         paciente.setTipo(Tipo.PACIENTE);
-        Imagen imagen = imagenServicio.guardar(archivo);
+        Imagen imagen = imagenServicio.guardar(archivo, Tipo.PACIENTE);
         paciente.setImagen(imagen);
         
         pacienteRepositorio.save(paciente);       
@@ -132,12 +132,16 @@ public class PacienteServicio implements UserDetailsService {
         }
     }
 
-    private void validarAtributos(String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    private void validarAtributos(MultipartFile archivo, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             String password, String password2) throws MiException {
 
         Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
 
+        if (archivo.getSize() > 5 * 1024 * 1024 || archivo.getContentType().startsWith("image")) {
+            throw new MiException("El archivo debe ser un imagen y no debe superar los 5MB");
+        }
+        
         if (nombre.isEmpty() || nombre == null) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
