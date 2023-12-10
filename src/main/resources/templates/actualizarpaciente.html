@@ -7,6 +7,12 @@
 
         <nav th:replace= "/fragments/navbar :: nav" ></nav>
 
+        <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
+            <div class="card-body">
+                <h5 class="card-title">Error!</h5>
+                <p class="card-text" th:text="${error}"></p>
+            </div>
+        </div>
 
         <h1>Actualizar/Modificar datos del Paciente</h1>
         <div class="container">
@@ -15,19 +21,19 @@
                 <input hidden th:value="${paciente.id}" name="id">
                 <div class="col-md-5">
                     <label for="validationDefault01" class="form-label">Nombre</label>
-                    <input type="text" name="nombre" class="form-control" id="validationDefault01" th:value="${paciente.nombre}" required>
+                    <input type="text" name="nombre" class="form-control" id="validationDefault01" th:value="${paciente.nombre}">
                 </div>
                 <div class="col-md-5">
                     <label for="validationDefault02" class="form-label">Apellido</label>
                     <input type="text" name="apellido" class="form-control" id="validationDefault02" th:value="${paciente.apellido}"
-                           required>
+                           >
                 </div>
                 <div class="col-md-3">
                     <label for="validationDefaultUsername" class="form-label">DNI o Identificación</label>
                     <div class="input-group">
                         <span class="input-group-text" id="inputGroupPrepend2">Nº</span>
                         <input type="text" name="dni" class="form-control" id="validationDefault03" th:value="${paciente.dni}"
-                               aria-describedby="inputGroupPrepend2" required>
+                               aria-describedby="inputGroupPrepend2">
                     </div>
                 </div>
 
@@ -48,9 +54,7 @@
                     <label for="validationDefault01" class="form-label">Correo electrónico</label>
                     <input type="text" name="email" class="form-control" id="validationDefault01"
                            value="Ingrese su correo electrónico" th:value="${paciente.email}" required>
-                </div>
-
-               
+                </div>              
 
                 <div class="col-md-7">
                     <label for="validationDefault08" class="form-label">Modifique cobertura</label>
@@ -58,12 +62,12 @@
                         <option th:each="obraSocial : ${obrasSociales}" th:value="${obraSocial}" th:text="${obraSocial}" th:selected="${obraSocial == paciente.obraSocial}"></option>
                     </select>
                 </div>
-                          <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">IMAGEN</label>
-            <input type="file" name="archivo" class="form-control" id="exampleFormControlInput1">
-          </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">IMAGEN</label>
+                    <input type="file" name="archivo" class="form-control" id="exampleFormControlInput1">
+                </div>
                 <div class="col-12">
-                    
+
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-2">
