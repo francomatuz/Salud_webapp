@@ -52,7 +52,7 @@
             <!-- Sidebar -->
             <div class="col-md-3">
                 <div class="card">
-                    <div class="card-body" th:if="${session.usuariosession.alta != null}">
+                    <div class="card-body" th:if="${session.usuariosession.alta == T(com.egg.salud_webapp.enumeraciones.SolicitudEnum).ACTIVO}">
                         <h5 class="card-title">Menú</h5>
                         <div class="btn-group-vertical">
                             <button id="nuevoPaciente" class="btn btn-success btn-sm mb-2">Nuevo Paciente</button>
@@ -61,8 +61,12 @@
                             <a th:href="@{/perfil2/darBaja}" class="btn btn-danger btn-sm mb-2">Dar Baja</a> 
                         </div>
                     </div>
-                    <div class="card-body" th:if="${session.usuariosession.alta == null}">
-                        <a th:href="@{/perfil2/darBaja}" class="btn btn-danger btn-sm mb-2">Alta</a> <!--cambiar ruta-->
+                   <div class="card-body" th:if="${session.usuariosession.alta == T(com.egg.salud_webapp.enumeraciones.SolicitudEnum).INACTIVO}">
+                        <a th:href="@{/perfil2/solicitarAlta}" class="btn btn-success btn-sm mb-2">Solicitud de Alta</a>
+                    </div>
+                    
+                    <div class="card-body" th:if="${session.usuariosession.alta == T(com.egg.salud_webapp.enumeraciones.SolicitudEnum).SOLICITUD}">
+                        <a class="btn btn-warning btn-sm mb-2">Solicitud pendiente</a>
                     </div>
                 </div>
             </div>
@@ -82,7 +86,7 @@
                             
                             <div class="col-md-6">
                                 <div class="user-avatar-container">
-                                    <img th:src="@{../img/doctor1.jpg}" alt="Foto de perfil" class="img-fluid rounded-circle">
+                                    <img th:src="@{/imagen/profesional/__${session.usuariosession.id}__}" alt="Foto de perfil" class="img-fluid rounded-circle">
                                     <button class="btn btn-primary btn-sm">Cambiar foto de perfil</button>
                                 </div>
                             </div>

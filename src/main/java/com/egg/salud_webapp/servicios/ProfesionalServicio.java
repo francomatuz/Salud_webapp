@@ -144,6 +144,7 @@ public class ProfesionalServicio implements UserDetailsService {
         if (profesional.getAlta() == SolicitudEnum.ACTIVO) {
             profesional.setAlta(SolicitudEnum.INACTIVO);
         }
+        profesionalRepositorio.save(profesional);
     }
 
     public void darAlta(Long id) throws MiException {
