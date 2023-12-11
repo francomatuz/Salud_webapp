@@ -6,13 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
 @Entity
 public class ProfesionalPrestadores {
-     @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
-   
-     @ManyToOne
+
+    @ManyToOne
     @JoinColumn(name = "profesional_id")
     protected Profesional profesional;
     protected String obraSocial;
@@ -40,9 +41,5 @@ public class ProfesionalPrestadores {
     public void setObraSocial(String obraSocial) {
         this.obraSocial = obraSocial;
     }
-
-   
-
-    
 
 }

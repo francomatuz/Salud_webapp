@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.egg.salud_webapp.servicios.ProfesionalServicio;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,25 +26,27 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/perfil2")
 public class PerfilProfesionalControlador {
 
-@Autowired
+    @Autowired
     private ProfesionalServicio profesionalServicio;
 
     @GetMapping("/actualizar")
     public String mostrarFormulario(ModelMap modelo, HttpSession session) {
-        
+
         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
 
         // Verificar si el usuario está logueado
         if (profesionalLogueado == null) {
-            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir al inicio de sesión
+            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir
+            // al inicio de sesión
             return "redirect:/login";
         }
         List<String> obrasSocialesSelected = new ArrayList<>();
         List<String> obrasSocialesList = new ArrayList<>();
-        for (ObraSocial obraSocial : profesionalServicio.obtenerObrasSocialesPorIdProfesional(profesionalLogueado.getId())) {
+        for (ObraSocial obraSocial : profesionalServicio
+                .obtenerObrasSocialesPorIdProfesional(profesionalLogueado.getId())) {
             obrasSocialesSelected.add(obraSocial.toString());
         }
-        for (ObraSocial obraSocial : ObraSocial.values()){
+        for (ObraSocial obraSocial : ObraSocial.values()) {
             obrasSocialesList.add(obraSocial.toString());
         }
 
@@ -56,12 +59,14 @@ public class PerfilProfesionalControlador {
         return "actualizarprofesional.html"; // Nombre del formulario de actualización de perfil
     }
 
-
     @PostMapping("/actualizar")
-    public String actualizarPerfil(@RequestParam MultipartFile archivo,@RequestParam String nombre, @RequestParam String apellido,@RequestParam String dni,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
-            @RequestParam String email, 
-            
-            @RequestParam(value = "prestadores", required = false) List <ObraSocial> prestadores, @RequestParam GeneroEnum genero, Double precio, ModelMap modelo, HttpSession session)
+    public String actualizarPerfil(@RequestParam MultipartFile archivo, @RequestParam String nombre,
+            @RequestParam String apellido, @RequestParam String dni,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
+            @RequestParam String email,
+
+            @RequestParam(value = "prestadores", required = false) List<ObraSocial> prestadores,
+            @RequestParam GeneroEnum genero, Double precio, ModelMap modelo, HttpSession session)
             throws MiException {
 
         // Obtener el usuario logueado desde la sesión
@@ -69,17 +74,19 @@ public class PerfilProfesionalControlador {
 
         // Verificar si el usuario está logueado
         if (profesionalLogueado == null) {
-            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir al inicio de sesión
+            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir
+            // al inicio de sesión
             return "redirect:/login";
         }
 
         try {
             // Actualizar el perfil del paciente (sin cambiar la contraseña)
-            profesionalServicio.actualizar(archivo,profesionalLogueado.getId(), nombre, apellido, dni, fecha_nac, email, prestadores,
-                    genero, null , null, precio);
+            profesionalServicio.actualizar(archivo, profesionalLogueado.getId(), nombre, apellido, dni, fecha_nac,
+                    email, prestadores,
+                    genero, null, null, precio);
 
             modelo.put("Exito", "Perfil actualizado exitosamente");
-//TO DO : REDIRECT!
+            // TO DO : REDIRECT!
             return "index.html"; // Página de perfil actualizado
 
         } catch (MiException ex) {
@@ -93,26 +100,24 @@ public class PerfilProfesionalControlador {
         }
     }
 
-    //DAR DE BAJA
+    // DAR DE BAJA
     @GetMapping("/darBaja")
-    public String darBaja(HttpSession session, ModelMap modelo) throws MiException {       
+    public String darBaja(HttpSession session, ModelMap modelo) throws MiException {
         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
         profesionalServicio.darBaja(profesionalLogueado.getId());
-       //logica para logout
-       return "index.html";   
+        // logica para logout
+        return "index.html";
     }
-    
-    //ELIMINAR
+
+    // ELIMINAR
     @GetMapping("/eliminar")
     public String eliminar(HttpSession session, ModelMap modelo) throws MiException {
-        
+
         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
-        
 
         try {
-            
-            profesionalServicio.eliminar(profesionalLogueado.getId());
 
+            profesionalServicio.eliminar(profesionalLogueado.getId());
 
             return "index.html";
 
@@ -124,13 +129,78 @@ public class PerfilProfesionalControlador {
         }
 
     }
-    
+
     @GetMapping("/dashboard2")
     public String dashboard() {
         return "dashboardprofesional.html";
     }
-    
-    
-    
-    
+
+    @GetMapping("/generar-turnos")
+    public String mostrarFormularioGenerarTurnos(ModelMap modelo, HttpSession session) {
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        if (profesionalLogueado == null) {
+            return "redirect:/login";
+        }
+
+        LocalDate fechaInicio = LocalDate.now();
+        LocalDate fechaFin = fechaInicio.plusDays(1);
+        int horarioInicio = 8; // Ejemplo: 8 AM
+        int horarioFin = 17; // Ejemplo: 5 PM
+        int duracionTurnoEnMinutos = 30; // Ejemplo: 30 minutos
+
+        modelo.put("fechaInicio", fechaInicio);
+        modelo.put("fechaFin", fechaFin);
+        modelo.put("horarioInicio", horarioInicio);
+        modelo.put("horarioFin", horarioFin);
+        modelo.put("duracionTurnoEnMinutos", duracionTurnoEnMinutos);
+        modelo.put("profesional", profesionalLogueado);
+
+        return "generarTurnos.html";
+    }
+
+    @PostMapping("/generar-turnos")
+    public String generarTurnosDisponibles(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime horarioInicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime horarioFin,
+            @RequestParam int duracionTurnoEnMinutos,
+            ModelMap modelo,
+            HttpSession session) throws MiException {
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+
+        if (profesionalLogueado == null) {
+            return "redirect:/login";
+        }
+
+        try {
+            // Validaciones
+            if (fechaFin.isBefore(fechaInicio) ||
+                    (fechaFin.isEqual(fechaInicio) && horarioInicio.isAfter(horarioFin)) ||
+                    duracionTurnoEnMinutos <= 0) {
+                modelo.put("Error", "Parámetros de entrada inválidos.");
+                modelo.put("profesional", profesionalLogueado);
+                return "error.html";
+            }
+
+            profesionalServicio.generarTurnosDisponibles(
+                    profesionalLogueado.getId(),
+                    fechaInicio,
+                    fechaFin,
+                    horarioInicio,
+                    horarioFin,
+                    duracionTurnoEnMinutos);
+
+            modelo.put("Exito", "Turnos agregados correctamente");
+            return "dashboardprofesional.html"; // Página de éxito
+
+        } catch (MiException ex) {
+            Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
+
+            modelo.put("Error", ex.getMessage());
+            modelo.put("profesional", profesionalLogueado);
+
+            return "error.html"; // Página de error
+        }
+    }
 }

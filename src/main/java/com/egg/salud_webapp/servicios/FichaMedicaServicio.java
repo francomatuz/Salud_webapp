@@ -6,9 +6,7 @@ import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.repositorios.FichaMedicaRepositorio;
 import com.egg.salud_webapp.repositorios.HistoriaClinicaRepositorio;
 import java.time.LocalDate;
-import static java.time.LocalDate.now;
 import java.util.List;
-import javax.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,7 +23,7 @@ public class FichaMedicaServicio implements UserDetailsService {
   private HistoriaClinicaRepositorio historiaClinicaRepositorio;
 
   public void crearFichaMedica(
-       String diagnostico, String tratamiento, String notas) {
+      String diagnostico, String tratamiento, String notas) {
     // validar atributos
     FichaMedica fichaMedica = new FichaMedica();
 
@@ -35,8 +33,7 @@ public class FichaMedicaServicio implements UserDetailsService {
     fichaMedica.setNotas(notas);
 
     HistoriaClinica historiaClinica = historiaClinicaRepositorio.buscarPorId(
-      2L
-    ); // (idHistoriaClinica)
+        2L); // (idHistoriaClinica)
 
     if (historiaClinica != null) {
       fichaMedica.setHistoriaClinica(historiaClinica);
@@ -53,8 +50,7 @@ public class FichaMedicaServicio implements UserDetailsService {
   public void RecuperarFichaMedica() throws Exception {
     // Recuperar la historia clínica con ID 2
     HistoriaClinica historiaClinica = historiaClinicaRepositorio.buscarPorId(
-      2L
-    );
+        2L);
 
     // Verificar si la historia clínica existe
     if (historiaClinica != null) {
@@ -74,8 +70,7 @@ public class FichaMedicaServicio implements UserDetailsService {
         throw new Exception("No se encuentra la ficha médica con ID 1");
       } else {
         throw new Exception(
-          "No hay fichas médicas asociadas a la historia clínica"
-        );
+            "No hay fichas médicas asociadas a la historia clínica");
       }
     } else {
       throw new Exception("No se encuentra la historia clínica");
@@ -84,7 +79,8 @@ public class FichaMedicaServicio implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username)
-    throws UsernameNotFoundException {
-    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      throws UsernameNotFoundException {
+    throw new UnsupportedOperationException("Not supported yet."); // Generated from
+                                                                   // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
   }
 }

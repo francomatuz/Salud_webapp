@@ -11,12 +11,13 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 public class Imagen {
     @Id
-    @GeneratedValue(generator="uuid")
-    @GenericGenerator(name="uuid",strategy="uuid2")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     private String mime;
     private String name;
-    @Lob @Basic(fetch=FetchType.LAZY)
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] contenido;
 
     public Imagen() {
@@ -50,4 +51,3 @@ public class Imagen {
         this.contenido = contenido;
     }
 }
-
