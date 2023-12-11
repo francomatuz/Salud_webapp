@@ -6,18 +6,14 @@ import java.time.LocalTime;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.Turno;
-import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.servicios.TurnoServicio;
 
@@ -28,52 +24,56 @@ public class TurnoControlador {
     @Autowired
     private TurnoServicio turnoServicio;
 
-    @GetMapping("/disponibles")  // para que los pacientes puedan tomar
-public String mostrarTurnosDisponibles(@RequestParam(name = "especialidad", required = false) String especialidad, ModelMap modelo) {
-    List<Turno> turnosDisponibles;
+    @GetMapping("/disponibles") // para que los pacientes puedan tomar
+    public String mostrarTurnosDisponibles(@RequestParam(name = "especialidad", required = false) String especialidad,
+            ModelMap modelo) {
+        List<Turno> turnosDisponibles;
 
-    if (especialidad != null) {
-        turnosDisponibles = turnoServicio.obtenerTurnosDisponiblesPorEspecialidad(especialidad);
-    } else {
-        turnosDisponibles = turnoServicio.obtenerTurnosDisponibles();
+        if (especialidad != null) {
+            turnosDisponibles = turnoServicio.obtenerTurnosDisponiblesPorEspecialidad(especialidad);
+        } else {
+            turnosDisponibles = turnoServicio.obtenerTurnosDisponibles();
+        }
+
+        List<String> especialidades = turnoServicio.obtenerEspecialidadesDisponibles();
+        modelo.put("especialidades", especialidades);
+
+        // Agregar la lista filtrada al modelo
+        modelo.put("turnosDisponibles", turnosDisponibles);
+
+        return "turnosDisponibles.html";
     }
 
-    List<String> especialidades = turnoServicio.obtenerEspecialidadesDisponibles();
-    modelo.put("especialidades", especialidades);
+    // @GetMapping("/disponibles")
+    // public String mostrarTurnosDisponibles(@RequestParam(name = "especialidad",
+    // required = false) Especialidades especialidad, ModelMap modelo) {
+    // List<Long> idsProfesionales =
+    // turnoServicio.obtenerIdsProfesionalesPorEspecialidad(especialidad);
 
-    // Agregar la lista filtrada al modelo
-    modelo.put("turnosDisponibles", turnosDisponibles);
+    // if (idsProfesionales.isEmpty()) {
+    // return "redirect:/error";
+    // }
 
-    return "turnosDisponibles.html";
-}
+    // List<Turno> turnosDisponibles =
+    // turnoServicio.obtenerTurnosDisponiblesPorIdsProfesionales(idsProfesionales);
 
+    // // Agregar la lista de especialidades al modelo
+    // List<String> especialidades =
+    // turnoServicio.obtenerEspecialidadesDisponibles();
+    // modelo.put("especialidades", especialidades);
 
-// @GetMapping("/disponibles")
-//     public String mostrarTurnosDisponibles(@RequestParam(name = "especialidad", required = false) Especialidades especialidad, ModelMap modelo) {
-//         List<Long> idsProfesionales = turnoServicio.obtenerIdsProfesionalesPorEspecialidad(especialidad);
+    // // Agregar la lista filtrada al modelo
+    // modelo.put("turnosDisponibles", turnosDisponibles);
 
-//         if (idsProfesionales.isEmpty()) {
-//             return "redirect:/error";
-//         }
+    // return "turnosDisponibles.html";
+    // }
 
-//         List<Turno> turnosDisponibles = turnoServicio.obtenerTurnosDisponiblesPorIdsProfesionales(idsProfesionales);
-
-//         // Agregar la lista de especialidades al modelo
-//         List<String> especialidades = turnoServicio.obtenerEspecialidadesDisponibles();
-//         modelo.put("especialidades", especialidades);
-
-//         // Agregar la lista filtrada al modelo
-//         modelo.put("turnosDisponibles", turnosDisponibles);
-
-//         return "turnosDisponibles.html";
-//     }
-
-// @GetMapping("/disponibles")
-//     public String mostrarTurnosDisponibles(ModelMap modelo) {
-//         List<Turno> turnosDisponibles = turnoServicio.obtenerTurnosDisponibles();
-//         modelo.put("turnosDisponibles", turnosDisponibles);
-//         return "turnosDisponibles.html";
-//     }
+    // @GetMapping("/disponibles")
+    // public String mostrarTurnosDisponibles(ModelMap modelo) {
+    // List<Turno> turnosDisponibles = turnoServicio.obtenerTurnosDisponibles();
+    // modelo.put("turnosDisponibles", turnosDisponibles);
+    // return "turnosDisponibles.html";
+    // }
     @PostMapping("/tomar")
     public String tomarTurno(@RequestParam Long idTurno,
             HttpSession session,
@@ -170,9 +170,4 @@ public String mostrarTurnosDisponibles(@RequestParam(name = "especialidad", requ
         return "redirect:/turnos/mis-turnos-paciente";
     }
 
-
-
 }
-
-
-

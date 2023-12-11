@@ -1,14 +1,10 @@
 package com.egg.salud_webapp.servicios;
+
 import com.egg.salud_webapp.repositorios.ImagenRepositorio;
-
 import com.egg.salud_webapp.entidades.Imagen;
-import com.egg.salud_webapp.entidades.Paciente;
-import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.excepciones.MiException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class ImagenServicio {
     @Autowired
-     private ImagenRepositorio imagenRepositorio;
+    private ImagenRepositorio imagenRepositorio;
+
     @Transactional
     public Imagen guardar(MultipartFile archivo) throws MiException {
         if (archivo != null) {
@@ -33,29 +30,28 @@ public class ImagenServicio {
                 return imagenRepositorio.save(imagen);
 
             } catch (Exception e) {
-                System.err.println(e.getMessage()); //err: el mensaje va a ser de color rojo
+                System.err.println(e.getMessage()); // err: el mensaje va a ser de color rojo
             }
         }
         return null;
     }
 
-
     @Transactional
-    public Imagen actualizar(MultipartFile archivo, String idImagen)throws MiException{
-        if (archivo !=null) {
-            try{
+    public Imagen actualizar(MultipartFile archivo, String idImagen) throws MiException {
+        if (archivo != null) {
+            try {
                 Imagen imagen = new Imagen();
-                if (idImagen!=null) {
+                if (idImagen != null) {
                     Optional<Imagen> respuesta = imagenRepositorio.findById(idImagen);
                     if (respuesta.isPresent()) {
-                        imagen=respuesta.get();
+                        imagen = respuesta.get();
                     }
                 }
                 imagen.setMime(archivo.getContentType());
                 imagen.setName(archivo.getName());
                 imagen.setContenido(archivo.getBytes());
                 return imagenRepositorio.save(imagen);
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
         }

@@ -1,6 +1,5 @@
 package com.egg.salud_webapp.controladores;
 
-import com.egg.salud_webapp.entidades.Imagen;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,17 +36,19 @@ public class ProfesionalControlador {
     @PostMapping("/registrar/profesional")
     public String registrarProfesional(@RequestParam String matricula, @RequestParam Especialidades especialidad,
 
-            
             @RequestParam(value = "atencionVirtual", required = false) Boolean atencionVirtual,
             Double precio,
-            @RequestParam(value = "prestadores", required = false) String[] prestadoresArray, @RequestParam MultipartFile archivo,  @RequestParam String nombre,
+            @RequestParam(value = "prestadores", required = false) String[] prestadoresArray,
+            @RequestParam MultipartFile archivo, @RequestParam String nombre,
             @RequestParam String apellido, @RequestParam String dni,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate fecha_nac, @RequestParam String email, @RequestParam String password,
-            @RequestParam String password2, @RequestParam GeneroEnum genero, 
-             ModelMap modelo) throws MiException {
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
+            @RequestParam String email, @RequestParam String password,
+            @RequestParam String password2, @RequestParam GeneroEnum genero,
+            ModelMap modelo) throws MiException {
         try {
-          
-            profesionalServicio.registrar(archivo, matricula, especialidad, atencionVirtual, precio, prestadoresArray, nombre, apellido, dni, fecha_nac, email, password, password2, genero);
+
+            profesionalServicio.registrar(archivo, matricula, especialidad, atencionVirtual, precio, prestadoresArray,
+                    nombre, apellido, dni, fecha_nac, email, password, password2, genero);
 
             modelo.put("Exito", "Solicitud enviada exitosamente");
 
@@ -62,12 +63,9 @@ public class ProfesionalControlador {
             modelo.put("fecha de nacimiento", fecha_nac);
             modelo.put("genero", genero);
             modelo.put("matricula", matricula);
-            
 
             return "error.html";
         }
     }
 
-    
-   
 }

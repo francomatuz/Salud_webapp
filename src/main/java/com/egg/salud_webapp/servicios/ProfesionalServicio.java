@@ -1,7 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
 import com.egg.salud_webapp.entidades.Imagen;
-import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.entidades.Turno;
@@ -14,7 +13,6 @@ import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
 import com.egg.salud_webapp.repositorios.TurnoRepositorio;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -318,7 +316,7 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     public Profesional getOne(Long id) {
-        return profesionalRepositorio.getOne(id);
+        return profesionalRepositorio.getOne(id); // esto esta deprecado hay que cambiarlo
     }
 
     // Logica de los turnos

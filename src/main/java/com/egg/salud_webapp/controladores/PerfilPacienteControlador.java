@@ -7,7 +7,6 @@ import com.egg.salud_webapp.excepciones.MiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.egg.salud_webapp.servicios.PacienteServicio;
 import java.time.LocalDate;
 import java.util.logging.Level;
@@ -24,23 +23,23 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/perfil")
 public class PerfilPacienteControlador {
 
-@Autowired
+    @Autowired
     private PacienteServicio pacienteServicio;
 
     @GetMapping("/dashboard")
     public String dashboard() {
         return "dashboardpaciente.html";
     }
-    //ELIMINAR
+
+    // ELIMINAR
     @GetMapping("/eliminar")
     public String eliminar(HttpSession session, ModelMap modelo) throws MiException {
-        
+
         Paciente pacienteLogueado = (Paciente) session.getAttribute("usuariosession");
 
         try {
-            
-            pacienteServicio.eliminar(pacienteLogueado.getId());
 
+            pacienteServicio.eliminar(pacienteLogueado.getId());
 
             return "index.html";
 
@@ -52,19 +51,19 @@ public class PerfilPacienteControlador {
         }
 
     }
-    
+
     @GetMapping("/actualizar")
     public String mostrarFormulario(ModelMap modelo, HttpSession session) {
-        
+
         Paciente pacienteLogueado = (Paciente) session.getAttribute("usuariosession");
 
         // Verificar si el usuario está logueado
         if (pacienteLogueado == null) {
-            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir al inicio de sesión
+            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir
+            // al inicio de sesión
             return "redirect:/login";
         }
 
-        
         modelo.put("paciente", pacienteLogueado);
         modelo.put("generos", GeneroEnum.values());
         modelo.put("obrasSociales", ObraSocial.values());
@@ -73,7 +72,8 @@ public class PerfilPacienteControlador {
     }
 
     @PostMapping("/actualizar")
-    public String actualizarPerfil(@RequestParam MultipartFile archivo,@RequestParam String nombre, @RequestParam String apellido,
+    public String actualizarPerfil(@RequestParam MultipartFile archivo, @RequestParam String nombre,
+            @RequestParam String apellido,
             @RequestParam String email, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, ModelMap modelo, HttpSession session)
@@ -84,13 +84,15 @@ public class PerfilPacienteControlador {
 
         // Verificar si el usuario está logueado
         if (pacienteLogueado == null) {
-            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir al inicio de sesión
+            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir
+            // al inicio de sesión
             return "redirect:/login";
         }
 
         try {
             // Actualizar el perfil del paciente (sin cambiar la contraseña)
-            pacienteServicio.actualizar( archivo, pacienteLogueado.getId(), nombre, apellido, email, dni, fecha_nac, obraSocial,
+            pacienteServicio.actualizar(archivo, pacienteLogueado.getId(), nombre, apellido, email, dni, fecha_nac,
+                    obraSocial,
                     genero, null, null);
 
             modelo.put("Exito", "Perfil actualizado exitosamente");
@@ -107,5 +109,5 @@ public class PerfilPacienteControlador {
             return "error.html"; // Página de error
         }
     }
-    //a ver si anda
+    // a ver si anda
 }

@@ -1,4 +1,3 @@
-
 package com.egg.salud_webapp.entidades;
 
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
@@ -7,7 +6,6 @@ import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import java.time.LocalDate;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -40,7 +38,7 @@ public class Paciente extends Usuario {
         super(nombre, apellido, dni, fecha_nac, email, password, genero, rol, imagen);
         this.activo = activo;
         this.obraSocial = obraSocial;
-        this.historiaClinica = historiaClinica;
+        // this.historiaClinica = historiaClinica;
     }
 
     public Boolean getActivo() {
@@ -93,7 +91,5 @@ public class Paciente extends Usuario {
     public void setTurnos(List<Turno> turnos) {
         this.turnos = turnos;
     }
-    
-    
-    
+
 }

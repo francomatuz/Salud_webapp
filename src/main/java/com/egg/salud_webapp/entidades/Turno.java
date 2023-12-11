@@ -8,8 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -21,7 +19,7 @@ public class Turno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @DateTimeFormat(iso = ISO.TIME)
-    
+
     private LocalDateTime fechaHora;
     private boolean disponible;
     @ManyToOne
@@ -44,18 +42,17 @@ public class Turno {
         this.disponible = true;
     }
 
-    public Turno(Long id, LocalDateTime fechaHora, boolean disponible, Profesional profesional, Paciente paciente, int duracionEnMinutos, boolean finalizado) {
+    public Turno(Long id, LocalDateTime fechaHora, boolean disponible, Profesional profesional, Paciente paciente,
+            int duracionEnMinutos, boolean finalizado) {
         this.id = id;
         this.fechaHora = fechaHora;
         this.disponible = true; // se inicialia en true ya que esta disponible para que un paciente lo tome
         this.profesional = profesional;
         this.paciente = paciente;
         this.duracionEnMinutos = duracionEnMinutos;
-        this.isFinalizado = false;  // se inicializa en false ya que no esta finalizado
-        this.isCancelado=false;//se incializa en falso porque el turno no ha sido cancelado aun
+        this.isFinalizado = false; // se inicializa en false ya que no esta finalizado
+        this.isCancelado = false;// se incializa en falso porque el turno no ha sido cancelado aun
     }
-
-
 
     public Turno(Paciente paciente) {
         this.paciente = paciente;
@@ -124,6 +121,5 @@ public class Turno {
     public void setIsCancelado(boolean isCancelado) {
         this.isCancelado = isCancelado;
     }
-
 
 }

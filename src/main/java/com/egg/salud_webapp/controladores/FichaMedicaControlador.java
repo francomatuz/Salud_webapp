@@ -2,7 +2,6 @@ package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.servicios.FichaMedicaServicio;
-import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,17 +24,15 @@ public class FichaMedicaControlador {
 
   @PostMapping("/crear")
   public String crearFichaMedica(
-    @RequestParam String diagnostico,
-    @RequestParam String tratamiento,
-    @RequestParam String notas,
-    @RequestParam ModelMap modelo
-  ) throws MiException {
-      fichaMedicaServicio.crearFichaMedica(
-              diagnostico,
-              tratamiento,
-              notas
-      );
-      modelo.put("Exito", "Ficha Medica creada");
-      return "dashboardprofesional.html";
+      @RequestParam String diagnostico,
+      @RequestParam String tratamiento,
+      @RequestParam String notas,
+      @RequestParam ModelMap modelo) throws MiException {
+    fichaMedicaServicio.crearFichaMedica(
+        diagnostico,
+        tratamiento,
+        notas);
+    modelo.put("Exito", "Ficha Medica creada");
+    return "dashboardprofesional.html";
   }
 }

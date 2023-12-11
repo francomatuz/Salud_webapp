@@ -1,7 +1,6 @@
 package com.egg.salud_webapp.entidades;
 
 import java.time.LocalDate;
-import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,18 +27,18 @@ public class FichaMedica {
   @JoinColumn(name = "historia_clinica_id")
   private HistoriaClinica historiaClinica;
 
-  public FichaMedica() {}
+  public FichaMedica() {
+  }
 
   public FichaMedica(
-    Long id,
-    LocalDate fecha,
-    String diagnostico,
-    String tratamiento,
-    String notas,
-    HistoriaClinica historiaClinica
-  ) {
+      Long id,
+      LocalDate fecha,
+      String diagnostico,
+      String tratamiento,
+      String notas,
+      HistoriaClinica historiaClinica) {
     this.id = id;
-    this.fecha =  fecha;
+    this.fecha = fecha;
     this.diagnostico = diagnostico;
     this.tratamiento = tratamiento;
     this.notas = notas;
@@ -96,21 +95,19 @@ public class FichaMedica {
 
   @Override
   public String toString() {
-    return (
-      "FichaMedica{" +
-      "\nid=" +
-      id +
-      ", \nfecha=" +
-      fecha +
-      ", \ndiagnostico=" +
-      diagnostico +
-      ", \ntratamiento=" +
-      tratamiento +
-      ", \nnotas=" +
-      notas +
-      ", \nhistoriaClinica=" +
-      historiaClinica +
-      '}'
-    );
+    return ("FichaMedica{" +
+        "\nid=" +
+        id +
+        ", \nfecha=" +
+        fecha +
+        ", \ndiagnostico=" +
+        diagnostico +
+        ", \ntratamiento=" +
+        tratamiento +
+        ", \nnotas=" +
+        notas +
+        ", \nhistoriaClinica=" +
+        historiaClinica +
+        '}');
   }
 }

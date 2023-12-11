@@ -16,7 +16,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
-
 @Entity
 public class Profesional extends Usuario {
 
@@ -28,7 +27,6 @@ public class Profesional extends Usuario {
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
 
-    
     // private LocalDateTime agendaTurnos; no se usa
     // private Integer duracionTurno Se hace en la entity turno, y no necesariamente
     // se instancia , haces fecha de inicio y fecha fin
@@ -36,21 +34,20 @@ public class Profesional extends Usuario {
     // Calificaciones que tenga idProfesional y la calificacion que le da el
     // paciente al final del turno. Y aqui tiene que ser el promedio de las que
     // tengan el id del profesional que quiero ver.
-    
+
     private String atencionFisicaDireccion; // cambio de nombre, seguir un patron en el nombramiento de variables.
     private Boolean atencionVirtual;
     private String bio;
-    //ENUM PARA DIFERENCIAR ALTA/BAJA/SOLICITUD
+    // ENUM PARA DIFERENCIAR ALTA/BAJA/SOLICITUD
     private SolicitudEnum alta = SolicitudEnum.SOLICITUD;
     private Double precio = 3000d;
-    private Double calificacion = null; 
+    private Double calificacion = null;
 
     @OneToMany(mappedBy = "profesional", fetch = FetchType.EAGER)
     public List<ProfesionalPrestadores> prestadores;
-    
+
     @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Turno> turnos = new ArrayList<>();
-    
 
     public Profesional(String matricula, Especialidades especialidad,
             Boolean atencionVirtual, Double precio, String nombre, String apellido, String dni,
@@ -60,10 +57,10 @@ public class Profesional extends Usuario {
         this.especialidad = especialidad;
         this.atencionVirtual = atencionVirtual;
         this.precio = precio;
-        this.tipo =  Tipo.PROFESIONAL;
-        
-        //setear aqui el activo
-            
+        this.tipo = Tipo.PROFESIONAL;
+
+        // setear aqui el activo
+
     }
 
     public Profesional() {
@@ -157,5 +154,4 @@ public class Profesional extends Usuario {
         this.turnos = turnos;
     }
 
-    
 }

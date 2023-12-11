@@ -32,6 +32,7 @@ public class PortalControlador {
     public String index() {
         return "index.html";
     }
+
     @GetMapping("/historia")
     public String historia() {
         return "historiaclinica.html";
@@ -50,14 +51,15 @@ public class PortalControlador {
     }
 
     @PostMapping("/registrar/paciente")
-    public String registrarpaciente(@RequestParam String nombre, @RequestParam MultipartFile archivo, @RequestParam String apellido,
+    public String registrarpaciente(@RequestParam String nombre, @RequestParam MultipartFile archivo,
+            @RequestParam String apellido,
             @RequestParam String email, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password,
             @RequestParam String password2, ModelMap modelo) throws MiException, IOException {
 
         try {
-            pacienteServicio.registrar(archivo,nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,
+            pacienteServicio.registrar(archivo, nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,
                     password2);
 
             modelo.put("Exito", "Paciente registrado exitosamente");
@@ -81,7 +83,7 @@ public class PortalControlador {
 
         }
     }
-    
+
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error, ModelMap modelo) {
 
@@ -106,5 +108,5 @@ public class PortalControlador {
 
         return "index.html";
     }
-   
+
 }
