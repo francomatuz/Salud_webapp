@@ -1,7 +1,6 @@
 package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.entidades.Profesional;
-import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.excepciones.MiException;
@@ -16,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,12 +25,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/perfil2")
 public class PerfilProfesionalControlador {
 
-    @Autowired
+@Autowired
     private ProfesionalServicio profesionalServicio;
 
     @GetMapping("/actualizar")
     public String mostrarFormulario(ModelMap modelo, HttpSession session) {
-
+        
         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
 
         // Verificar si el usuario está logueado
@@ -45,7 +43,7 @@ public class PerfilProfesionalControlador {
         for (ObraSocial obraSocial : profesionalServicio.obtenerObrasSocialesPorIdProfesional(profesionalLogueado.getId())) {
             obrasSocialesSelected.add(obraSocial.toString());
         }
-        for (ObraSocial obraSocial : ObraSocial.values()) {
+        for (ObraSocial obraSocial : ObraSocial.values()){
             obrasSocialesList.add(obraSocial.toString());
         }
 
@@ -55,13 +53,15 @@ public class PerfilProfesionalControlador {
         modelo.put("atencionVirtual", profesionalLogueado.getAtencionVirtual());
         modelo.put("prestadores", obrasSocialesSelected);
 
-        return "actualizarprofesional.html";
+        return "actualizarprofesional.html"; // Nombre del formulario de actualización de perfil
     }
 
+
     @PostMapping("/actualizar")
-    public String actualizarPerfil(@RequestParam MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido, @RequestParam String dni, @RequestParam String matricula, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
-            @RequestParam String email,
-            @RequestParam(value = "prestadores", required = false) List<ObraSocial> prestadores, @RequestParam GeneroEnum genero, Double precio, ModelMap modelo, HttpSession session)
+    public String actualizarPerfil(@RequestParam MultipartFile archivo,@RequestParam String nombre, @RequestParam String apellido,@RequestParam String dni,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
+            @RequestParam String email, 
+            
+            @RequestParam(value = "prestadores", required = false) List <ObraSocial> prestadores, @RequestParam GeneroEnum genero, Double precio, ModelMap modelo, HttpSession session)
             throws MiException {
 
         // Obtener el usuario logueado desde la sesión
@@ -69,64 +69,50 @@ public class PerfilProfesionalControlador {
 
         // Verificar si el usuario está logueado
         if (profesionalLogueado == null) {
-            
+            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir al inicio de sesión
             return "redirect:/login";
         }
 
         try {
             // Actualizar el perfil del paciente (sin cambiar la contraseña)
-            profesionalServicio.actualizar(profesionalLogueado, archivo, nombre, apellido, dni, matricula, fecha_nac, email, prestadores,
-                    genero, null, null, precio);
+            profesionalServicio.actualizar(archivo,profesionalLogueado.getId(), nombre, apellido, dni, fecha_nac, email, prestadores,
+                    genero, null , null, precio);
 
-            Profesional profesionalActualizado = profesionalServicio.getById(profesionalLogueado.getId());
-            // Cerrar sesión
-            SecurityContextHolder.getContext().setAuthentication(null);
-
-            modelo.put("profesional", profesionalActualizado);
-            modelo.put("exito", "Perfil actualizado exitosamente");
-
-            return "login.html"; //Se cierra sesión para poder actualizar los datos en el front
+            modelo.put("Exito", "Perfil actualizado exitosamente");
+//TO DO : REDIRECT!
+            return "index.html"; // Página de perfil actualizado
 
         } catch (MiException ex) {
             // Manejar excepciones
             Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
 
-            modelo.put("error", ex.getMessage());
-            modelo.put("nombre", nombre);
-            modelo.put("apellido", apellido);
-            modelo.put("dni", dni);
-            modelo.put("generos", GeneroEnum.values());
-            modelo.put("fecha de nacimiento", fecha_nac);
-            modelo.put("email", email);
-            modelo.put("matricula", matricula);
-            modelo.put("especialidades", Especialidades.values());
-            modelo.put("obrasSociales", ObraSocial.values());
-            modelo.put("atencionVirtual", profesionalLogueado.getAtencionVirtual());
-            modelo.put("obrasSociales", ObraSocial.values());
+            modelo.put("Error", ex.getMessage());
             modelo.put("profesional", profesionalLogueado);
 
-            return "actualizarprofesional.html"; // Se queda en la misma página con cartel de error.
+            return "error.html"; // Página de error
         }
     }
 
     //DAR DE BAJA
     @GetMapping("/darBaja")
-    public String darBaja(HttpSession session, ModelMap modelo) throws MiException {
+    public String darBaja(HttpSession session, ModelMap modelo) throws MiException {       
         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
         profesionalServicio.darBaja(profesionalLogueado.getId());
-        //logica para logout
-        return "index.html";
+       //logica para logout
+       return "index.html";   
     }
-
+    
     //ELIMINAR
     @GetMapping("/eliminar")
     public String eliminar(HttpSession session, ModelMap modelo) throws MiException {
-
+        
         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        
 
         try {
-
+            
             profesionalServicio.eliminar(profesionalLogueado.getId());
+
 
             return "index.html";
 
@@ -138,10 +124,13 @@ public class PerfilProfesionalControlador {
         }
 
     }
-
+    
     @GetMapping("/dashboard2")
     public String dashboard() {
         return "dashboardprofesional.html";
     }
-
+    
+    
+    
+    
 }

@@ -56,7 +56,7 @@ public class PortalControlador {
             pacienteServicio.registrar(archivo,nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,
                     password2);
 
-            modelo.put("exito", "Paciente registrado exitosamente");
+            modelo.put("Exito", "Paciente registrado exitosamente");
 
             return "login.html";
 
@@ -64,16 +64,16 @@ public class PortalControlador {
 
             Logger.getLogger(PortalControlador.class.getName()).log(Level.SEVERE, null, ex);
 
-            modelo.put("error", ex.getMessage());
+            modelo.put("Error", ex.getMessage());
             modelo.put("nombre", nombre);
             modelo.put("apellido", apellido);
             modelo.put("email", email);
             modelo.put("dni", dni);
-            modelo.put("fecha de nacimiento", fecha_nac);            
-            modelo.put("generos", GeneroEnum.values());
-            modelo.put("obrasSociales", ObraSocial.values());
+            modelo.put("fecha de nacimiento", fecha_nac);
+            modelo.put("obra social", obraSocial);
+            modelo.put("genero", genero);
 
-            return "registrarpaciente.html";
+            return "error.html";
 
         }
     }

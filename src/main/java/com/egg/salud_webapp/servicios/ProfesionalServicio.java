@@ -12,7 +12,6 @@ import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,7 @@ public class ProfesionalServicio implements UserDetailsService {
     ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(MultipartFile archivo, String matricula, Especialidades especialidad,
+    public void registrar(MultipartFile archivo,String matricula, Especialidades especialidad,
             Boolean atencionVirtual, Double precio,
             String[] prestadores, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
@@ -52,13 +51,13 @@ public class ProfesionalServicio implements UserDetailsService {
         validarAtributos(prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula /*precio*/);
 
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
-
-        Imagen imagen = imagenServicio.guardar(archivo);
+        
+        Imagen imagen = imagenServicio.guardar(archivo);        
 
         Profesional profesional = new Profesional(matricula, especialidad,
                 atencionVirtual != null ? atencionVirtual : false, precio,
                 nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero, UsuarioEnum.USER, imagen);
-
+                     
         profesionalRepositorio.save(profesional);
 
         for (String prestador : prestadoresList) {
@@ -89,12 +88,12 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizar(Profesional profesional, MultipartFile archivo, String nombre, String apellido, String dni, String matricula, LocalDate fecha_nac, String email,
+    public void actualizar(MultipartFile archivo,Long id, String nombre, String apellido, String dni, LocalDate fecha_nac, String email,
             List<ObraSocial> prestadores, GeneroEnum genero,
             String password, String password2, Double precio) throws MiException {
 
-        validarAtributosActualizar(profesional, archivo, nombre, apellido, dni, matricula, fecha_nac, email, prestadores, precio);
-        Profesional profesionalAActualizar = getById(profesional.getId());
+        validarAtributos2(id, email, password, password2);
+        Profesional profesionalAActualizar = getById(id);
 
         if (profesionalAActualizar != null) {
             profesionalAActualizar.setNombre(nombre != null ? nombre : profesionalAActualizar.getNombre());
@@ -107,58 +106,73 @@ public class ProfesionalServicio implements UserDetailsService {
                     : profesionalAActualizar.getPassword());
             profesionalAActualizar.setPrecio(precio != null ? precio : profesionalAActualizar.getPrecio());
 
+            // profesionalAActualizar.setAtencionFisicaDireccion(
+            // direccion != null ? direccion :
+            // profesionalAActualizar.getAtencionFisicaDireccion());
+            // profesionalAActualizar.setAtencionVirtual(
+            // atencionVirtual != null ? atencionVirtual :
+            // profesionalAActualizar.getAtencionVirtual());
+            // profesionalAActualizar.setBio(bio != null ? bio :
+            // profesionalAActualizar.getBio());
+            if (prestadores == null) {
+                throw new MiException("Se tiene que seleccionar al menos una opcion");
+            }
+
             List<String> obrasSocialesList = new ArrayList<>(); // lista con las obras sociales nuevas
             for (ObraSocial obraSocial : prestadores) {
                 obrasSocialesList.add(obraSocial.toString());
             }
-            profesionalPrestadoresRepositorio.deleteByProfesionalId(profesional.getId());
+            profesionalPrestadoresRepositorio.deleteByProfesionalId(id);
 
-            String idImagen = null;
-            if (profesionalAActualizar.getImagen() != null) {
-                idImagen = profesionalAActualizar.getImagen().getId();
-            }
-            Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
-            profesionalAActualizar.setImagen(imagen);
-            Hibernate.initialize(profesionalAActualizar.getPrestadores());
-            profesionalRepositorio.save(profesionalAActualizar);
             for (String prestador : obrasSocialesList) { // creo una nueva lista con los prestadores nuevos
                 ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesionalAActualizar,
                         prestador);
                 profesionalPrestadoresRepositorio.save(profesionalPrestadores);
             }
+                       String idImagen=null;
+            if (profesionalAActualizar.getImagen()!=null) {
+                idImagen=profesionalAActualizar.getImagen().getId();
+            }
+            Imagen imagen =imagenServicio.actualizar(archivo, idImagen);
+            profesionalAActualizar.setImagen(imagen);
+            Hibernate.initialize(profesionalAActualizar.getPrestadores());
+            profesionalRepositorio.save(profesionalAActualizar);
         }
     }
 
     @Transactional
     public void eliminar(Long id) throws MiException {
-        profesionalPrestadoresRepositorio.deleteByProfesionalId(id);
+       // profesionalPrestadoresRepositorio.deleteById(id);
+      //  profesionalRepositorio.delete(getById(id));
+      
+       // Eliminar registros dependientes en profesional_prestadores
+    profesionalPrestadoresRepositorio.deleteByProfesionalId(id);
 
-        // Eliminar el registro en la tabla principal (profesional)
-        profesionalRepositorio.deleteById(id);
+    // Eliminar el registro en la tabla principal (profesional)
+    profesionalRepositorio.deleteById(id);
 
     }
-
     //Boton para cambiar el estado de baja
-    public void darBaja(Long id) throws MiException {
-        Profesional profesional = getById(id);
-        if (profesional.getAlta() == SolicitudEnum.ACTIVO) {
-            profesional.setAlta(SolicitudEnum.INACTIVO);
-        }
+    public void darBaja(Long id) throws MiException{
+       Profesional profesional = getById(id);
+       if(profesional.getAlta()==SolicitudEnum.ACTIVO){
+           profesional.setAlta(SolicitudEnum.INACTIVO);
+       }
     }
-
-    public void darAlta(Long id) throws MiException {
+    
+    public void darAlta(Long id) throws MiException{
         Profesional profesional = getById(id);
         profesional.setAlta(SolicitudEnum.SOLICITUD);
     }
-
-    public List<Profesional> listarProfesionalesSolicitud() {
+    
+    public List<Profesional> listarProfesionalesSolicitud(){
         return profesionalRepositorio.buscarProfesionalesConSolicitud();
     }
-
-    public List<Profesional> listarProfesionalesSinSolicitud() {
+    
+    public List<Profesional> listarProfesionalesSinSolicitud(){
         return profesionalRepositorio.buscarProfesionalesSinSolicitud();
     }
-
+    
     public boolean tieneBio(Long id) throws MiException {
         Profesional profesional = getById(id);
         return !(profesional.getBio() == null || profesional.getBio() == "" || profesional.getBio().isEmpty());
@@ -167,44 +181,6 @@ public class ProfesionalServicio implements UserDetailsService {
     // Listar profesionales
     public List<Profesional> listarProfesionales() {
         return profesionalRepositorio.findAll();
-    }
-
-    // Listar profesionales por precio
-    public List<Profesional> listarProfesionalesPorPrecio(int num) {
-
-        switch (num) {
-            case 1:
-                return profesionalRepositorio.buscarProfesionalesPorRangoDePrecio(0d, 3000d);
-
-            case 2:
-                return profesionalRepositorio.buscarProfesionalesPorRangoDePrecio(3001d, 5000d);
-
-            case 3:
-                return profesionalRepositorio.buscarProfesionalesPorRangoDePrecio(5001d, Double.MAX_VALUE);
-
-        }
-        return null;
-
-    }
-
-    // Listar profesionales por especialidad
-    public List<Profesional> listarProfesionalesEspecialidad(String especialidad) {
-        return profesionalRepositorio.buscarPorEspecialidad(especialidad);
-    }
-
-    // Listar profesionales por atecion virtual
-    public List<Profesional> listarProfesionalesAtencionVirtual() {
-        return profesionalRepositorio.buscarProfesionalesConAtencionVirtual();
-    }
-
-    // Listar profesionales por apellido
-    public List<Profesional> listarProfesionalesPorApellido(String apellido) {
-        return profesionalRepositorio.buscarPorApellido(apellido);
-    }
-
-    // Listar profesionales por obra social
-    public List<Profesional> listarProfesionalesPorObraSocial(String obraSocial) {
-        return profesionalRepositorio.buscarProfesionalesPorObra(obraSocial);
     }
 
     // Buscar un profesional por id
@@ -228,19 +204,17 @@ public class ProfesionalServicio implements UserDetailsService {
             String password, String password2, String matricula /*Double precio*/)
             throws MiException {
 
-        LocalDate fechaActual = LocalDate.now();
-
-        Profesional dniExistente = profesionalRepositorio.buscarPorDni(dni);
+        Optional<Profesional> dniExistente = profesionalRepositorio.buscarPorDni(dni);
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
-        Profesional matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
-
+        // Optional<Profesional> matriculaExistente =
+        // profesionalRepositorio.buscarPorMatricula(matricula);
         if (prestadores == null) {
             throw new MiException("Se tiene que seleccionar al menos una opcion");
         }
-        if (nombre.isEmpty()) {
+        if (nombre.isEmpty() || nombre == null) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
-        if (apellido.isEmpty()) {
+        if (apellido.isEmpty() || apellido == null) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
         if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
@@ -249,95 +223,57 @@ public class ProfesionalServicio implements UserDetailsService {
         if (email == null || email.isEmpty()) {
             throw new MiException("El email no puede estar vacío o ser nulo");
         }
-        if (dniExistente != null && dniExistente.getDni().equals(dni)) {
+        if (dniExistente.isPresent()) {
             throw new MiException("Ya hay un usuario existente con el Dni ingresado");
         }
-        if (dni.isEmpty() || dni.length() < 7 || dni.length() > 8) {
-            throw new MiException("El dni no puede estar vacío, ser nulo o debe tener 7 u 8 dígitos");
+        if (dni.isEmpty() || dni == null) {
+            throw new MiException("El dni no puede estar vacío o ser nulo");
         }
-        if (fecha_nac == null || fecha_nac.isAfter(fechaActual)) {
-            throw new MiException("La fecha de nacimiento no puede estar vacía o ser posterior a la actual");
+        if (fecha_nac == null) {
+            throw new MiException("La fecha de nacimiento no puede estar vacía ");
         }
-        if (password.isEmpty() || password.length() <= 5) {
+        if (password.isEmpty() || password == null || password.length() <= 5) {
             throw new MiException("La contraseña no puede estar vacia y debe tener más de 5 dígitos");
         }
         if (!password.equals(password2)) {
             throw new MiException("La contraseñas ingresadas deben ser iguales");
         }
-        if (matriculaExistente != null && matriculaExistente.getMatricula().equals(matricula)) {
-            throw new MiException("Ya hay un usuario existente con la matricula ingresada");
+        if (matricula.isEmpty() || matricula == null) {
+            throw new MiException("La matrícula no puede estar vacía o ser nula");
         }
-
-        if (matricula.isEmpty()) {
-            throw new MiException("La matricula no puede estar vacía");
-        }
+   /*     if (precio.isNaN() || precio == null || precio<0){
+            throw new MiException("El precio no es válido");
+        }*/
 
     }
 
     // validar atributos de actualización
-    private void validarAtributosActualizar(Profesional profesional, MultipartFile archivo, String nombre, String apellido, String dni, String matricula, LocalDate fecha_nac, String email,
-            List<ObraSocial> prestadores,
-            Double precio) throws MiException {
+    private void validarAtributos2(Long id, String email, String password, String password2) throws MiException {
 
-        LocalDate fechaActual = LocalDate.now();
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
-        Profesional dniExistente = profesionalRepositorio.buscarPorDni(dni);
-        Profesional matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
 
-        if (nombre.isEmpty()) {
-            throw new MiException("El nombre no puede estar vacío o ser nulo");
-        }
-        if (apellido.isEmpty()) {
-            throw new MiException("El apellido no puede estar vacío o ser nulo");
+        if (emailExistente != null && !emailExistente.getId().equals(id)
+                && emailExistente.getEmail().equalsIgnoreCase(email)) {
+            throw new MiException("Ya hay un usuario existente con el Email ingresado");
         }
 
-        if (profesional.getDni().equals(dni)) {
-
-        } else {
-            if (dniExistente != null && dniExistente.getDni().equals(dni)) {
-                throw new MiException("Ya hay un usuario existente con el dni ingresado");
-            }
-
-            if (dni.isEmpty() || dni.length() < 7 || dni.length() > 8) {
-                throw new MiException("El dni no puede estar vacío, ser nulo o debe tener 7 u 8 dígitos");
-            }
+        if (email == null || email.isEmpty()) {
+            throw new MiException("El email no puede estar vacío o ser nulo");
         }
 
-        if (profesional.getMatricula().equals(matricula)) {
-
-        } else {
-            if (matriculaExistente != null && matriculaExistente.getMatricula().equals(matricula)) {
-                throw new MiException("Ya hay un usuario existente con la matricula ingresada");
-            }
-
-            if (matricula.isEmpty()) {
-                throw new MiException("La matricula no puede estar vacía");
-            }
-        }
-
-        if (fecha_nac == null || fecha_nac.isAfter(fechaActual)) {
-            throw new MiException("La fecha de nacimiento no puede estar vacía o ser posterior a la actual");
-        }
-
-        if (profesional.getEmail().equals(email)) {
-
-        } else {
-            if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
-                throw new MiException("Ya hay un usuario existente con el Email ingresado");
-            }
-
-            if (email == null || email.isEmpty() || !email.contains("@")) {
-                throw new MiException("El email no puede estar vacío, ser nulo y debe contener '@'");
-            }
-        }
-
-        if (prestadores == null) {
-            throw new MiException("Se tiene que seleccionar al menos una opcion");
-        }
-
-//        if (precio == null || precio == 0) {
-//            throw new MiException("El precio no puede estar vacío o ser igual a cero");
-//        }
+        // if (password.isEmpty() || password == null || password.length() <= 5) {
+        // throw new MiException("La contraseña no puede estar vacia y debe tener más de
+        // 5 dígitos");
+        // }
+        // if (!password.equals(password2)) {
+        // throw new MiException("La contraseñas ingresadas deben ser iguales");
+        // }
+        // if (direccion.isEmpty() || direccion == null) {
+        // throw new MiException("El direccion no puede estar vacío o ser nulo");
+        // }
+        // if (bio.isEmpty() || bio == null) {
+        // throw new MiException("La bio no puede estar vacía o ser nula");
+        // }
     }
 
     @Override
@@ -369,18 +305,4 @@ public class ProfesionalServicio implements UserDetailsService {
     public Profesional getOne(Long id) {
         return profesionalRepositorio.getOne(id);
     }
-
-    public void calificacionProfesional(Long idProfesional, Integer calif) {
-        Profesional profesional = profesionalRepositorio.getById(idProfesional);
-
-        profesional.setCantCalificaciones(profesional.getCantCalificaciones() + 1);
-
-        profesional.setSumaCalificaciones(profesional.getSumaCalificaciones() + calif);
-
-        Integer calificacionTotal = (profesional.getSumaCalificaciones() / profesional.getCantCalificaciones());
-
-        profesional.setCalificacion(calificacionTotal.doubleValue());
-
-    }
-
 }
