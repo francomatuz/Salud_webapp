@@ -1,6 +1,6 @@
 package com.egg.salud_webapp.controladores;
 
-import com.egg.salud_webapp.entidades.Imagen;
+
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
