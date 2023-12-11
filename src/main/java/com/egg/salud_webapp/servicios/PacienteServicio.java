@@ -1,6 +1,5 @@
 package com.egg.salud_webapp.servicios;
 
-import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Imagen;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
@@ -37,11 +36,11 @@ public class PacienteServicio implements UserDetailsService {
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(MultipartFile archivo,String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    public void registrar(MultipartFile archivo, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
-        
+
         Paciente paciente = new Paciente();
 
         paciente.setNombre(nombre);
@@ -56,30 +55,23 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setTipo(Tipo.PACIENTE);
         Imagen imagen = imagenServicio.guardar(archivo);
         paciente.setImagen(imagen);
-        
-        
-        HistoriaClinica historiaClinica = new HistoriaClinica();
-        historiaClinica.setPaciente(paciente);
-        paciente.setHistoriaClinica(historiaClinica);
-        
+
         pacienteRepositorio.save(paciente);
     }
 
     // Actualizar paciente
     @Transactional
-    public void actualizar(MultipartFile archivo,Long id, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    public void actualizar(Paciente pacienteUsuario, MultipartFile archivo, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
-        validarAtributosActualizar(id,nombre, apellido, email, dni, fecha_nac);
+        validarAtributosActualizar(pacienteUsuario, nombre, apellido, email, dni, fecha_nac);
 
-        Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(id);
+        Optional<Paciente> respuesta = pacienteRepositorio.buscarPorId(pacienteUsuario.getId());
 
         if (respuesta.isPresent()) {
 
             Paciente paciente = respuesta.get();
-             
-        
-    
+
             paciente.setNombre(nombre != null && !nombre.isEmpty() ? nombre : paciente.getNombre());
             paciente.setApellido(apellido != null && !apellido.isEmpty() ? apellido : paciente.getApellido());
             paciente.setEmail(email != null && !email.isEmpty() ? email : paciente.getEmail());
@@ -87,12 +79,12 @@ public class PacienteServicio implements UserDetailsService {
             paciente.setFecha_nac(fecha_nac != null ? fecha_nac : paciente.getFecha_nac());
             paciente.setObraSocial(obraSocial != null ? obraSocial : paciente.getObraSocial());
             paciente.setGenero(genero != null ? genero : paciente.getGenero());
-            paciente.setPassword(password != null && !password.isEmpty() && password2 != null && !password2.isEmpty()? new BCryptPasswordEncoder().encode(password): paciente.getPassword());
-                       String idImagen=null;
-            if (paciente.getImagen()!=null) {
-                idImagen=paciente.getImagen().getId();
+            paciente.setPassword(password != null && !password.isEmpty() && password2 != null && !password2.isEmpty() ? new BCryptPasswordEncoder().encode(password) : paciente.getPassword());
+            String idImagen = null;
+            if (paciente.getImagen() != null) {
+                idImagen = paciente.getImagen().getId();
             }
-            Imagen imagen =imagenServicio.actualizar(archivo, idImagen);
+            Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
             paciente.setImagen(imagen);
             pacienteRepositorio.save(paciente);
         }
@@ -141,31 +133,34 @@ public class PacienteServicio implements UserDetailsService {
 
         Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
+        LocalDate fechaActual = LocalDate.now();
 
-        if (nombre.isEmpty() || nombre == null) {
+        if (nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
-        if (apellido.isEmpty() || apellido == null) {
+        if (apellido.isEmpty()) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
         if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
             throw new MiException("Ya hay un usuario existente con el Email ingresado");
         }
 
-        if (email == null || email.isEmpty()) {
-            throw new MiException("El email no puede estar vacío o ser nulo");
+        if (email == null || email.isEmpty() || !email.contains("@")) {
+            throw new MiException("El email no puede estar vacío, ser nulo y debe contener '@'");
         }
+
         if (dniExistente != null && dniExistente.getDni().equals(dni)) {
             throw new MiException("Ya hay un usuario existente con el dni ingresado");
         }
 
-        if (dni.isEmpty() || dni == null) {
-            throw new MiException("El dni no puede estar vacío o ser nulo");
+        if (dni.isEmpty() || dni.length() < 7 || dni.length() > 8) {
+            throw new MiException("El dni no puede estar vacío, ser nulo o debe tener 7 u 8 dígitos");
         }
-        if (fecha_nac == null) {
-            throw new MiException("La fecha de nacimiento no puede estar vacía ");
+
+        if (fecha_nac == null || fecha_nac.isAfter(fechaActual)) {
+            throw new MiException("La fecha de nacimiento no puede estar vacía o ser posterior a la actual");
         }
-        if (password.isEmpty() || password == null || password.length() <= 5) {
+        if (password.isEmpty() || password.length() <= 5) {
             throw new MiException("La contraseña no puede estar vacia y debe tener más de 5 dígitos");
         }
         if (!password.equals(password2)) {
@@ -173,41 +168,46 @@ public class PacienteServicio implements UserDetailsService {
         }
     }
 
-
-     private void validarAtributosActualizar(Long id,String nombre, String apellido, String email, String dni, LocalDate fecha_nac) throws MiException {
+    private void validarAtributosActualizar(Paciente PacienteUsuario, String nombre, String apellido, String email, String dni, LocalDate fecha_nac) throws MiException {
 
         Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
-
-        if (nombre.isEmpty() || nombre == null) {
+        LocalDate fechaActual = LocalDate.now();
+        if (nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
-        if (apellido.isEmpty() || apellido == null) {
+        if (apellido.isEmpty()) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
-        if (emailExistente != null && !emailExistente.getId().equals(id) && emailExistente.getEmail().equalsIgnoreCase(email)) {
-            throw new MiException("Ya hay un usuario existente con el Email ingresado");
+
+        if (PacienteUsuario.getDni().equals(dni)) {
+
+        } else {
+            if (dniExistente != null && dniExistente.getDni().equals(dni)) {
+                throw new MiException("Ya hay un usuario existente con el dni ingresado");
+            }
+
+            if (dni.isEmpty() || dni.length() < 7 || dni.length() > 8) {
+                throw new MiException("El dni no puede estar vacío, ser nulo o debe tener 7 u 8 dígitos");
+            }
         }
-    
-        if (email == null || email.isEmpty()) {
-            throw new MiException("El email no puede estar vacío o ser nulo");
+
+        if (fecha_nac == null || fecha_nac.isAfter(fechaActual)) {
+            throw new MiException("La fecha de nacimiento no puede estar vacía o ser posterior a la actual");
         }
-        if (dniExistente != null && !dniExistente.getId().equals(id) && dniExistente.getDni().equals(dni)) {
-            throw new MiException("Ya hay un usuario existente con el dni ingresado");
+
+        if (PacienteUsuario.getEmail().equals(email)) {
+
+        } else {
+            if (emailExistente != null && emailExistente.getEmail().equalsIgnoreCase(email)) {
+                throw new MiException("Ya hay un usuario existente con el Email ingresado");
+            }
+
+            if (email == null || email.isEmpty() || !email.contains("@")) {
+                throw new MiException("El email no puede estar vacío, ser nulo y debe contener '@'");
+            }
         }
-    
-        if (dni.isEmpty() || dni == null) {
-            throw new MiException("El dni no puede estar vacío o ser nulo");
-        }
-        if (fecha_nac == null) {
-            throw new MiException("La fecha de nacimiento no puede estar vacía ");
-        }
-        // if (password.isEmpty() || password == null || password.length() <= 5) {
-        //     throw new MiException("La contraseña no puede estar vacia y debe tener más de 5 dígitos");
-        // }
-        // if (!password.equals(password2)) {
-        //     throw new MiException("La contraseñas ingresadas deben ser iguales");
-        // } // HAY QUE HACER LA VERIFICACION DE LA PASS CUANDO ACTUALIZA
+
     }
 
     @Override
@@ -235,8 +235,9 @@ public class PacienteServicio implements UserDetailsService {
         }
 
     }
-        public Paciente getOne(Long id){
+
+    public Paciente getOne(Long id) {
         return pacienteRepositorio.getOne(id);
     }
-    
+
 }
