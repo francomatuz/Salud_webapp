@@ -1,31 +1,3 @@
-*{
-    box-sizing: border-box;
-    padding: 0;
-    margin:0;
-}
-body{
-    background-color:  #e0e1dd;
-}
-html{
-    font-size: 62.5%;
-    font-family: 'Montserrat', sans-serif;
-}
-
-.navbar {
-  background-color: #1b263b; 
-}
-
-.navbar .nav-link {
-  color: #ffffff; /* Cambiar el color del texto a blanco (#ffffff) */
-}
-
-
-.logo{
-    font-family: 'Montserrat', sans-serif;
-    font-size: large;
-    font-weight: bold;
-    color: #ffffff;
-}
 .container-fluid a{
     text-align: center;
     
@@ -170,4 +142,26 @@ input{
     display: inlineblock;
     width:100px;
     color: #00b4d8;
+}
+
+.title h1{
+    text-align: center;
+    color: #1b263b;
+    font-size: 4.7em !important;
+    font-weight: 600;
+}
+.galeria{
+    display: flex !important;
+    overflow-y:auto !important;
+}
+.col-md-2{
+    margin-right: 18px;
+}
+.card{
+    overflow: hidden;
+}
+.card img{
+    height:200px;
+    width:220px;
+    object-fit:cover;
 }

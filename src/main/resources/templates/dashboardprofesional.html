@@ -62,7 +62,7 @@
                         </div>
                     </div>
                    <div class="card-body" th:if="${session.usuariosession.alta == T(com.egg.salud_webapp.enumeraciones.SolicitudEnum).INACTIVO}">
-                        <a th:href="@{/perfil2/solicitarAlta}" class="btn btn-success btn-sm mb-2">Solicitud de Alta</a>
+                        <a th:href="@{/perfil2/solicitarAlta}" class="btn btn-success btn-sm mb-2">Me di de baja, pero me arrepenti, quiero volver :(</a>
                     </div>
                     
                     <div class="card-body" th:if="${session.usuariosession.alta == T(com.egg.salud_webapp.enumeraciones.SolicitudEnum).SOLICITUD}">
@@ -105,6 +105,13 @@
                     </div>
                 </div>
 
+                 <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <form th:action="@{/perfil2/precio}" method="POST">
+                        <label for="exampleInputEmail1" class="form-label">Cambiar valor de la consulta</label>
+                
+                
                 <!-- Sección de citas programadas -->
                 <div class="card">
                     <div class="card-body">

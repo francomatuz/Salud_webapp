@@ -384,4 +384,11 @@ public class ProfesionalServicio implements UserDetailsService {
 
     }
 
+    @Transactional
+    public void settearPrecioConsulta(Double precio, Long id) throws MiException {
+        Profesional profesional = getById(id);
+        profesional.setPrecio(precio);
+        profesionalRepositorio.save(profesional);
+    }
+    
 }

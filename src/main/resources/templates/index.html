@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-       
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> 
     <head th:replace= "/fragments/head :: head" ></head>
 
     <body>
         <header>
-            
             <nav th:replace= "/fragments/navbar :: nav" ></nav>
-            
         </header>
 
         <div class="container-fluid" id="size">
@@ -23,22 +20,23 @@
         </div>
 
 
-        <section class="row" id="profesionales">
-            <div class="section-title">
-                <br>
-                <h1>Nuestros Profesionales</h4>
-                    <br>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card" style="width: 18rem">
-                            <img
-                                src="/img/doctorImgGeneric.jpg"
+        <div class="title">
+            <h1>PROFESIONALES<h1>
+        </div>
+        <div class="container galeria" id="profesionales">
+        <div th:each="profesional:${profesionales}" class="col-md-2">
+            <div class="card mb-2">
+                        <div class="card">
+                            <img th:src="@{/imagen/profesional/__${profesional.id}__}"
                                 class="card-img-top"
                                 alt="img"
                                 />
                             <div class="card-body">
-                                <h5 class="card-title">Nombre Profesional</h5>
+                                <h5 th:text="${profesional.nombre}" class="card-title"></h5>
+                                <p th:text="${profesional.especialidad}" class="card-text">
+                                </p>
                                 <p class="card-text">
+                                    Bio
                                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                                     eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
                                     enim ad minim veniam, quis nostrud exercitation ullamco laboris
@@ -47,65 +45,9 @@
                                 <button type="submit" class="btn btn-primary">Contactar</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card" style="width: 18rem">
-                            <img
-                                src="/img/doctorImgGeneric.jpg"
-                                class="card-img-top"
-                                alt="img"
-                                />
-                            <div class="card-body">
-                                <h5 class="card-title">Nombre Profesional</h5>
-                                <p class="card-text">
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                                    enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                                    nisi ut aliquip ex ea commodo consequat.
-                                </p>
-                                <button type="submit" class="btn btn-primary">Contactar</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card" style="width: 18rem">
-                            <img
-                                src="/img/doctorImgGeneric.jpg"
-                                class="card-img-top"
-                                alt="img"
-                                />
-                            <div class="card-body">
-                                <h5 class="card-title">Nombre Profesional</h5>
-                                <p class="card-text">
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                                    enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                                    nisi ut aliquip ex ea commodo consequat.
-                                </p>
-                                <button type="submit" class="btn btn-primary">Contactar</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card" style="width: 18rem">
-                            <img
-                                src="/img/doctorImgGeneric.jpg"
-                                class="card-img-top"
-                                alt="img"
-                                />
-                            <div class="card-body">
-                                <h5 class="card-title">Nombre Profesional</h5>
-                                <p class="card-text">
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                                    enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                                    nisi ut aliquip ex ea commodo consequat.
-                                </p>
-                                <button type="submit" class="btn btn-primary">Contactar</button>
-                            </div>
-                        </div>
-                    </div>
-                    </section>
+            </div>
+        </div>
+    </div>
         
                     <footer th:replace="/fragments/footer :: footer"></footer>
 

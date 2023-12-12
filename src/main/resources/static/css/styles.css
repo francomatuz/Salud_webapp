@@ -1,0 +1,39 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin:0;
+}
+body{
+    background-color:#1d1e21;
+}
+html{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 62.5%;
+    
+}
+.navbar {
+  background-color: #0096c7; 
+}
+.navbar .nav-link {
+  color:#caf0f8; 
+}
+
+.nav a:hover{
+    text-shadow: 0 0 10px white;
+    cursor:pointer;
+}
+.collapse .navbar-nav .nav-link {
+    padding: 6px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.navbar .nav-link[href*="/login"] .fs-5 {
+  color: #caf0f8; /* Cambiar el color del texto a rojo (#ff0000) para el enlace "Login" */
+}
+
+.logo{
+    font-size: large;
+    font-weight: bold;
+    color: #caf0f8; 
+}

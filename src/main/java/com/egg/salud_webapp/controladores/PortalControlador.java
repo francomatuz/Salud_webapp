@@ -1,12 +1,15 @@
 package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.entidades.Paciente;
+import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.servicios.PacienteServicio;
+import com.egg.salud_webapp.servicios.ProfesionalServicio;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
@@ -27,9 +30,13 @@ public class PortalControlador {
 
     @Autowired
     private PacienteServicio pacienteServicio;
+    @Autowired
+    private ProfesionalServicio profesionalServicio;
 
-    @GetMapping("/")
-    public String index() {
+   @GetMapping("/")
+    public String index(ModelMap modelo) {
+         List<Profesional> profesionales = profesionalServicio.listarProfesionales();
+        modelo.addAttribute("profesionales", profesionales);
         return "index.html";
     }
 
@@ -96,11 +103,11 @@ public class PortalControlador {
         if (usuarioSession instanceof Paciente) {
             Paciente logueado = (Paciente) usuarioSession;
             if (logueado.getRol().toString().equals("ADMIN")) {
-                return "redirect:/index";
+                return "redirect:/";
             }
         }
 
-        return "index.html";
+        return "redirect:/";
     }
    
 }
