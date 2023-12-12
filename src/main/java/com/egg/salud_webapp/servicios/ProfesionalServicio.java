@@ -1,9 +1,9 @@
 package com.egg.salud_webapp.servicios;
 
 import com.egg.salud_webapp.entidades.Imagen;
-import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
+import com.egg.salud_webapp.entidades.Turno;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
@@ -12,11 +12,13 @@ import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
-import java.math.BigDecimal;
+import com.egg.salud_webapp.repositorios.TurnoRepositorio;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,8 @@ public class ProfesionalServicio implements UserDetailsService {
     ProfesionalPrestadoresRepositorio profesionalPrestadoresRepositorio;
     @Autowired
     ImagenServicio imagenServicio;
+    @Autowired
+    TurnoRepositorio turnoRepositorio;
 
     @Transactional
     public void registrar(MultipartFile archivo, String matricula, Especialidades especialidad,
@@ -49,7 +53,9 @@ public class ProfesionalServicio implements UserDetailsService {
             String[] prestadores, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
             String email, String password, String password2, GeneroEnum genero) throws MiException {
-        validarAtributos(prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula /*precio*/);
+        validarAtributos(prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula /*
+                                                                                                               * precio
+                                                                                                               */);
 
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
 
@@ -57,7 +63,8 @@ public class ProfesionalServicio implements UserDetailsService {
 
         Profesional profesional = new Profesional(matricula, especialidad,
                 atencionVirtual != null ? atencionVirtual : false, precio,
-                nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero, UsuarioEnum.USER, imagen);
+                nombre, apellido, dni, fecha_nac, email, new BCryptPasswordEncoder().encode(password), genero,
+                UsuarioEnum.USER, imagen);
 
         profesionalRepositorio.save(profesional);
 
@@ -89,11 +96,13 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizar(Profesional profesional, MultipartFile archivo, String nombre, String apellido, String dni, String matricula, LocalDate fecha_nac, String email,
+    public void actualizar(Profesional profesional, MultipartFile archivo, String nombre, String apellido, String dni,
+            String matricula, LocalDate fecha_nac, String email,
             List<ObraSocial> prestadores, GeneroEnum genero,
             String password, String password2, Double precio) throws MiException {
 
-        validarAtributosActualizar(profesional, archivo, nombre, apellido, dni, matricula, fecha_nac, email, prestadores, precio);
+        validarAtributosActualizar(profesional, archivo, nombre, apellido, dni, matricula, fecha_nac, email,
+                prestadores, precio);
         Profesional profesionalAActualizar = getById(profesional.getId());
 
         if (profesionalAActualizar != null) {
@@ -138,7 +147,7 @@ public class ProfesionalServicio implements UserDetailsService {
 
     }
 
-    //Boton para cambiar el estado de baja
+    // Boton para cambiar el estado de baja
     public void darBaja(Long id) throws MiException {
         Profesional profesional = getById(id);
         if (profesional.getAlta() == SolicitudEnum.ACTIVO) {
@@ -208,13 +217,8 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     // Buscar un profesional por id
-    public Profesional getById(Long id) throws MiException {
-        Profesional profesional = profesionalRepositorio.getById(id);
-        if (profesional == null) {
-            throw new MiException("No se encontró un profesional con los datos ingresados");
-        } else {
-            return profesional;
-        }
+    public Profesional getById(Long id)  {
+        return profesionalRepositorio.getById(id);
     }
 
     @Transactional(readOnly = true)
@@ -225,7 +229,7 @@ public class ProfesionalServicio implements UserDetailsService {
     // validar los atributos de creación
     private void validarAtributos(String[] prestadores, String nombre, String apellido, String email, String dni,
             LocalDate fecha_nac,
-            String password, String password2, String matricula /*Double precio*/)
+            String password, String password2, String matricula /* Double precio */)
             throws MiException {
 
         LocalDate fechaActual = LocalDate.now();
@@ -275,7 +279,8 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     // validar atributos de actualización
-    private void validarAtributosActualizar(Profesional profesional, MultipartFile archivo, String nombre, String apellido, String dni, String matricula, LocalDate fecha_nac, String email,
+    private void validarAtributosActualizar(Profesional profesional, MultipartFile archivo, String nombre,
+            String apellido, String dni, String matricula, LocalDate fecha_nac, String email,
             List<ObraSocial> prestadores,
             Double precio) throws MiException {
 
@@ -335,9 +340,9 @@ public class ProfesionalServicio implements UserDetailsService {
             throw new MiException("Se tiene que seleccionar al menos una opcion");
         }
 
-//        if (precio == null || precio == 0) {
-//            throw new MiException("El precio no puede estar vacío o ser igual a cero");
-//        }
+        // if (precio == null || precio == 0) {
+        // throw new MiException("El precio no puede estar vacío o ser igual a cero");
+        // }
     }
 
     @Override
@@ -366,21 +371,35 @@ public class ProfesionalServicio implements UserDetailsService {
 
     }
 
-    public Profesional getOne(Long id) {
-        return profesionalRepositorio.getOne(id);
+    
+
+    // Logica de los turnos
+    @Transactional
+    public List<Turno> generarTurnosDisponibles(Long id, LocalDate fechaInicio, LocalDate fechaFin,
+            LocalTime horarioInicio, LocalTime horarioFin, int duracionTurnoEnMinutos) throws MiException {
+        Profesional profesional = getById(id);
+        List<Turno> turnosDisponibles = new ArrayList<>();
+
+        DayOfWeek[] diasLaborables = { DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
+                DayOfWeek.FRIDAY };
+
+        for (LocalDate fecha = fechaInicio; !fecha.isAfter(fechaFin); fecha = fecha.plusDays(1)) {
+            for (DayOfWeek diaLaborable : diasLaborables) {
+                if (fecha.getDayOfWeek() == diaLaborable) {
+                    LocalDateTime fechaHoraInicio = LocalDateTime.of(fecha, horarioInicio);
+                    LocalDateTime fechaHoraFin = fecha.atTime(horarioFin);
+
+                    while (fechaHoraInicio.isBefore(fechaHoraFin)) {
+                        turnosDisponibles.add(new Turno(profesional, fechaHoraInicio, duracionTurnoEnMinutos));
+                        fechaHoraInicio = fechaHoraInicio.plusMinutes(duracionTurnoEnMinutos);
+                    }
+                }
+            }
+        }
+
+        // Guardar los turnos en la base de datos
+        turnosDisponibles.forEach(turnoRepositorio::save);
+
+        return turnosDisponibles;
     }
-
-    public void calificacionProfesional(Long idProfesional, Integer calif) {
-        Profesional profesional = profesionalRepositorio.getById(idProfesional);
-
-        profesional.setCantCalificaciones(profesional.getCantCalificaciones() + 1);
-
-        profesional.setSumaCalificaciones(profesional.getSumaCalificaciones() + calif);
-
-        Integer calificacionTotal = (profesional.getSumaCalificaciones() / profesional.getCantCalificaciones());
-
-        profesional.setCalificacion(calificacionTotal.doubleValue());
-
-    }
-
 }

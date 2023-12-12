@@ -67,11 +67,8 @@ nav a:hover{
     border: 1px solid #ccc;
 }
 .card{
-    display: flex;
     color: white !important;
     background-color: #1b263b !important;
-    margin-left: 48px;
-    margin-top: 10px;
 }
 .section-title{
     margin-top: 10px;
@@ -170,4 +167,7 @@ input{
     display: inlineblock;
     width:100px;
     color: #00b4d8;
+}
+.title{
+    text-align: center;
 }

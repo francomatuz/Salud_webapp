@@ -39,7 +39,8 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password, GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {       
+    public Usuario(String nombre, String apellido, String dni, LocalDate fecha_nac, String email, String password,
+            GeneroEnum genero, UsuarioEnum rol, Imagen imagen) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;

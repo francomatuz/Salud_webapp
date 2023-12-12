@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class ErroresControlador implements ErrorController{
+public class ErroresControlador implements ErrorController {
 
-    @RequestMapping(value ="/error", method = { RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView renderErrorPage(HttpServletRequest httpRequest){
+    @RequestMapping(value = "/error", method = { RequestMethod.GET, RequestMethod.POST })
+    public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
 
         ModelAndView errorPage = new ModelAndView("error");
         String errorMsg = "";
-        int httpErrorCode= getErrorCode (httpRequest);
+        int httpErrorCode = getErrorCode(httpRequest);
 
         switch (httpErrorCode) {
             case 400: {
@@ -39,19 +39,19 @@ public class ErroresControlador implements ErrorController{
                 errorMsg = "Ocurrió un error interno.";
                 break;
             }
-            }
-    
-            errorPage.addObject("codigo", httpErrorCode);
-            errorPage.addObject("mensaje", errorMsg);
-            return errorPage;
+        }
+
+        errorPage.addObject("codigo", httpErrorCode);
+        errorPage.addObject("mensaje", errorMsg);
+        return errorPage;
     }
 
-    private int getErrorCode(HttpServletRequest httpRequest){
+    private int getErrorCode(HttpServletRequest httpRequest) {
         return (Integer) httpRequest.getAttribute("javax.servlet.error.status_code");
     }
 
-    public String getErrorPath(){
+    public String getErrorPath() {
         return "/error.html";
     }
-    
+
 }

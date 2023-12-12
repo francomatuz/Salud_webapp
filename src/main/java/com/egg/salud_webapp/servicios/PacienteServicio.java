@@ -36,7 +36,8 @@ public class PacienteServicio implements UserDetailsService {
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(MultipartFile archivo, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    public void registrar(MultipartFile archivo, String nombre, String apellido, String email, String dni,
+            LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         validarAtributos(nombre, apellido, email, dni, fecha_nac, password, password2);
@@ -61,7 +62,8 @@ public class PacienteServicio implements UserDetailsService {
 
     // Actualizar paciente
     @Transactional
-    public void actualizar(Paciente pacienteUsuario, MultipartFile archivo, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    public void actualizar(Paciente pacienteUsuario, MultipartFile archivo, String nombre, String apellido,
+            String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         validarAtributosActualizar(pacienteUsuario, nombre, apellido, email, dni, fecha_nac);
@@ -79,7 +81,9 @@ public class PacienteServicio implements UserDetailsService {
             paciente.setFecha_nac(fecha_nac != null ? fecha_nac : paciente.getFecha_nac());
             paciente.setObraSocial(obraSocial != null ? obraSocial : paciente.getObraSocial());
             paciente.setGenero(genero != null ? genero : paciente.getGenero());
-            paciente.setPassword(password != null && !password.isEmpty() && password2 != null && !password2.isEmpty() ? new BCryptPasswordEncoder().encode(password) : paciente.getPassword());
+            paciente.setPassword(password != null && !password.isEmpty() && password2 != null && !password2.isEmpty()
+                    ? new BCryptPasswordEncoder().encode(password)
+                    : paciente.getPassword());
             String idImagen = null;
             if (paciente.getImagen() != null) {
                 idImagen = paciente.getImagen().getId();
@@ -168,7 +172,8 @@ public class PacienteServicio implements UserDetailsService {
         }
     }
 
-    private void validarAtributosActualizar(Paciente PacienteUsuario, String nombre, String apellido, String email, String dni, LocalDate fecha_nac) throws MiException {
+    private void validarAtributosActualizar(Paciente PacienteUsuario, String nombre, String apellido, String email,
+            String dni, LocalDate fecha_nac) throws MiException {
 
         Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
@@ -236,8 +241,6 @@ public class PacienteServicio implements UserDetailsService {
 
     }
 
-    public Paciente getOne(Long id) {
-        return pacienteRepositorio.getOne(id);
-    }
+   
 
 }
