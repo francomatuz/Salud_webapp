@@ -8,19 +8,17 @@ import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.SolicitudEnum;
+import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
-import com.egg.salud_webapp.repositorios.TurnoRepositorio;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -53,13 +51,14 @@ public class ProfesionalServicio implements UserDetailsService {
             String[] prestadores, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
             String email, String password, String password2, GeneroEnum genero) throws MiException {
-        validarAtributos(prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula /*
-                                                                                                               * precio
-                                                                                                               */);
+        validarAtributos(archivo, prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula /*precio*/);
 
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
 
-        Imagen imagen = imagenServicio.guardar(archivo);
+        Imagen imagen = null;
+        Tipo tipoUsuario = Tipo.PROFESIONAL;
+
+        imagen = imagenServicio.guardar(archivo, tipoUsuario);
 
         Profesional profesional = new Profesional(matricula, especialidad,
                 atencionVirtual != null ? atencionVirtual : false, precio,
@@ -122,14 +121,15 @@ public class ProfesionalServicio implements UserDetailsService {
             }
             profesionalPrestadoresRepositorio.deleteByProfesionalId(profesional.getId());
 
-            String idImagen = null;
-            if (profesionalAActualizar.getImagen() != null) {
-                idImagen = profesionalAActualizar.getImagen().getId();
+            if (archivo != null && !archivo.isEmpty()) {
+                String idImagen = null;
+                if (profesionalAActualizar.getImagen() != null) {
+                    idImagen = profesionalAActualizar.getImagen().getId();
+                }
+                Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
+                profesionalAActualizar.setImagen(imagen);
             }
-            Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
-            profesionalAActualizar.setImagen(imagen);
-            Hibernate.initialize(profesionalAActualizar.getPrestadores());
-            profesionalRepositorio.save(profesionalAActualizar);
+
             for (String prestador : obrasSocialesList) { // creo una nueva lista con los prestadores nuevos
                 ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesionalAActualizar,
                         prestador);
@@ -227,7 +227,7 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     // validar los atributos de creación
-    private void validarAtributos(String[] prestadores, String nombre, String apellido, String email, String dni,
+    private void validarAtributos(MultipartFile archivo, String[] prestadores, String nombre, String apellido, String email, String dni,
             LocalDate fecha_nac,
             String password, String password2, String matricula /* Double precio */)
             throws MiException {
@@ -236,6 +236,12 @@ public class ProfesionalServicio implements UserDetailsService {
 
         Profesional dniExistente = profesionalRepositorio.buscarPorDni(dni);
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
+        // Optional<Profesional> matriculaExistente =
+        // profesionalRepositorio.buscarPorMatricula(matricula);
+        if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+            throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
+        }
+
         Profesional matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
 
         if (prestadores == null) {
@@ -288,6 +294,10 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
         Profesional dniExistente = profesionalRepositorio.buscarPorDni(dni);
         Profesional matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
+
+        if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+            throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
+        }
 
         if (nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
