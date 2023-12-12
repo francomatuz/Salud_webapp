@@ -217,13 +217,8 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     // Buscar un profesional por id
-    public Profesional getById(Long id) throws MiException {
-        Profesional profesional = profesionalRepositorio.getById(id);
-        if (profesional == null) {
-            throw new MiException("No se encontró un profesional con los datos ingresados");
-        } else {
-            return profesional;
-        }
+    public Profesional getById(Long id)  {
+        return profesionalRepositorio.getById(id);
     }
 
     @Transactional(readOnly = true)
@@ -376,9 +371,7 @@ public class ProfesionalServicio implements UserDetailsService {
 
     }
 
-    public Profesional getOne(Long id) {
-        return profesionalRepositorio.getOne(id);
-    }
+    
 
     // Logica de los turnos
     @Transactional

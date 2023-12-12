@@ -241,8 +241,6 @@ public class PacienteServicio implements UserDetailsService {
 
     }
 
-    public Paciente getOne(Long id) {
-        return pacienteRepositorio.getOne(id);
-    }
+   
 
 }

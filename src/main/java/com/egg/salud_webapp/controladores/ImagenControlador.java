@@ -10,9 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @RequestMapping("/imagen")
@@ -24,7 +21,7 @@ public class ImagenControlador {
 
     @GetMapping("/paciente/{id}")
     public ResponseEntity<byte[]> obtenerImagenPaciente(@PathVariable Long id) {
-        Paciente paciente = pacienteServicio.getOne(id);
+        Paciente paciente = pacienteServicio.getById(id);
         byte[] imagenBytes = paciente.getImagen().getContenido();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
@@ -34,7 +31,7 @@ public class ImagenControlador {
 
     @GetMapping("/profesional/{id}")
     public ResponseEntity<byte[]> ObtenerImagenProfesional(@PathVariable Long id) {
-        Profesional profesional = profesionalServicio.getOne(id);
+        Profesional profesional = profesionalServicio.getById(id);
         byte[] imagen = profesional.getImagen().getContenido();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
