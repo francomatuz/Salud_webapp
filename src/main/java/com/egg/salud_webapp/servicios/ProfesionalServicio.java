@@ -1,7 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
 import com.egg.salud_webapp.entidades.Imagen;
-import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
@@ -13,13 +12,10 @@ import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import javax.servlet.http.HttpSession;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -117,14 +113,15 @@ public class ProfesionalServicio implements UserDetailsService {
             }
             profesionalPrestadoresRepositorio.deleteByProfesionalId(profesional.getId());
 
-            String idImagen = null;
-            if (profesionalAActualizar.getImagen() != null) {
-                idImagen = profesionalAActualizar.getImagen().getId();
+            if (archivo != null && !archivo.isEmpty()) {
+                String idImagen = null;
+                if (profesionalAActualizar.getImagen() != null) {
+                    idImagen = profesionalAActualizar.getImagen().getId();
+                }
+                Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
+                profesionalAActualizar.setImagen(imagen);
             }
-            Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
-            profesionalAActualizar.setImagen(imagen);
-            Hibernate.initialize(profesionalAActualizar.getPrestadores());
-            profesionalRepositorio.save(profesionalAActualizar);
+
             for (String prestador : obrasSocialesList) { // creo una nueva lista con los prestadores nuevos
                 ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesionalAActualizar,
                         prestador);
@@ -238,10 +235,10 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
         // Optional<Profesional> matriculaExistente =
         // profesionalRepositorio.buscarPorMatricula(matricula);
-        if (archivo.getSize() > 5 * 1024 * 1024 || archivo.getContentType().startsWith("image")) {
-            throw new MiException("El archivo debe ser un imagen y no debe superar los 5MB");
+        if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+            throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
         }
-        
+
         Profesional matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
 
         if (prestadores == null) {
@@ -293,6 +290,10 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
         Profesional dniExistente = profesionalRepositorio.buscarPorDni(dni);
         Profesional matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
+
+        if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+            throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
+        }
 
         if (nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
