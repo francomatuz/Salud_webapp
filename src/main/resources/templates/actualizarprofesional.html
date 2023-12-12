@@ -10,9 +10,16 @@
 
 <body>
     <nav th:replace="/fragments/navbar :: nav"></nav>
-    
+
+    <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError">
+        <div class="card-body">
+            <h5 class="card-title">Error!</h5>
+            <p class="card-text" th:text="${error}"></p>
+        </div>
+    </div>
+
     <div class="titulo">
-    <h1>Actualizar/Modificar datos del Profesional</h1>
+        <h1>Actualizar/Modificar datos del Profesional</h1>
     </div>
     <div class="container">
         <form class="formulario" th:action="@{/perfil2/actualizar}" method="POST" enctype="multipart/form-data">
@@ -20,19 +27,19 @@
             <div class="col-md-5">
                 <label for="validationDefault01" class="form-label">Nombre</label>
                 <input type="text" name="nombre" class="form-control" id="validationDefault01"
-                    th:value="${profesional.nombre}" required>
+                    th:value="${profesional.nombre}">
             </div>
             <div class="col-md-5">
                 <label for="validationDefault02" class="form-label">Apellido</label>
                 <input type="text" name="apellido" class="form-control" id="validationDefault02"
-                    th:value="${profesional.apellido}" required>
+                    th:value="${profesional.apellido}">
             </div>
             <div class="col-md-3">
                 <label for="validationDefaultUsername" class="form-label">DNI o Identificación</label>
                 <div class="input-group">
                     <span class="input-group-text" id="inputGroupPrepend2">Nº</span>
                     <input type="text" name="dni" class="form-control" id="validationDefault03"
-                        th:value="${profesional.dni}" aria-describedby="inputGroupPrepend2" required>
+                        th:value="${profesional.dni}" aria-describedby="inputGroupPrepend2">
                 </div>
             </div>
             <div class="col-md-3">
@@ -40,7 +47,7 @@
                 <div class="input-group">
                     <span class="input-group-text" id="inputGroupPrepend2">MN/MP</span>
                     <input type="text" name="matricula" class="form-control" id="validationDefault03"
-                        th:value="${profesional.matricula}" aria-describedby="inputGroupPrepend2" required>
+                        th:value="${profesional.matricula}" aria-describedby="inputGroupPrepend2">
                 </div>
             </div>
             <div class="col-md-3">
@@ -67,11 +74,12 @@
                 <div class="checkbox-list">
                     <div th:each="obraSocial : ${obrasSociales}">
                         <div>
-                            <input class="form-check-input" type="checkbox" id="obrasSocialesCheck${obraSocial}"
-                                name="prestadores" th:value="${obraSocial}"
+                            <input class="form-check-input" type="checkbox" id="obrasSocialesCheck${
+                                           obraSocial
+                                       }" name="prestadores" th:value="${obraSocial}"
                                 th:checked="${prestadores != null && prestadores.contains(obraSocial)}">
                             <label class="form-check-label" for="obrasSocialesCheck${obraSocial}"
-                                th:text="${obraSocial}"></label>
+                                th:text="${obraSocial}" required></label>
                         </div>
                     </div>
                 </div>
@@ -90,33 +98,33 @@
                 <label for="exampleFormControlInput1" class="form-label">IMAGEN</label>
                 <input type="file" name="archivo" class="form-control" id="exampleFormControlInput1">
             </div>
-            
+
             <div class="row justify-content-center">
                 <div class="col-2">
                     <button class="btn-actualizar" type="submit">Actualizar</button>
                 </div>
             </div>
-        </div>
+    </div>
     </form>
-        
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js"></script>
 
 
-        <script>
-            $(document).ready(function () {
-                $('.datepicker').datepicker({
-                    format: 'yyyy-mm-dd',
-                    language: 'es',
-                    autoclose: true
-                });
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                language: 'es',
+                autoclose: true
             });
-        </script>
+        });
+    </script>
 
 </body>
 
