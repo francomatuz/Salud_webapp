@@ -235,7 +235,10 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
         // Optional<Profesional> matriculaExistente =
         // profesionalRepositorio.buscarPorMatricula(matricula);
-        if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+
+        if (archivo.isEmpty() || archivo == null) {
+
+        } else if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
             throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
         }
 
@@ -291,7 +294,9 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional dniExistente = profesionalRepositorio.buscarPorDni(dni);
         Profesional matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
 
-        if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+        if (archivo.isEmpty() || archivo == null) {
+
+        } else if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
             throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
         }
 

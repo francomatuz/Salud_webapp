@@ -1,6 +1,5 @@
 package com.egg.salud_webapp.controladores;
 
-import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
@@ -71,7 +70,7 @@ public class PerfilProfesionalControlador {
 
         // Verificar si el usuario está logueado
         if (profesionalLogueado == null) {
-            
+
             return "redirect:/login";
         }
 
@@ -91,7 +90,9 @@ public class PerfilProfesionalControlador {
 
         } catch (MiException ex) {
             // Manejar excepciones
-            Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null,
+                    ex);
+            Profesional profesional = (Profesional) session.getAttribute("usuariosession");
 
             modelo.put("error", ex.getMessage());
             modelo.put("nombre", nombre);
@@ -102,9 +103,18 @@ public class PerfilProfesionalControlador {
             modelo.put("email", email);
             modelo.put("matricula", matricula);
             modelo.put("especialidades", Especialidades.values());
-            modelo.put("obrasSociales", ObraSocial.values());
             modelo.put("atencionVirtual", profesionalLogueado.getAtencionVirtual());
-            modelo.put("obrasSociales", ObraSocial.values());
+
+            List<String> obrasSocialesSelected = new ArrayList<>();
+            List<String> obrasSocialesList = new ArrayList<>();
+            for (ObraSocial obraSocial : profesionalServicio.obtenerObrasSocialesPorIdProfesional(profesional.getId())) {
+                obrasSocialesSelected.add(obraSocial.toString());
+            }
+            for (ObraSocial obraSocial : ObraSocial.values()) {
+                obrasSocialesList.add(obraSocial.toString());
+            }
+            modelo.put("obrasSociales", obrasSocialesList);
+            modelo.put("prestadores", obrasSocialesSelected);
             modelo.put("profesional", profesionalLogueado);
 
             return "actualizarprofesional.html"; // Se queda en la misma página con cartel de error.

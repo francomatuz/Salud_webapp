@@ -138,7 +138,9 @@ public class PacienteServicio implements UserDetailsService {
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
         LocalDate fechaActual = LocalDate.now();
 
-        if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+        if (archivo.isEmpty() || archivo == null) {
+
+        } else if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
             throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
         }
 
@@ -181,7 +183,9 @@ public class PacienteServicio implements UserDetailsService {
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
         LocalDate fechaActual = LocalDate.now();
 
-        if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+        if (archivo.isEmpty() || archivo == null) {
+
+        } else if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
             throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
         }
 
