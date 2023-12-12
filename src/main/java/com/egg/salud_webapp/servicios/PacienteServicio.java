@@ -90,6 +90,8 @@ public class PacienteServicio implements UserDetailsService {
                 }
                 Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
                 paciente.setImagen(imagen);
+            }else{
+               paciente.setImagen(pacienteUsuario.getImagen());
             }
             pacienteRepositorio.save(paciente);
         }
@@ -182,11 +184,11 @@ public class PacienteServicio implements UserDetailsService {
         Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
         LocalDate fechaActual = LocalDate.now();
-
-        if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
-            throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
+        if(archivo!=null && !archivo.isEmpty()){
+            if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+                throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
+            }
         }
-
         if (nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }

@@ -109,7 +109,7 @@ public class PerfilProfesionalControlador {
             modelo.put("especialidades", Especialidades.values());
             modelo.put("obrasSociales", ObraSocial.values());
             modelo.put("atencionVirtual", profesionalLogueado.getAtencionVirtual());
-            modelo.put("obrasSociales", ObraSocial.values());
+//            modelo.put("obrasSociales", ObraSocial.values());
             modelo.put("profesional", profesionalLogueado);
 
             return "actualizarprofesional.html"; // Se queda en la misma página con cartel de error.

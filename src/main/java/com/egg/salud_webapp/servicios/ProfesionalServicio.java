@@ -19,6 +19,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
+import com.egg.salud_webapp.repositorios.TurnoRepositorio;
+import java.time.DayOfWeek;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -128,13 +130,16 @@ public class ProfesionalServicio implements UserDetailsService {
                 }
                 Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
                 profesionalAActualizar.setImagen(imagen);
+            }else{
+                profesionalAActualizar.setImagen(profesional.getImagen());
             }
-
+            
             for (String prestador : obrasSocialesList) { // creo una nueva lista con los prestadores nuevos
                 ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesionalAActualizar,
                         prestador);
                 profesionalPrestadoresRepositorio.save(profesionalPrestadores);
             }
+            profesionalRepositorio.save(profesionalAActualizar);
         }
     }
 
@@ -241,7 +246,7 @@ public class ProfesionalServicio implements UserDetailsService {
         if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
             throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
         }
-
+        
         Profesional matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
 
         if (prestadores == null) {
@@ -294,11 +299,11 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
         Profesional dniExistente = profesionalRepositorio.buscarPorDni(dni);
         Profesional matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
-
-        if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
-            throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
+        if(archivo!=null && !archivo.isEmpty()){
+            if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+                throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
+            }
         }
-
         if (nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
