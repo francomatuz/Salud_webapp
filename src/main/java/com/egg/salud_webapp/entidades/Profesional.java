@@ -26,15 +26,6 @@ public class Profesional extends Usuario {
 
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
-
-    // private LocalDateTime agendaTurnos; no se usa
-    // private Integer duracionTurno Se hace en la entity turno, y no necesariamente
-    // se instancia , haces fecha de inicio y fecha fin
-    // private Integer calificacion; Seria un double. Pero, hay que crear una tabla
-    // Calificaciones que tenga idProfesional y la calificacion que le da el
-    // paciente al final del turno. Y aqui tiene que ser el promedio de las que
-    // tengan el id del profesional que quiero ver.
-
     private String atencionFisicaDireccion; // cambio de nombre, seguir un patron en el nombramiento de variables.
     private Boolean atencionVirtual;
     private String bio;

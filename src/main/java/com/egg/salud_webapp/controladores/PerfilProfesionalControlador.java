@@ -1,6 +1,7 @@
 package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.entidades.Profesional;
+import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.excepciones.MiException;
@@ -16,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,15 +58,14 @@ public class PerfilProfesionalControlador {
         modelo.put("atencionVirtual", profesionalLogueado.getAtencionVirtual());
         modelo.put("prestadores", obrasSocialesSelected);
 
-        return "actualizarprofesional.html"; // Nombre del formulario de actualización de perfil
+        return "actualizarprofesional.html";
     }
 
     @PostMapping("/actualizar")
     public String actualizarPerfil(@RequestParam MultipartFile archivo, @RequestParam String nombre,
-            @RequestParam String apellido, @RequestParam String dni,
+            @RequestParam String apellido, @RequestParam String dni, @RequestParam String matricula,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam String email,
-
             @RequestParam(value = "prestadores", required = false) List<ObraSocial> prestadores,
             @RequestParam GeneroEnum genero, Double precio, ModelMap modelo, HttpSession session)
             throws MiException {
@@ -74,29 +75,44 @@ public class PerfilProfesionalControlador {
 
         // Verificar si el usuario está logueado
         if (profesionalLogueado == null) {
-            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir
-            // al inicio de sesión
+
             return "redirect:/login";
         }
 
         try {
             // Actualizar el perfil del paciente (sin cambiar la contraseña)
-            profesionalServicio.actualizar(archivo, profesionalLogueado.getId(), nombre, apellido, dni, fecha_nac,
+            profesionalServicio.actualizar(profesionalLogueado, archivo, nombre, apellido, dni, matricula, fecha_nac,
                     email, prestadores,
                     genero, null, null, precio);
 
-            modelo.put("Exito", "Perfil actualizado exitosamente");
-            // TO DO : REDIRECT!
-            return "index.html"; // Página de perfil actualizado
+            Profesional profesionalActualizado = profesionalServicio.getById(profesionalLogueado.getId());
+            // Cerrar sesión
+            SecurityContextHolder.getContext().setAuthentication(null);
+
+            modelo.put("profesional", profesionalActualizado);
+            modelo.put("exito", "Perfil actualizado exitosamente");
+
+            return "login.html"; // Se cierra sesión para poder actualizar los datos en el front
 
         } catch (MiException ex) {
             // Manejar excepciones
             Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
 
-            modelo.put("Error", ex.getMessage());
+            modelo.put("error", ex.getMessage());
+            modelo.put("nombre", nombre);
+            modelo.put("apellido", apellido);
+            modelo.put("dni", dni);
+            modelo.put("generos", GeneroEnum.values());
+            modelo.put("fecha de nacimiento", fecha_nac);
+            modelo.put("email", email);
+            modelo.put("matricula", matricula);
+            modelo.put("especialidades", Especialidades.values());
+            modelo.put("obrasSociales", ObraSocial.values());
+            modelo.put("atencionVirtual", profesionalLogueado.getAtencionVirtual());
+            modelo.put("obrasSociales", ObraSocial.values());
             modelo.put("profesional", profesionalLogueado);
 
-            return "error.html"; // Página de error
+            return "actualizarprofesional.html"; // Se queda en la misma página con cartel de error.
         }
     }
 

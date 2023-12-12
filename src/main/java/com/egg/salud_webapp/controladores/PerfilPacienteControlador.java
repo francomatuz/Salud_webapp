@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class PerfilPacienteControlador {
         return "dashboardpaciente.html";
     }
 
-    // ELIMINAR
+    //ELIMINAR
     @GetMapping("/eliminar")
     public String eliminar(HttpSession session, ModelMap modelo) throws MiException {
 
@@ -59,8 +60,7 @@ public class PerfilPacienteControlador {
 
         // Verificar si el usuario está logueado
         if (pacienteLogueado == null) {
-            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir
-            // al inicio de sesión
+            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir al inicio de sesión
             return "redirect:/login";
         }
 
@@ -72,8 +72,7 @@ public class PerfilPacienteControlador {
     }
 
     @PostMapping("/actualizar")
-    public String actualizarPerfil(@RequestParam MultipartFile archivo, @RequestParam String nombre,
-            @RequestParam String apellido,
+    public String actualizarPerfil(@RequestParam MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
             @RequestParam String email, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, ModelMap modelo, HttpSession session)
@@ -84,30 +83,39 @@ public class PerfilPacienteControlador {
 
         // Verificar si el usuario está logueado
         if (pacienteLogueado == null) {
-            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir
-            // al inicio de sesión
+
             return "redirect:/login";
         }
 
         try {
             // Actualizar el perfil del paciente (sin cambiar la contraseña)
-            pacienteServicio.actualizar(archivo, pacienteLogueado.getId(), nombre, apellido, email, dni, fecha_nac,
-                    obraSocial,
+            pacienteServicio.actualizar(pacienteLogueado, archivo, nombre, apellido, email, dni, fecha_nac, obraSocial,
                     genero, null, null);
 
-            modelo.put("Exito", "Perfil actualizado exitosamente");
+            Paciente pacienteActualizado = pacienteServicio.getById(pacienteLogueado.getId());
+            // Cerrar sesión
+            SecurityContextHolder.getContext().setAuthentication(null);
 
-            return "index.html"; // Página de perfil actualizado CAMBIAR A DASHBOARD
+            modelo.put("paciente", pacienteActualizado);
+            modelo.put("exito", "Perfil actualizado exitosamente");
+
+            return "login.html"; //Se cierra sesión para poder actualizar los datos en el front
 
         } catch (MiException ex) {
             // Manejar excepciones
             Logger.getLogger(PerfilPacienteControlador.class.getName()).log(Level.SEVERE, null, ex);
 
-            modelo.put("Error", ex.getMessage());
+            modelo.put("error", ex.getMessage());
+            modelo.put("nombre", nombre);
+            modelo.put("apellido", apellido);
+            modelo.put("dni", dni);
+            modelo.put("generos", GeneroEnum.values());
+            modelo.put("fecha de nacimiento", fecha_nac);
+            modelo.put("email", email);
+            modelo.put("obrasSociales", ObraSocial.values());
             modelo.put("paciente", pacienteLogueado);
 
-            return "error.html"; // Página de error
+            return "actualizarpaciente.html";
         }
     }
-    // a ver si anda
 }
