@@ -112,6 +112,10 @@ public class PacienteServicio implements UserDetailsService {
     public List<Paciente> listarPacientes() {
         return pacienteRepositorio.findAll();
     }
+    
+    public Paciente getByDni(String dni) {
+        return pacienteRepositorio.buscarPorDni(dni);
+    }
 
     @Transactional
     public void cambiarRol(Long id) {
@@ -255,5 +259,5 @@ public class PacienteServicio implements UserDetailsService {
     public Paciente getOne(Long id) {
         return pacienteRepositorio.getOne(id);
     }
-
+        
 }
