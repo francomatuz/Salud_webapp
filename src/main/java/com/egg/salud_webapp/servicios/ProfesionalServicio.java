@@ -13,14 +13,14 @@ import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.ProfesionalPrestadoresRepositorio;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
+import com.egg.salud_webapp.repositorios.TurnoRepositorio;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
-import com.egg.salud_webapp.repositorios.TurnoRepositorio;
-import java.time.DayOfWeek;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -130,16 +130,13 @@ public class ProfesionalServicio implements UserDetailsService {
                 }
                 Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
                 profesionalAActualizar.setImagen(imagen);
-            }else{
-                profesionalAActualizar.setImagen(profesional.getImagen());
             }
-            
+
             for (String prestador : obrasSocialesList) { // creo una nueva lista con los prestadores nuevos
                 ProfesionalPrestadores profesionalPrestadores = new ProfesionalPrestadores(profesionalAActualizar,
                         prestador);
                 profesionalPrestadoresRepositorio.save(profesionalPrestadores);
             }
-            profesionalRepositorio.save(profesionalAActualizar);
         }
     }
 
@@ -158,6 +155,7 @@ public class ProfesionalServicio implements UserDetailsService {
         if (profesional.getAlta() == SolicitudEnum.ACTIVO) {
             profesional.setAlta(SolicitudEnum.INACTIVO);
         }
+        profesionalRepositorio.save(profesional);
     }
 
     public void darAlta(Long id) throws MiException {
@@ -222,7 +220,7 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     // Buscar un profesional por id
-    public Profesional getById(Long id)  {
+    public Profesional getById(Long id) {
         return profesionalRepositorio.getById(id);
     }
 
@@ -243,10 +241,13 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
         // Optional<Profesional> matriculaExistente =
         // profesionalRepositorio.buscarPorMatricula(matricula);
-        if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+
+        if (archivo.isEmpty() || archivo == null) {
+
+        } else if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
             throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
         }
-        
+
         Profesional matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
 
         if (prestadores == null) {
@@ -299,11 +300,13 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional emailExistente = profesionalRepositorio.buscarPorEmail(email);
         Profesional dniExistente = profesionalRepositorio.buscarPorDni(dni);
         Profesional matriculaExistente = profesionalRepositorio.buscarPorMatricula(matricula);
-        if(archivo!=null && !archivo.isEmpty()){
-            if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
-                throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
-            }
+
+        if (archivo.isEmpty() || archivo == null) {
+
+        } else if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+            throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
         }
+
         if (nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
@@ -386,8 +389,6 @@ public class ProfesionalServicio implements UserDetailsService {
 
     }
 
-    
-
     // Logica de los turnos
     @Transactional
     public List<Turno> generarTurnosDisponibles(Long id, LocalDate fechaInicio, LocalDate fechaFin,
@@ -395,8 +396,8 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional profesional = getById(id);
         List<Turno> turnosDisponibles = new ArrayList<>();
 
-        DayOfWeek[] diasLaborables = { DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
-                DayOfWeek.FRIDAY };
+        DayOfWeek[] diasLaborables = {DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
+            DayOfWeek.FRIDAY};
 
         for (LocalDate fecha = fechaInicio; !fecha.isAfter(fechaFin); fecha = fecha.plusDays(1)) {
             for (DayOfWeek diaLaborable : diasLaborables) {
@@ -417,4 +418,25 @@ public class ProfesionalServicio implements UserDetailsService {
 
         return turnosDisponibles;
     }
+
+    public void calificacionProfesional(Long idProfesional, Integer calif) {
+        Profesional profesional = profesionalRepositorio.getById(idProfesional);
+
+        profesional.setCantCalificaciones(profesional.getCantCalificaciones() + 1);
+
+        profesional.setSumaCalificaciones(profesional.getSumaCalificaciones() + calif);
+
+        Integer calificacionTotal = (profesional.getSumaCalificaciones() / profesional.getCantCalificaciones());
+
+        profesional.setCalificacion(calificacionTotal.doubleValue());
+
+    }
+
+    @Transactional
+    public void settearPrecioConsulta(Double precio, Long id) throws MiException {
+        Profesional profesional = getById(id);
+        profesional.setPrecio(precio);
+        profesionalRepositorio.save(profesional);
+    }
+
 }

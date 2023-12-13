@@ -1,5 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Imagen;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
@@ -56,6 +57,10 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setTipo(Tipo.PACIENTE);
         Imagen imagen = imagenServicio.guardar(archivo, Tipo.PACIENTE);
         paciente.setImagen(imagen);
+        HistoriaClinica historiaClinica = new HistoriaClinica();
+        
+        historiaClinica.setPaciente(paciente);
+        paciente.setHistoriaClinica(historiaClinica);
 
         pacienteRepositorio.save(paciente);
     }
@@ -90,8 +95,6 @@ public class PacienteServicio implements UserDetailsService {
                 }
                 Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
                 paciente.setImagen(imagen);
-            }else{
-               paciente.setImagen(pacienteUsuario.getImagen());
             }
             pacienteRepositorio.save(paciente);
         }
@@ -115,6 +118,10 @@ public class PacienteServicio implements UserDetailsService {
 
     public List<Paciente> listarPacientes() {
         return pacienteRepositorio.findAll();
+    }
+    
+    public Paciente getByDni(String dni) {
+        return pacienteRepositorio.buscarPorDni(dni);
     }
 
     @Transactional
@@ -142,7 +149,9 @@ public class PacienteServicio implements UserDetailsService {
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
         LocalDate fechaActual = LocalDate.now();
 
-        if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+        if (archivo.isEmpty() || archivo == null) {
+
+        } else if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
             throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
         }
 
@@ -184,11 +193,13 @@ public class PacienteServicio implements UserDetailsService {
         Paciente dniExistente = pacienteRepositorio.buscarPorDni(dni);
         Paciente emailExistente = pacienteRepositorio.buscarPorEmail(email);
         LocalDate fechaActual = LocalDate.now();
-        if(archivo!=null && !archivo.isEmpty()){
-            if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
-                throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
-            }
+
+        if (archivo.isEmpty() || archivo == null) {
+
+        } else if (archivo.getSize() > 5 * 1024 * 1024 || !archivo.getContentType().startsWith("image")) {
+            throw new MiException("El archivo debe ser una imagen y no debe superar los 5MB");
         }
+
         if (nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
