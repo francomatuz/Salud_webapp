@@ -1,54 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> 
     <head th:replace= "/fragments/head :: head" ></head>
+    <link href="/css/index.css" rel="stylesheet">   
 
     <body>
         <header>
             <nav th:replace= "/fragments/navbar :: nav" ></nav>
         </header>
 
-        <div class="container-fluid" id="size">
-            <img class="img-fluid" src="/img/heroMain.jpg" alt="hero" />
-            <form class="buscar">
-                <input type="text" placeholder="Buscar Profesional">
-                <button type="submit" class="boton">
-                    <i class="bi bi-search"><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                        </svg></i>
-                </button>
-            </form>
-        </div>
+     <div class="container-fluid" id="size">
+    <img class="img-fluid" src="/img/heroMain.jpg" alt="hero" />
+    <h1>Bienestar a un click</h1>
+</div>
 
-
-        <div class="title">
-            <h1>PROFESIONALES<h1>
-        </div>
-        <div class="container galeria" id="profesionales">
-        <div th:each="profesional:${profesionales}" class="col-md-2">
-            <div class="card mb-2">
+       <div class="container galeria" id="profesionales">
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div th:each="profesional, iterStat : ${profesionales}" class="carousel-item" th:classappend="${iterStat.index == 0} ? 'active'">
+                <div class="col-md-12">
+                    <div class="card mb-2">
                         <div class="card">
-                            <img th:src="@{/imagen/profesional/__${profesional.id}__}"
-                                class="card-img-top"
-                                alt="img"
-                                />
-                            <div class="card-body">
-                                <h5 th:text="${profesional.nombre}" class="card-title"></h5>
-                                <p th:text="${profesional.especialidad}" class="card-text">
-                                </p>
-                                <p class="card-text">
-                                    Bio
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                                    enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                                    nisi ut aliquip ex ea commodo consequat.
-                                </p>
-                                <button type="submit" class="btn btn-primary">Contactar</button>
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img th:src="@{/imagen/profesional/__${profesional.id}__}" class="card-img-top" alt="img" style="max-width: 100px; height: auto;" />
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 th:text="${profesional.nombre}" class="card-title"></h5>
+                                        <p th:text="${profesional.especialidad}" class="card-text"></p>
+                                        <p class="card-text">
+                                            Aca va la biografia.
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
             </div>
         </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Posterior</span>
+        </button>
     </div>
-        
+</div>
+
                     <footer th:replace="/fragments/footer :: footer"></footer>
 
                     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
