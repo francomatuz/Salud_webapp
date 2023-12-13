@@ -54,14 +54,28 @@
                     </div>
                 </div>
                 
-    <div class="col-md-4">
+     <div class="col-md-4">
+                                    <div class="card mb-3">
+                        <div class="card-body">
+                        <label for="exampleInputEmail1" class="form-label">Valor de la consulta:</label>
+                        <span th:text="${session.usuariosession.precio}"</span>
+
+                    </div>
+                        </div>
+                    </div>
+                            <div class="col-md-4">
             <div class="card mb-3">
                 <div class="card-body">
                     <form th:action="@{/perfil2/precio}" method="POST">
                         <label for="exampleInputEmail1" class="form-label">Cambiar valor de la consulta</label>
+
+                        <input th:value="${precio}" name="precio" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <br>
+                        <button type="submit" id="saveBiography" class="btn btn-success btn-sm">Cambiar Precio</button>
+                    </form>
                 </div>
             </div>
-    </div>
+</div>
                 
                 <div class="card">
                     <div class="card-body">
