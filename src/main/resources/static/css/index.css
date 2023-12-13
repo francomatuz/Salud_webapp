@@ -1,15 +1,6 @@
 .container-fluid {
     position: relative;
-}
-
-.container-fluid h1 {
-    position: absolute;
-    top: 50%; /* Ajusta la posición vertical del texto */
-    left: 50%; /* Ajusta la posición horizontal del texto */
-    transform: translate(-50%, -50%); /* Centra el texto en base al contenedor */
-    color: black; /* Cambia el color del texto */
-    font-size: 50px;
-
+    width:100%;
 }
 
 ::placeholder{
@@ -28,11 +19,38 @@
     color: #03045e;
 }
 
-.title h1{
+.text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
-    color: #1b263b;
-    font-size: 4.7em !important;
-    font-weight: 600;
+    color: white;
+    background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    padding: 10px 20px; /* Espaciado interior para el texto */
+    width:100%;
+}
+.text {
+    font-size: 30px; 
+    
+ .card {
+    border: none;
+    border-radius: 0; /* Esquinas rectangulares */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin-bottom: 0; /* Elimina el espacio entre tarjetas */
+}
+
+/* Estilo para el fondo */
+.card-body {
+    background-color: #fff; /* Fondo blanco */
+}
+
+/* Estilo para el texto */
+.card-title, .card-text {
+    color: #ccc; /* Color de texto */
+}   
+    
+    
 }
 .carousel-item {
     text-align: left;
@@ -40,7 +58,7 @@
 
 .carousel-item .card {
     width: 100%; /* Ancho de la tarjeta dentro del carrusel */
-    background-color: #ade8f4;
+    background-color: whitesmoke;
 }
 
 .carousel-item img {
@@ -53,7 +71,7 @@
 .carousel-control-prev,
 .carousel-control-next {
     width: auto; /* Ancho automático */
-    color: #caf0f8; /* Color de las flechas */
+    color: #ccc; /* Color de las flechas */
     background-color: #ade8f4; /* Color de fondo de las flechas */
 }
 

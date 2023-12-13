@@ -10,10 +10,58 @@
 
      <div class="container-fluid" id="size">
     <img class="img-fluid" src="/img/heroMain.jpg" alt="hero" />
-    <h1>Bienestar a un click</h1>
+    <div class="text-overlay">
+                            <div class="text">Bienestar a un click</div>
+        </div>                      
+     </div>
+      <br>
+      
+      <div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Pediatría</h5>
+                    <p class="card-text">
+                        La pediatría es la rama de la medicina que se especializa en la atención de los niños, desde recién nacidos hasta adolescentes. Los pediatras están capacitados para tratar una amplia gama de problemas de salud infantil.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Cardiología</h5>
+                    <p class="card-text">
+                        La cardiología se enfoca en el diagnóstico y tratamiento de enfermedades relacionadas con el corazón y los vasos sanguíneos. Los cardiólogos pueden tratar afecciones como enfermedades del corazón, hipertensión arterial, entre otras.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ginecología</h5>
+                    <p class="card-text">
+                        La ginecología se centra en la salud reproductiva de las mujeres. Los ginecólogos pueden diagnosticar y tratar afecciones ginecológicas, realizar exámenes de detección y brindar atención médica relacionada con la salud sexual y reproductiva.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Clínica Médica</h5>
+                    <p class="card-text">
+                        La clínica médica es una especialidad que se enfoca en el diagnóstico y manejo de enfermedades en adultos. Los médicos de esta especialidad brindan atención integral y coordinan el cuidado de pacientes con diversas condiciones de salud.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-       <div class="container galeria" id="profesionales">
+      <br>
+    <div class="container galeria" id="profesionales">
     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div th:each="profesional, iterStat : ${profesionales}" class="carousel-item" th:classappend="${iterStat.index == 0} ? 'active'">
