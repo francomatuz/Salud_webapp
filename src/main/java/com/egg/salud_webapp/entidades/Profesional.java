@@ -33,6 +33,8 @@ public class Profesional extends Usuario {
     private SolicitudEnum alta = SolicitudEnum.SOLICITUD;
     private Double precio = 3000d;
     private Double calificacion = null;
+    private Integer cantCalificaciones = 0;
+    private Integer sumaCalificaciones = 0;
 
     @OneToMany(mappedBy = "profesional", fetch = FetchType.EAGER)
     public List<ProfesionalPrestadores> prestadores;
@@ -51,7 +53,6 @@ public class Profesional extends Usuario {
         this.tipo = Tipo.PROFESIONAL;
 
         // setear aqui el activo
-
     }
 
     public Profesional() {
@@ -143,6 +144,22 @@ public class Profesional extends Usuario {
 
     public void setTurnos(List<Turno> turnos) {
         this.turnos = turnos;
+    }
+
+    public Integer getCantCalificaciones() {
+        return cantCalificaciones;
+    }
+
+    public void setCantCalificaciones(Integer cantCalificaciones) {
+        this.cantCalificaciones = cantCalificaciones;
+    }
+
+    public Integer getSumaCalificaciones() {
+        return sumaCalificaciones;
+    }
+
+    public void setSumaCalificaciones(Integer sumaCalificaciones) {
+        this.sumaCalificaciones = sumaCalificaciones;
     }
 
 }

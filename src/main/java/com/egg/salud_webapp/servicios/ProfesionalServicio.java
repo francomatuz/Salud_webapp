@@ -220,7 +220,7 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     // Buscar un profesional por id
-    public Profesional getById(Long id)  {
+    public Profesional getById(Long id) {
         return profesionalRepositorio.getById(id);
     }
 
@@ -389,8 +389,6 @@ public class ProfesionalServicio implements UserDetailsService {
 
     }
 
-    
-
     // Logica de los turnos
     @Transactional
     public List<Turno> generarTurnosDisponibles(Long id, LocalDate fechaInicio, LocalDate fechaFin,
@@ -398,8 +396,8 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional profesional = getById(id);
         List<Turno> turnosDisponibles = new ArrayList<>();
 
-        DayOfWeek[] diasLaborables = { DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
-                DayOfWeek.FRIDAY };
+        DayOfWeek[] diasLaborables = {DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
+            DayOfWeek.FRIDAY};
 
         for (LocalDate fecha = fechaInicio; !fecha.isAfter(fechaFin); fecha = fecha.plusDays(1)) {
             for (DayOfWeek diaLaborable : diasLaborables) {
@@ -421,7 +419,6 @@ public class ProfesionalServicio implements UserDetailsService {
         return turnosDisponibles;
     }
 
-
     public void calificacionProfesional(Long idProfesional, Integer calif) {
         Profesional profesional = profesionalRepositorio.getById(idProfesional);
 
@@ -441,5 +438,5 @@ public class ProfesionalServicio implements UserDetailsService {
         profesional.setPrecio(precio);
         profesionalRepositorio.save(profesional);
     }
-    
+
 }

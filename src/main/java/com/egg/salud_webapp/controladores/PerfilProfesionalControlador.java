@@ -163,9 +163,9 @@ public class PerfilProfesionalControlador {
     }
 
     @GetMapping("/dashboard2")
-     public String obtenerTurnosTomados(ModelMap modelo) {
-         List<Turno> turnosTomados = turnoServicio.obtenerTurnosTomados();
-         modelo.put("turnosTomados", turnosTomados);
+    public String obtenerTurnosTomados(ModelMap modelo) {
+        List<Turno> turnosTomados = turnoServicio.obtenerTurnosTomados();
+        modelo.put("turnosTomados", turnosTomados);
         return "dashboardprofesional.html";
     }
 
@@ -209,9 +209,9 @@ public class PerfilProfesionalControlador {
 
         try {
             // Validaciones
-            if (fechaFin.isBefore(fechaInicio) ||
-                    (fechaFin.isEqual(fechaInicio) && horarioInicio.isAfter(horarioFin)) ||
-                    duracionTurnoEnMinutos <= 0) {
+            if (fechaFin.isBefore(fechaInicio)
+                    || (fechaFin.isEqual(fechaInicio) && horarioInicio.isAfter(horarioFin))
+                    || duracionTurnoEnMinutos <= 0) {
                 modelo.put("Error", "Parámetros de entrada inválidos.");
                 modelo.put("profesional", profesionalLogueado);
                 return "error.html";
@@ -235,10 +235,13 @@ public class PerfilProfesionalControlador {
             modelo.put("profesional", profesionalLogueado);
 
             return "error.html"; // Página de error
+        }
+    }
+
     @PostMapping("/precio")
     public String settearPrecioConsulta(HttpSession session, @RequestParam Double precio, ModelMap modelo) throws MiException {
         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
-            try {
+        try {
             profesionalServicio.settearPrecioConsulta(precio, profesionalLogueado.getId());
             return "dashboardprofesional.html";
         } catch (MiException ex) {
