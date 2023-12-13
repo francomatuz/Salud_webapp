@@ -1,12 +1,11 @@
 package com.egg.salud_webapp.servicios;
-import com.egg.salud_webapp.repositorios.ImagenRepositorio;
 
+import com.egg.salud_webapp.repositorios.ImagenRepositorio;
 import com.egg.salud_webapp.entidades.Imagen;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.excepciones.MiException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -68,23 +67,22 @@ public class ImagenServicio {
         return imagenPredeterminada;
     }
 
-
     @Transactional
-    public Imagen actualizar(MultipartFile archivo, String idImagen)throws MiException{
-        if (archivo !=null) {
-            try{
+    public Imagen actualizar(MultipartFile archivo, String idImagen) throws MiException {
+        if (archivo != null) {
+            try {
                 Imagen imagen = new Imagen();
-                if (idImagen!=null) {
+                if (idImagen != null) {
                     Optional<Imagen> respuesta = imagenRepositorio.findById(idImagen);
                     if (respuesta.isPresent()) {
-                        imagen=respuesta.get();
+                        imagen = respuesta.get();
                     }
                 }
                 imagen.setMime(archivo.getContentType());
                 imagen.setName(archivo.getName());
                 imagen.setContenido(archivo.getBytes());
                 return imagenRepositorio.save(imagen);
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
         }

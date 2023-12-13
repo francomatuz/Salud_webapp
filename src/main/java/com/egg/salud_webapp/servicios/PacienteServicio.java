@@ -1,5 +1,6 @@
 package com.egg.salud_webapp.servicios;
 
+import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Imagen;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
@@ -36,7 +37,8 @@ public class PacienteServicio implements UserDetailsService {
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void registrar(MultipartFile archivo, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    public void registrar(MultipartFile archivo, String nombre, String apellido, String email, String dni,
+            LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         validarAtributos(archivo, nombre, apellido, email, dni, fecha_nac, password, password2);
@@ -55,13 +57,18 @@ public class PacienteServicio implements UserDetailsService {
         paciente.setTipo(Tipo.PACIENTE);
         Imagen imagen = imagenServicio.guardar(archivo, Tipo.PACIENTE);
         paciente.setImagen(imagen);
+        HistoriaClinica historiaClinica = new HistoriaClinica();
+        
+        historiaClinica.setPaciente(paciente);
+        paciente.setHistoriaClinica(historiaClinica);
 
         pacienteRepositorio.save(paciente);
     }
 
     // Actualizar paciente
     @Transactional
-    public void actualizar(Paciente pacienteUsuario, MultipartFile archivo, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
+    public void actualizar(Paciente pacienteUsuario, MultipartFile archivo, String nombre, String apellido,
+            String email, String dni, LocalDate fecha_nac,
             ObraSocial obraSocial, GeneroEnum genero, String password, String password2) throws MiException {
 
         validarAtributosActualizar(archivo, pacienteUsuario, nombre, apellido, email, dni, fecha_nac);
@@ -256,8 +263,6 @@ public class PacienteServicio implements UserDetailsService {
 
     }
 
-    public Paciente getOne(Long id) {
-        return pacienteRepositorio.getOne(id);
-    }
-        
+   
+
 }

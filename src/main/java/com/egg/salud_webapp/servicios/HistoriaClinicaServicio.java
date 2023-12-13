@@ -3,32 +3,26 @@ package com.egg.salud_webapp.servicios;
 
 import com.egg.salud_webapp.entidades.FichaMedica;
 import com.egg.salud_webapp.entidades.HistoriaClinica;
+import com.egg.salud_webapp.repositorios.FichaMedicaRepositorio;
 import com.egg.salud_webapp.repositorios.HistoriaClinicaRepositorio;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class HistoriaClinicaServicio {
-    
+
     @Autowired
     private HistoriaClinicaRepositorio historiaClinicaRepositorio;
-    
-    
-//    @Transactional
-//    public void agregarFichaMedica(Long id, FichaMedica fichaMedica){
-//        
-//        HistoriaClinica historiaClinica = historiaClinicaRepositorio.buscarPorId(id);
-//        
-//       fichaMedica.setHistoriaClinica(historiaClinica);
-//        
-//     historiaClinica.getFichasMedicas().add(fichaMedica);
-//     
-//     historiaClinicaRepositorio.save(historiaClinica);
-//        
-//    }
-    
-     public HistoriaClinica getById(Long id) {
+    @Autowired
+    private FichaMedicaRepositorio fichaMedicaRepositorio;
+
+    public List<FichaMedica> listarTodasLasFichasMedicas() {
+        return fichaMedicaRepositorio.findAll();
+
+    }
+
+    public HistoriaClinica getById(Long id) {
         return historiaClinicaRepositorio.getById(id);
     }
 }
