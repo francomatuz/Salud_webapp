@@ -44,36 +44,13 @@ public class TurnoControlador {
         return "turnosDisponibles.html";
     }
 
-    // @GetMapping("/disponibles")
-    // public String mostrarTurnosDisponibles(@RequestParam(name = "especialidad",
-    // required = false) Especialidades especialidad, ModelMap modelo) {
-    // List<Long> idsProfesionales =
-    // turnoServicio.obtenerIdsProfesionalesPorEspecialidad(especialidad);
+    @GetMapping("/tomados")
+    public String obtenerTurnosTomados(ModelMap modelo) {
+        List<Turno> turnosTomados = turnoServicio.obtenerTurnosTomados();
+        modelo.put("turnosTomados", turnosTomados);
+        return "turnosTomados.html";
+    }
 
-    // if (idsProfesionales.isEmpty()) {
-    // return "redirect:/error";
-    // }
-
-    // List<Turno> turnosDisponibles =
-    // turnoServicio.obtenerTurnosDisponiblesPorIdsProfesionales(idsProfesionales);
-
-    // // Agregar la lista de especialidades al modelo
-    // List<String> especialidades =
-    // turnoServicio.obtenerEspecialidadesDisponibles();
-    // modelo.put("especialidades", especialidades);
-
-    // // Agregar la lista filtrada al modelo
-    // modelo.put("turnosDisponibles", turnosDisponibles);
-
-    // return "turnosDisponibles.html";
-    // }
-
-    // @GetMapping("/disponibles")
-    // public String mostrarTurnosDisponibles(ModelMap modelo) {
-    // List<Turno> turnosDisponibles = turnoServicio.obtenerTurnosDisponibles();
-    // modelo.put("turnosDisponibles", turnosDisponibles);
-    // return "turnosDisponibles.html";
-    // }
     @PostMapping("/tomar")
     public String tomarTurno(@RequestParam Long idTurno,
             HttpSession session,
@@ -168,6 +145,17 @@ public class TurnoControlador {
             modelo.addAttribute("error", "Error al intentar cancelar el turno: " + ex.getMessage());
         }
         return "redirect:/turnos/mis-turnos-paciente";
+    }
+
+    @PostMapping("/cancelar-profesional")
+    public String cancelarTurnoProfesional(@RequestParam Long idTurno, ModelMap modelo) {
+        try {
+            turnoServicio.cancelarTurno(idTurno);
+            modelo.addAttribute("Turno cancelado con éxito", true);
+        } catch (MiException ex) {
+            modelo.addAttribute("error", "Error al intentar cancelar el turno: " + ex.getMessage());
+        }
+        return "redirect:/perfil2/dashboard2";
     }
 
 }

@@ -21,8 +21,7 @@ public interface TurnoRepositorio extends JpaRepository<Turno, Long> {
     @Query("SELECT t FROM Turno t WHERE t.profesional.id = :idProfesional AND t.disponible = true")
     List<Turno> findByProfesionalIdAndDisponibleTrue(@Param("idProfesional") Long idProfesional);
 
-    @Query("SELECT t FROM Turno t WHERE t.disponible = true")
-    List<Turno> findAllDisponibles();
+    
 
     @Query("SELECT t FROM Turno t WHERE t.disponible = true ORDER BY t.fechaHora")
     List<Turno> findAllDisponiblesOrderByFechaHora();
@@ -35,4 +34,7 @@ public interface TurnoRepositorio extends JpaRepository<Turno, Long> {
 
     @Query("SELECT t FROM Turno t WHERE t.profesional.id IN :idsProfesionales AND t.disponible = true")
     List<Turno> findByProfesionalIdInAndDisponibleTrue(@Param("idsProfesionales") List<Long> idsProfesionales);
+
+    @Query("SELECT t FROM Turno t WHERE t.disponible = false")
+    List<Turno> findByDisponiblefalse();
 }

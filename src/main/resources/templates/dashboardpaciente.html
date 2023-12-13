@@ -94,7 +94,7 @@
                         </div>
                         <div>
                             <p>DNI:<span th:text="${session.usuariosession.dni}"></span></p>
-                            <p>FECHA DE NACIMIENTO:<span th:text="${session.usuariosession.fecha_nac}"></span></p>
+                            <p>FECHA DE NACIMIENTO:<span th:text="${#temporals.format(session.usuariosession.fecha_nac, 'dd-MM-yyyy')}"></span></p>
                             <p>GENERO:<span th:text="${session.usuariosession.genero}"></span></p>
                             <p>EMAIL:<span th:text="${session.usuariosession.email}"></span></p>
                         </div>
