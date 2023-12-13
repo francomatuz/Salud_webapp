@@ -370,9 +370,6 @@ public class ProfesionalServicio implements UserDetailsService {
         }
 
     }
-
-    
-
     // Logica de los turnos
     @Transactional
     public List<Turno> generarTurnosDisponibles(Long id, LocalDate fechaInicio, LocalDate fechaFin,
@@ -401,5 +398,28 @@ public class ProfesionalServicio implements UserDetailsService {
         turnosDisponibles.forEach(turnoRepositorio::save);
 
         return turnosDisponibles;
+    }
+
+    public void calificacionProfesional(Long idProfesional, Integer calif) throws MiException {
+        validarCalificacion(calif);
+        
+        Profesional profesional = profesionalRepositorio.getById(idProfesional);
+        
+        profesional.setCantCalificaciones(profesional.getCantCalificaciones() + 1);
+        
+        profesional.setSumaCalificaciones(profesional.getSumaCalificaciones() + calif);
+        
+        Integer calificacionTotal = (profesional.getSumaCalificaciones() / profesional.getCantCalificaciones());
+        
+        profesional.setCalificacion(calificacionTotal.doubleValue());
+        
+        profesionalRepositorio.save(profesional);
+    }
+    public void validarCalificacion(Integer calif) throws MiException{
+        if (calif>5) {
+            throw new MiException("La calificacion no puede exceder al valor numero 5");
+        }else if(calif<0){
+            throw new MiException("La calificacion no puede ser menor a 0");
+        }
     }
 }

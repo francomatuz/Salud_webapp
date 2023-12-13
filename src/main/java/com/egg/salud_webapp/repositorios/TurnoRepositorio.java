@@ -6,11 +6,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.egg.salud_webapp.entidades.Paciente;
+import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.Turno;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 
 @Repository
 public interface TurnoRepositorio extends JpaRepository<Turno, Long> {
+
+    @Query("SELECT t FROM Turno t WHERE t.profesional = :profesional")
+    List<Turno> findAllByProfesional(@Param("profesional") Profesional profesional);
 
     @Query("SELECT t FROM Turno t WHERE t.disponible = true")
     List<Turno> findByDisponibleTrue();
@@ -21,7 +25,11 @@ public interface TurnoRepositorio extends JpaRepository<Turno, Long> {
     @Query("SELECT t FROM Turno t WHERE t.profesional.id = :idProfesional AND t.disponible = true")
     List<Turno> findByProfesionalIdAndDisponibleTrue(@Param("idProfesional") Long idProfesional);
 
-    
+    @Query("SELECT t FROM Turno t WHERE t.paciente.id = :idPaciente AND t.isFinalizado = true AND t.isCalificado = false")
+    List<Turno> findByPacienteAndFinalizadoTrue(@Param("idPaciente") Long idPaciente);
+
+    @Query("SELECT t FROM Turno t WHERE t.paciente = :paciente AND t.isCancelado = false AND t.isFinalizado = false")
+    List<Turno> findByPacienteAndIsCanceladoFalseAndIsFinalizadoFalse(@Param("paciente") Paciente paciente);
 
     @Query("SELECT t FROM Turno t WHERE t.disponible = true ORDER BY t.fechaHora")
     List<Turno> findAllDisponiblesOrderByFechaHora();

@@ -70,7 +70,7 @@ public class FichaMedicaControlador {
   }
 
   @PostMapping("/crear/{id}")
-  public String crearFichaMedica(@PathVariable Long id, @RequestParam String diagnostico,
+  public String crearFichaMedica(@PathVariable Long id, @RequestParam Long idTurno, @RequestParam String diagnostico,
       @RequestParam String tratamiento, @RequestParam String notas, ModelMap modelo, HttpSession session)
       throws MiException {
     Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
@@ -79,7 +79,7 @@ public class FichaMedicaControlador {
       return "redirect:/login";
     }
     fichaMedicaServicio.crearFichaMedica(id, diagnostico, tratamiento, notas);
-    turnoServicio.marcarTurnoComoFinalizado(id);
+    turnoServicio.marcarTurnoComoFinalizado(idTurno);
     modelo.put("Exito", "Ficha Medica creada");
     return "redirect:/perfil2/dashboard2";
 

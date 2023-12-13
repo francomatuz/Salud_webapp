@@ -88,6 +88,7 @@
                 <textarea id="notas" class="form-control mb-3" rows="5" placeholder="Notas" name="notas"></textarea>
                 <!-- Otros campos del formulario aquí -->
                 <input type="hidden" th:name="id" th:value="${paciente.id}" />
+                <input type="hidden" th:name="idTurno" th:value="${.id}" />
                 <button type="submit" class="btn btn-success btn-sm">Generar ficha medica</button>
               </div>
             </form>
