@@ -31,6 +31,11 @@
                                ><span class="fs-5 fw-bold">Login</span></a
                             >
                         </li>
+                                                                       <li class="nav-item">
+                            <a th:href="@{/turnos/disponibles}" class="nav-link" aria-disabled="true"
+                               ><span class="fs-5 fw-bold nombreUsuario">TURNOS</span></a
+                            >
+                        </li>
                         <li th:if="${session.usuariosession!=null}" class="nav-item"> 
 
                             <a href="/logout" class="nav-link" aria-current="page"
@@ -62,7 +67,6 @@
                                ><span class="fs-5 fw-bold nombreUsuario" th:if="${session.usuariosession != null and session.usuariosession.rol.toString() == 'ADMIN'}">ADMIN</span></a
                             >
                         </li>
-    
                     </ul>
                 </div>
             </nav>

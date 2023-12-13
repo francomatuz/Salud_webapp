@@ -1,7 +1,7 @@
 package com.egg.salud_webapp.repositorios;
 
 import com.egg.salud_webapp.entidades.Profesional;
-import java.math.BigDecimal;
+import com.egg.salud_webapp.enumeraciones.Especialidades;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -57,6 +57,9 @@ public interface ProfesionalRepositorio extends JpaRepository<Profesional, Long>
     //Busqueda por calificacion
     @Query("SELECT p FROM Profesional p ORDER BY p.calificacion DESC")
     public List<Profesional> buscarProfesionalesPorCalificacion();
+
+    @Query("SELECT p.id FROM Profesional p WHERE p.especialidad = :especialidad")
+    List<Long> findIdsByEspecialidad(@Param("especialidad") Especialidades especialidad);
 
     //Posibilidad de hacer filtros o busquedas combinadas
 }

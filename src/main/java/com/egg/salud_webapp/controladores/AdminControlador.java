@@ -4,7 +4,6 @@ package com.egg.salud_webapp.controladores;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.SolicitudEnum;
-import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.repositorios.ProfesionalRepositorio;
 import com.egg.salud_webapp.servicios.PacienteServicio;
 import com.egg.salud_webapp.servicios.ProfesionalServicio;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,10 +24,10 @@ public class AdminControlador {
 
     @Autowired
     private PacienteServicio pacienteServicio;
-    
+
     @Autowired
     private ProfesionalServicio profesionalServicio;
-    
+
     @Autowired
     private ProfesionalRepositorio profesionalRepositorio;
 
@@ -44,21 +42,21 @@ public class AdminControlador {
         modelo.addAttribute("Pacientes", pacientes);
         return "listapacientes.html";
     }
-    
+
     @GetMapping("/solicitudes")
-    public String listarProfesionalesSolicitudes (ModelMap modelo){
+    public String listarProfesionalesSolicitudes(ModelMap modelo) {
         List<Profesional> profesionalesSolicitud = profesionalServicio.listarProfesionalesSolicitud();
-        modelo.addAttribute("Profesionales",profesionalesSolicitud);
+        modelo.addAttribute("Profesionales", profesionalesSolicitud);
         return "solicitudes.html";
     }
-    
+
     @GetMapping("/profesionales")
-    public String listarProfesionalesSinSolicitudes (ModelMap modelo){
+    public String listarProfesionalesSinSolicitudes(ModelMap modelo) {
         List<Profesional> profesionalesSinSolicitud = profesionalServicio.listarProfesionalesSinSolicitud();
-        modelo.addAttribute("Profesionales",profesionalesSinSolicitud);
+        modelo.addAttribute("Profesionales", profesionalesSinSolicitud);
         return "listaprofesionales.html";
     }
-    
+
     @GetMapping("/modificarRol/{id}")
     public String cambiarRol(@PathVariable Long id) {
         pacienteServicio.cambiarRol(id);
@@ -86,5 +84,5 @@ public class AdminControlador {
         }
         return "redirect:/admin/solicitudes";
     }
-    
+
 }

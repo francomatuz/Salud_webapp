@@ -53,14 +53,15 @@ public class PortalControlador {
     }
 
     @PostMapping("/registrar/paciente")
-    public String registrarpaciente(@RequestParam String nombre, @RequestParam MultipartFile archivo, @RequestParam String apellido,
+    public String registrarpaciente(@RequestParam String nombre, @RequestParam MultipartFile archivo,
+            @RequestParam String apellido,
             @RequestParam String email, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, @RequestParam String password,
             @RequestParam String password2, ModelMap modelo) throws MiException, IOException {
 
         try {
-            pacienteServicio.registrar(archivo,nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,
+            pacienteServicio.registrar(archivo, nombre, apellido, email, dni, fecha_nac, obraSocial, genero, password,
                     password2);
 
             modelo.put("exito", "Paciente registrado exitosamente");
@@ -76,7 +77,7 @@ public class PortalControlador {
             modelo.put("apellido", apellido);
             modelo.put("email", email);
             modelo.put("dni", dni);
-            modelo.put("fecha de nacimiento", fecha_nac);            
+            modelo.put("fecha de nacimiento", fecha_nac);
             modelo.put("generos", GeneroEnum.values());
             modelo.put("obrasSociales", ObraSocial.values());
 
@@ -84,7 +85,7 @@ public class PortalControlador {
 
         }
     }
-    
+
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error, ModelMap modelo) {
 
@@ -94,7 +95,7 @@ public class PortalControlador {
 
         return "login.html";
     }
-
+       
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/inicio")
     public String inicio(HttpSession session) {
@@ -109,5 +110,5 @@ public class PortalControlador {
 
         return "redirect:/";
     }
-   
+      
 }

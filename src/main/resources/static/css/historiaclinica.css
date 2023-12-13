@@ -1,0 +1,79 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin:0;
+}
+.card-body{
+    color: white;
+    font-size: 16px;
+}
+button{
+    font-size: 13px !important;
+}
+.imagen-paciente {
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.card-img{
+    align-items: center;
+    text-align: center;
+}
+html{
+    font-size: 62.5%;
+    font-family: 'Montserrat', sans-serif;
+}
+.navbar {
+    background-color: #1b263b;
+    height: 50px; 
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .navbar .nav-link {
+    color: #ffffff; /* Cambiar el color del texto a blanco (#ffffff) */
+  }
+  
+  
+  .logo{
+      font-family: 'Montserrat', sans-serif;
+      font-size: large;
+      font-weight: bold;
+      color: #ffffff;
+  }
+  .container-fluid a{
+      text-align: center;
+      
+  }
+  .ml-5 {
+      margin-left: 1.5rem !important;
+  }
+  #navbarNav{
+      font-family: 'Montserrat', sans-serif;
+  }
+  nav a:hover{
+      text-shadow: 0 0 10px white;
+      cursor:pointer;
+  }
+  .collapse .navbar-nav .nav-link {
+      padding: 6px;
+      margin-left: 4px;
+      margin-right: 4px;
+  }
+  
+.bg-color{
+    background-color: #1b263b !important; 
+}
+.btn{
+    font-size: 10px;
+}
+.notas{
+    padding: 4px;
+    height:auto;
+    width: auto;
+    border-radius: 5px;
+}
+.titulo{
+    color:#1b263b;
+}
+

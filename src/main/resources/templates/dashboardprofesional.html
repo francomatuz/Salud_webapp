@@ -85,34 +85,26 @@
                                 <thead>
                                     <tr>
                                         <th>Fecha</th>
-                                        <th>Hora</th>
                                         <th>Paciente</th>
-                                        <th>Motivo de la consulta</th>
                                         <!-- Otros encabezados -->
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody  th:each="turno:${turnosTomados}">
                                     <tr>
-                                        <td>24/11/23</td>
-                                        <td>19:20</td>
-                                        <td>Grupo Cuatro</td>
-                                        <td>Bugs constantes en la cabeza</td>
+                                        <td th:text="${turno.fechaHora}"></td>
+                                        <!--     <td th:text="${turno.paciente.nombre}"></td>-->
                                         <td>
-                                            <button type="button" class="btn btn-warning btn-sm">Reprogramar</button>
-                                            <button type="button" class="btn btn-danger btn-sm">Cancelar</button>
+                                            <a th:href="@{'/fichamedica/paciente/' + ${turno.paciente.id}}">
+                                                <span th:text="${turno.paciente.nombre}"></span>
+                                            </a>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>24/11/23</td>
-                                        <td>20:00</td>
-                                        <td>Grupo Tres</td>
-                                        <td>Dolor de oídos</td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning btn-sm">Reprogramar</button>
-                                            <button type="button" class="btn btn-danger btn-sm">Cancelar</button>
-                                        </td>
-                                    </tr>
-                                    <!-- Otras filas -->
+                                <form th:action="@{/turnos/cancelar-profesional}" th:method="post">
+                                    <td>
+                                        <input type="hidden" th:name="idTurno" th:value="${turno.id}">
+                                        <button type="submit">Cancelar</button>
+                                    </td>
+                                </form>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
