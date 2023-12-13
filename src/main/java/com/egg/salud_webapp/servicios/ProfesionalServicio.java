@@ -155,6 +155,7 @@ public class ProfesionalServicio implements UserDetailsService {
         if (profesional.getAlta() == SolicitudEnum.ACTIVO) {
             profesional.setAlta(SolicitudEnum.INACTIVO);
         }
+        profesionalRepositorio.save(profesional);
     }
 
     public void darAlta(Long id) throws MiException {
@@ -419,4 +420,26 @@ public class ProfesionalServicio implements UserDetailsService {
 
         return turnosDisponibles;
     }
+
+
+    public void calificacionProfesional(Long idProfesional, Integer calif) {
+        Profesional profesional = profesionalRepositorio.getById(idProfesional);
+
+        profesional.setCantCalificaciones(profesional.getCantCalificaciones() + 1);
+
+        profesional.setSumaCalificaciones(profesional.getSumaCalificaciones() + calif);
+
+        Integer calificacionTotal = (profesional.getSumaCalificaciones() / profesional.getCantCalificaciones());
+
+        profesional.setCalificacion(calificacionTotal.doubleValue());
+
+    }
+
+    @Transactional
+    public void settearPrecioConsulta(Double precio, Long id) throws MiException {
+        Profesional profesional = getById(id);
+        profesional.setPrecio(precio);
+        profesionalRepositorio.save(profesional);
+    }
+    
 }

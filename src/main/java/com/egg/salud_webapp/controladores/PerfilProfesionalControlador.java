@@ -235,6 +235,17 @@ public class PerfilProfesionalControlador {
             modelo.put("profesional", profesionalLogueado);
 
             return "error.html"; // Página de error
+    @PostMapping("/precio")
+    public String settearPrecioConsulta(HttpSession session, @RequestParam Double precio, ModelMap modelo) throws MiException {
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+            try {
+            profesionalServicio.settearPrecioConsulta(precio, profesionalLogueado.getId());
+            return "dashboardprofesional.html";
+        } catch (MiException ex) {
+            Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
+            modelo.put("Error", ex.getMessage());
+            modelo.put("profesional", profesionalLogueado);
+            return "error.html";
         }
     }
 }

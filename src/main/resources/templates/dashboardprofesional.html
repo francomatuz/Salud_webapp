@@ -52,7 +52,7 @@
             <!-- Sidebar -->
             <div class="col-md-3">
                 <div class="card">
-                    <div class="card-body" th:if="${session.usuariosession.alta != null}">
+                    <div class="card-body" th:if="${session.usuariosession.alta == T(com.egg.salud_webapp.enumeraciones.SolicitudEnum).ACTIVO}">
                         <h5 class="card-title">Menú</h5>
                         <div class="btn-group-vertical">
                             <button id="nuevoPaciente" class="btn btn-success btn-sm mb-2">Nuevo Paciente</button>
@@ -61,8 +61,12 @@
                             <a th:href="@{/perfil2/darBaja}" class="btn btn-danger btn-sm mb-2">Dar Baja</a> 
                         </div>
                     </div>
-                    <div class="card-body" th:if="${session.usuariosession.alta == null}">
-                        <a th:href="@{/perfil2/darBaja}" class="btn btn-danger btn-sm mb-2">Alta</a> <!--cambiar ruta-->
+                   <div class="card-body" th:if="${session.usuariosession.alta == T(com.egg.salud_webapp.enumeraciones.SolicitudEnum).INACTIVO}">
+                        <a th:href="@{/perfil2/solicitarAlta}" class="btn btn-success btn-sm mb-2">Me di de baja, pero me arrepenti, quiero volver :(</a>
+                    </div>
+                    
+                    <div class="card-body" th:if="${session.usuariosession.alta == T(com.egg.salud_webapp.enumeraciones.SolicitudEnum).SOLICITUD}">
+                        <a class="btn btn-warning btn-sm mb-2">Solicitud pendiente</a>
                     </div>
                 </div>
             </div>
@@ -101,6 +105,13 @@
                     </div>
                 </div>
 
+                 <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <form th:action="@{/perfil2/precio}" method="POST">
+                        <label for="exampleInputEmail1" class="form-label">Cambiar valor de la consulta</label>
+                
+                
                 <!-- Sección de citas programadas -->
                 <div class="card">
                     <div class="card-body">
