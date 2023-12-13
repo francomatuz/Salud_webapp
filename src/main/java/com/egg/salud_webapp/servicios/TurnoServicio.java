@@ -29,7 +29,7 @@ public class TurnoServicio {
 
     public List<Turno> obtenerTurnosDisponibles() { // Aca tenemos un metodo que muestra una LISTA con los turnos QUE
                                                     // AUN ESTAN DISPONIBLES PARA TOMAR
-        return turnoRepositorio.findAllDisponibles();
+        return turnoRepositorio.findByDisponibleTrue();
     }
 
     public List<Long> obtenerIdsProfesionalesPorEspecialidad(Especialidades especialidad) {
@@ -182,5 +182,10 @@ public class TurnoServicio {
             throw new MiException("No se puede cancelar el turno.");
         }
     }
+
+    public List<Turno> obtenerTurnosTomados(){
+        return turnoRepositorio.findByDisponiblefalse();
+   
+       }
 
 }

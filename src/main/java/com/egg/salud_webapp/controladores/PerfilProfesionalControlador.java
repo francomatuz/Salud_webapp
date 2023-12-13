@@ -1,6 +1,7 @@
 package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.entidades.Profesional;
+import com.egg.salud_webapp.entidades.Turno;
 import com.egg.salud_webapp.enumeraciones.Especialidades;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.egg.salud_webapp.servicios.ProfesionalServicio;
+import com.egg.salud_webapp.servicios.TurnoServicio;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -30,6 +33,8 @@ public class PerfilProfesionalControlador {
 
     @Autowired
     private ProfesionalServicio profesionalServicio;
+    @Autowired
+    private TurnoServicio turnoServicio;
 
     @GetMapping("/actualizar")
     public String mostrarFormulario(ModelMap modelo, HttpSession session) {
@@ -147,7 +152,9 @@ public class PerfilProfesionalControlador {
     }
 
     @GetMapping("/dashboard2")
-    public String dashboard() {
+     public String obtenerTurnosTomados(ModelMap modelo) {
+         List<Turno> turnosTomados = turnoServicio.obtenerTurnosTomados();
+         modelo.put("turnosTomados", turnosTomados);
         return "dashboardprofesional.html";
     }
 
