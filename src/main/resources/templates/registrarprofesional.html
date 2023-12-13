@@ -145,90 +145,18 @@
         </div>
       </div>
 
-      <div hidden class="mb-3">
+      <div class="mb-3">
         <label class="form-label">IMAGEN</label>
         <input type="file" name="archivo" class="form-control">
       </div>
-
-
-                <div class="col-md-7">
-                    <label for="validationDefault01" class="form-label">Correo electrónico</label>
-                    <input type="text" name="email" class="form-control" id="validationDefault01"
-                           value="Ingrese su correo electrónico" th:value="${email}" required>
-                </div>
-
-                <div class="col-md-5">
-                    <label for="validationDefault05" class="form-label">Contraseña</label>
-                    <input type="password" name="password" class="form-control" id="validationDefault06" th:value="${password}"
-                           >
-                </div>
-
-                <div class="col-md-5">
-                    <label for="validationDefault05" class="form-label">Confirmar Contraseña</label>
-                    <input type="password" name="password2" class="form-control" id="validationDefault07" th:value="${password2}"
-                           >
-                </div>
-                <div class="col-md-6">
-                    <label for="validationDefault04" class="form-label">Número de Matrícula</label>
-                    <input type="text" name="matricula" class="form-control" id="validationDefault04" th:value="${matricula}" >
-                </div>
-                <div class="col-md-3">
-                    <label for="validationDefault08" class="form-label">Especialidad</label>
-                    <select class="form-select" name="especialidad" aria-label="Default select example">
-                        <option th:each="especialidad : ${especialidades}" th:value="${especialidad}" th:text="${especialidad}"></option>
-                    </select>
-                </div>
-
-                <div class="col-md-6">
-                    <label for="validationDefault09" class="form-label">Atiende de manera virtual?</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="atencionVirtual" name="atencionVirtual" th:checked="${atencionVirtual}">
-                        <label class="form-check-label" for="atencionVirtual">Sí</label>
-                    </div>
-                </div>
-
-
-
-                <div class="col-md-7">
-                    <label for="validationDefault08" class="form-label">Seleccione coberturas trabajadas</label>
-                    <div class="checkbox-list">
-                        <div th:each="obraSocial : ${obrasSociales}">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="obrasSocialesCheck${obraSocial.id}" name="prestadores" th:value="${obraSocial}"
-                                       th:checked="${prestadores != null and prestadores.contains(obraSocial)}">
-                                <label class="form-check-label" for="obrasSocialesCheck${obrasSociales.id}" th:text="${obraSocial}"></label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">IMAGEN</label>
-                    <input type="file" name="archivo" class="form-control">
-                </div>
-
-
-                <div class="col-12">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
-                        <label class="form-check-label" for="invalidCheck2">
-                            Acepto los <a href="terminosycondiciones.html">términos y condiciones</a>
-                        </label>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-2">
-                        <button class="btn-register" type="submit">Registrarse</button>
-                    </div>
-                </div>
-        </div>
-      </div>
-      <div class="row justify-content-center">
+          
+  </div>
+    <div class="row justify-content-center">
         <div class="col-2">
           <button class="btn-register" type="submit">Registrarse</button>
         </div>
       </div>
-  </div>
+    
   </form>
 
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
