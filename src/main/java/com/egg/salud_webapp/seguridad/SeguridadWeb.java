@@ -41,7 +41,7 @@ public class SeguridadWeb extends WebSecurityConfigurerAdapter {
                         .antMatchers("/css/*", "/js/*", "/img/*", "/**")
                         .permitAll())
                 .sessionManagement(management -> management
-                        .maximumSessions(2)// Limita a un maximo de 1 sesion por usuario
+                        .maximumSessions(100)// Limita a un maximo de 1 sesion por usuario
                         .expiredUrl("/login?expired=true") // Pagina a la que se redirige si la sesion ha expirado
                         .maxSessionsPreventsLogin(true)// Evita que un usuario inice sesion en una nueva sesion si ya
                                                        // alcanzo el limite
