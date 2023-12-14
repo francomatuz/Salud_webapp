@@ -41,5 +41,8 @@ public class ProfesionalPrestadores {
     public void setObraSocial(String obraSocial) {
         this.obraSocial = obraSocial;
     }
-
+    @Override
+    public String toString() {
+        return  obraSocial  ;
+    }
 }
