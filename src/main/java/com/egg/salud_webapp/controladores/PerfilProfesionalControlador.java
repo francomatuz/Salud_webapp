@@ -101,7 +101,9 @@ public class PerfilProfesionalControlador {
 
         } catch (MiException ex) {
             // Manejar excepciones
-            Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null,
+                    ex);
+            Profesional profesional = (Profesional) session.getAttribute("usuariosession");
 
             modelo.put("error", ex.getMessage());
             modelo.put("nombre", nombre);
@@ -112,9 +114,18 @@ public class PerfilProfesionalControlador {
             modelo.put("email", email);
             modelo.put("matricula", matricula);
             modelo.put("especialidades", Especialidades.values());
-            modelo.put("obrasSociales", ObraSocial.values());
             modelo.put("atencionVirtual", profesionalLogueado.getAtencionVirtual());
-            modelo.put("obrasSociales", ObraSocial.values());
+
+            List<String> obrasSocialesSelected = new ArrayList<>();
+            List<String> obrasSocialesList = new ArrayList<>();
+            for (ObraSocial obraSocial : profesionalServicio.obtenerObrasSocialesPorIdProfesional(profesional.getId())) {
+                obrasSocialesSelected.add(obraSocial.toString());
+            }
+            for (ObraSocial obraSocial : ObraSocial.values()) {
+                obrasSocialesList.add(obraSocial.toString());
+            }
+            modelo.put("obrasSociales", obrasSocialesList);
+            modelo.put("prestadores", obrasSocialesSelected);
             modelo.put("profesional", profesionalLogueado);
 
             return "actualizarprofesional.html"; // Se queda en la misma página con cartel de error.
@@ -152,10 +163,19 @@ public class PerfilProfesionalControlador {
     }
 
     @GetMapping("/dashboard2")
-     public String obtenerTurnosTomados(ModelMap modelo) {
-         List<Turno> turnosTomados = turnoServicio.obtenerTurnosTomados();
-         modelo.put("turnosTomados", turnosTomados);
+    public String obtenerTurnosTomados(ModelMap modelo) {
+        List<Turno> turnosTomados = turnoServicio.obtenerTurnosTomados();
+        modelo.put("turnosTomados", turnosTomados);
         return "dashboardprofesional.html";
+    }
+
+    @GetMapping("/solicitarAlta")
+    public String solicitarAlta(HttpSession session, ModelMap modelo) throws MiException {
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        profesionalServicio.darAlta(profesionalLogueado.getId());
+        SecurityContextHolder.getContext().setAuthentication(null);
+
+        return "login.html";
     }
 
     @GetMapping("/generar-turnos")
@@ -198,9 +218,9 @@ public class PerfilProfesionalControlador {
 
         try {
             // Validaciones
-            if (fechaFin.isBefore(fechaInicio) ||
-                    (fechaFin.isEqual(fechaInicio) && horarioInicio.isAfter(horarioFin)) ||
-                    duracionTurnoEnMinutos <= 0) {
+            if (fechaFin.isBefore(fechaInicio)
+                    || (fechaFin.isEqual(fechaInicio) && horarioInicio.isAfter(horarioFin))
+                    || duracionTurnoEnMinutos <= 0) {
                 modelo.put("Error", "Parámetros de entrada inválidos.");
                 modelo.put("profesional", profesionalLogueado);
                 return "error.html";
@@ -224,6 +244,20 @@ public class PerfilProfesionalControlador {
             modelo.put("profesional", profesionalLogueado);
 
             return "error.html"; // Página de error
+        }
+    }
+
+    @PostMapping("/precio")
+    public String settearPrecioConsulta(HttpSession session, @RequestParam Double precio, ModelMap modelo) throws MiException {
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        try {
+            profesionalServicio.settearPrecioConsulta(precio, profesionalLogueado.getId());
+            return "dashboardprofesional.html";
+        } catch (MiException ex) {
+            Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
+            modelo.put("Error", ex.getMessage());
+            modelo.put("profesional", profesionalLogueado);
+            return "error.html";
         }
     }
 }

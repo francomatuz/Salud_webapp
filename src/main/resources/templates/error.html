@@ -11,11 +11,14 @@
      <div class="container-fluid" id="size">
     <img class="img-fluid" src="/img/heroMain.jpg" alt="hero" />
     <div class="text-overlay">
-                            <div class="text">Bienestar a un click</div>
+        <div class="text" th:text="'Error ' + ${codigo} +' - ' + ${mensaje}">
+            
+        </div>
         </div>                      
      </div>
       <br>
       
+          
       <div class="container">
     <div class="row">
         <div class="col-md-3">

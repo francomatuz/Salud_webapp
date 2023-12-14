@@ -1,173 +1,84 @@
-*{
-    box-sizing: border-box;
-    padding: 0;
-    margin:0;
-}
-body{
-    background-color:  #e0e1dd;
-}
-html{
-    font-size: 62.5%;
-    font-family: 'Montserrat', sans-serif;
+.container-fluid {
+    position: relative;
+    width:100%;
 }
 
-.navbar {
-  background-color: #1b263b; 
-}
-
-.navbar .nav-link {
-  color: #ffffff; /* Cambiar el color del texto a blanco (#ffffff) */
-}
-
-
-.logo{
-    font-family: 'Montserrat', sans-serif;
-    font-size: large;
-    font-weight: bold;
-    color: #ffffff;
-}
-.container-fluid a{
-    text-align: center;
-    
-}
-.ml-5 {
-    margin-left: 1.5rem !important;
-}
-#navbarNav{
-    font-family: 'Montserrat', sans-serif;
-}
-nav a:hover{
-    text-shadow: 0 0 10px white;
-    cursor:pointer;
-}
-.collapse .navbar-nav .nav-link {
-    padding: 6px;
-    margin-left: 4px;
-    margin-right: 4px;
-}
-
-.navbar .nav-link[href*="/login"] .fs-5 {
-  color: #ffffff; /* Cambiar el color del texto a rojo (#ff0000) para el enlace "Login" */
-}
-
-.navbar .nav-link.disabled {
-    
-     color:#6d9efc
-    
-}
-
-.contenedor-footer {
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    font-size: medium;
-    color:#ffffff;
-    background-color: #1b263b;
-    height: 80px; /* Altura del contenedor (ajusta segÃºn sea necesario) */
-    border: 1px solid #ccc;
-}
-.card{
-    color: white !important;
-    background-color: #1b263b !important;
-}
-.section-title{
-    margin-top: 10px;
-    height: 30px;
-    text-align: center;
-    font-family: 'Montserrat', sans-serif;
-    color: #1b263b;
-}
-.section-title h1{
-    font-weight: bold !important;
-}
-.buscar{
-    position: absolute;
-    left: 48%;
-    top: 20%;
-    transform: translate(-50%,-50%);
-    padding: 10px;
-}
-input{
-    outline: none;
-    box-sizing: border-box;
-    height: 50px;
-    width: 0;
-    padding: 0px 20px;
-    color: #000;
-    border-radius:50px;
-    font-size: 18px !important;
-    border: 1px solid #1b263b;
-    transition: all .7s ease;
-}
 ::placeholder{
     color: grey;
 }
-.boton{
-    position:absolute;
-    right:0;
-    top: 0;
-    width: 65px;
-    height: 65px;
-    background: #1b263b;
-    line-height: 80px;
-    border-radius: 50%;
-    text-align: center;
-    cursor: pointer;
-    transition: .5s;
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    padding-block: 0px;
-    padding-inline: 0px;
-    border-width: 0px;
-}
+
 .boton i{
     color: white;
     line-height:65px;
     transition: all .7 ease;
 }
-.buscar:hover input{
-    width: 350px;
-}
-.buscar:hover i{
-    transform:rotate(-360deg);
-}
-.boton:hover{
-    background: #1b263b;
-}
-@media(max-width: 767px){
-  .navbar-logo {
-    display: none !important;
-  }
-      .boton{
-        width: 38px !important;
-        height: 38px !important;
-        background: #1b263b;
-    }
-    input{
-        height: 20px !important;
-        width: 0;
-        padding: 0px 10px;
-        color: #000;
-        font-size: 10px !important;
-    }
-    .buscar:hover input{
-        width: 200px;
-    }
-    svg{
-        width: 18px;
-        height: 18px;
-    }
-    .buscar{
-        left: 48%;
-        top: 10%;
-    }
-}
+
 .nombreUsuario{
     display: inlineblock;
-    width:100px;
-    color: #00b4d8;
+    width:120px;
+    color: #03045e;
 }
-.title{
+
+.text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
+    color: white;
+    background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    padding: 10px 20px; /* Espaciado interior para el texto */
+    width:100%;
+}
+.text {
+    font-size: 30px; 
+    
+ .card {
+    border: none;
+    border-radius: 0; /* Esquinas rectangulares */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin-bottom: 0; /* Elimina el espacio entre tarjetas */
+}
+
+/* Estilo para el fondo */
+.card-body {
+    background-color: #fff; /* Fondo blanco */
+}
+
+/* Estilo para el texto */
+.card-title, .card-text {
+    color: #ccc; /* Color de texto */
+}   
+    
+    
+}
+.carousel-item {
+    text-align: left;
+}
+
+.carousel-item .card {
+    width: 100%; /* Ancho de la tarjeta dentro del carrusel */
+    background-color: whitesmoke;
+}
+
+.carousel-item img {
+    max-width: 100px; /* Ancho máximo de la imagen de perfil */
+    height: auto;
+    border-radius: 50%; /* Hace que la imagen sea circular */
+    margin-right: 0px; /* Espacio entre la imagen y la biografía */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: auto; /* Ancho automático */
+    color: #ccc; /* Color de las flechas */
+    background-color: #ade8f4; /* Color de fondo de las flechas */
+}
+
+.carousel-control-prev {
+    left: -40px; /* Posición de la flecha de retroceso */
+}
+
+.carousel-control-next {
+    right: -40px; /* Posición de la flecha de avance */
 }
