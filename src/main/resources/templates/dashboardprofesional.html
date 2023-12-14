@@ -18,7 +18,6 @@
                             <h5 class="card-title">Menú</h5>
                             <div class="btn-group-vertical">
                                 <a th:href="@{/perfil2/generar-turnos}" class="btn btn-success btn-sm mb-2">Generar Turnos</a>
-                                <a th:href="@{/turnos/mis-turnos}" class="btn btn-warning btn-sm mb-2">Ver y/o modificar turnos</a>
                                 <a th:href="@{/perfil2/actualizar}" class="btn btn-warning btn-sm mb-2">Editar Perfil</a>
                                 <a th:href="@{/perfil2/darBaja}" class="btn btn-danger btn-sm mb-2">Dar Baja</a> 
                             </div>
@@ -53,18 +52,18 @@
                             </div>
                         </div>
                     </div>
-                    
-           
-  <!-- Sección de biografía -->
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <form th:action="@{/perfil2/biografia}" method="POST">
-                        <h5 class="card-title">Biografía</h5>
-                        <textarea  class="form-control mb-3" rows="5" placeholder="Escribe tu biografía aquí" id="biografia" name="biografia"></textarea>
-                        <button type="submit" class="btn btn-success btn-sm">Guardar Biografía</button>
-                        </form>
+
+
+                    <!-- Sección de biografía -->
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <form th:action="@{/perfil2/biografia}" method="POST">
+                                <h5 class="card-title">Biografía</h5>
+                                <textarea  class="form-control mb-3" rows="5" placeholder="Escribe tu biografía aquí" id="biografia" name="biografia"></textarea>
+                                <button type="submit" class="btn btn-success btn-sm">Guardar Biografía</button>
+                            </form>
+                        </div>
                     </div>
-                </div>
 
                     <div class="col-md-4">
                         <div class="card mb-3">
@@ -79,7 +78,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
 
                     <div class="card">
                         <div class="card-body">
