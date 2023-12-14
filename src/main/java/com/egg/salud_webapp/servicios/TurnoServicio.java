@@ -87,6 +87,10 @@ public class TurnoServicio {
             throw new MiException("Paciente no encontrado.");
         }
     }
+    public List<Turno> obtenerTurnosDisponiblesYAtencionVirtual(String especialidad) {
+        Especialidades especialidadEnum = Especialidades.valueOf(especialidad.toUpperCase());
+        return turnoRepositorio.findByProfesionalEspecialidadAndDisponibleTrueAndProfesionalAtencionVirtualTrue(especialidadEnum);
+    }
 
     public List<Turno> obtenerTurnosDisponiblesPorProfesional(Long idProfesional) {
         return turnoRepositorio.findByProfesionalIdAndDisponibleTrue(idProfesional);
