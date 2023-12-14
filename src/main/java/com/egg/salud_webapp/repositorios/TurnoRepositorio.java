@@ -49,4 +49,14 @@ public interface TurnoRepositorio extends JpaRepository<Turno, Long> {
 
     @Query("SELECT t FROM Turno t WHERE t.disponible = false")
     List<Turno> findByDisponiblefalse();
+
+     @Query("SELECT t FROM Turno t WHERE t.profesional.especialidad = :especialidad AND t.disponible = true AND t.profesional.atencionVirtual = true") // Query
+                                                                                                                                                      // de
+                                                                                                                                                      // busqueda
+                                                                                                                                                      // para
+                                                                                                                                                      // la
+                                                                                                                                                      // atencion
+                                                                                                                                                      // virtual
+    List<Turno> findByProfesionalEspecialidadAndDisponibleTrueAndProfesionalAtencionVirtualTrue(
+            @Param("especialidad") Especialidades especialidad);
 }
