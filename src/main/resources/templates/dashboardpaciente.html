@@ -8,17 +8,15 @@
             <nav th:replace= "/fragments/navbar :: nav" ></nav>
         </header>
 
-
-
    <div class="container-fluid mt-3">
     <div class="row">
-        <!-- Sidebar -->
+
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Menú</h5>
                     <div class="btn-group-vertical">
-                        <a th:href="@{/nuevo-turno}"><button id="nuevoTurno" class="btn btn-success btn-sm mb-2">Nuevo Turno</button></a>
+                        <a th:href="@{/turnos/disponibles}"<button id="nuevoTurno" class="btn btn-success btn-sm mb-2">Nuevo Turno</button></a>
                         <a th:href="@{/perfil/actualizar}" class="btn btn-warning btn-sm mb-2">Editar mi Perfil</a>
                         <a th:href="@{/perfil/darBaja}" class="btn btn-danger btn-sm mb-2">Darme de Baja</a>
                         <a href="/logout"><button id="pacienteExistente" class="btn btn-primary btn-sm mb-2">Cerrar sesión</button></a>
