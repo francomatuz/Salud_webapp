@@ -163,7 +163,7 @@ public class ProfesionalServicio implements UserDetailsService {
 
     public void darAlta(Long id) throws MiException {
         Profesional profesional = getById(id);
-        profesional.setAlta(SolicitudEnum.SOLICITUD);
+        profesional.setAlta(SolicitudEnum.ACTIVO);
         profesionalRepositorio.save(profesional);
     }
 
@@ -437,8 +437,8 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional profesional = getById(id);
         List<Turno> turnosDisponibles = new ArrayList<>();
 
-        DayOfWeek[] diasLaborables = { DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
-                DayOfWeek.FRIDAY };
+        DayOfWeek[] diasLaborables = {DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
+            DayOfWeek.FRIDAY};
 
         for (LocalDate fecha = fechaInicio; !fecha.isAfter(fechaFin); fecha = fecha.plusDays(1)) {
             for (DayOfWeek diaLaborable : diasLaborables) {
@@ -494,7 +494,8 @@ public class ProfesionalServicio implements UserDetailsService {
     public List<Profesional> listarProfesionalesActivos() {
         return profesionalRepositorio.findAllActivos();
     }
-    public void guardarBio(Long idProfesional, String biografia){
+
+    public void guardarBio(Long idProfesional, String biografia) {
         Profesional profesional = profesionalRepositorio.getById(idProfesional);
         profesional.setBio(biografia);
         profesionalRepositorio.save(profesional);
