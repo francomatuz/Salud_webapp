@@ -72,7 +72,8 @@
                         <div class="card-body">
                             <h5 class="card-title" th:text="${profesional.nombre}"></h5>
                             <p class="card-text" th:text="${profesional.especialidad}"></p>
-                            <p class="card-text">Aquí va la biografía.</p>
+                            <p class="card-text" th:if="${profesional.bio ==null}">Este profesional no tiene una biografía aún.</p>
+                            <p class="card-text" th:text="${profesional.bio}"></p>
                         </div>
                     </div>
                 </div>

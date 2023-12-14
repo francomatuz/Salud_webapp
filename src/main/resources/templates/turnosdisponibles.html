@@ -37,6 +37,8 @@
                     <th scope="col">Fecha</th>
                     <th scope="col">Profesional</th>
                     <th scope="col">Especialidad</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Calificacion</th>
                     <th scope="col">Reservar</th>
                 </tr>
                 </thead>
@@ -45,6 +47,8 @@
                         <td th:text="${turno.fechaHora}" scope="row"></td>
                         <td th:text="${turno.profesional.nombre}" scope="row"></td>
                         <td th:text="${turno.profesional.especialidad}" scope="row"></td>
+                        <td th:text="${turno.profesional.precio}" scope="row"></td>
+                        <td th:text="${turno.profesional.calificacion}" scope="row"></td>
                         <td th:if="${session.usuariosession==null}" scope="row">
                             <a th:href="@{/login}">
                                 <button type="button" class="btn btn-info">AGENDAR</button>

@@ -49,7 +49,8 @@
                         
                         <!-- Otros campos -->
                         <td>
-                            <a class="btn-sm" th:href="@{/admin/aprobarSolicitud/__${profesional.id}__}"> Aprobar</a>
+                            <a th:if="${session.usuariosession != null and session.usuariosession.rol.toString() == 'ADMIN'}" class="btn-sm" th:href="@{/admin/aprobarSolicitud/__${profesional.id}__}"> Aprobar</a>
+                            <a th:if="${session.usuariosession != null and session.usuariosession.rol.toString() == 'MOD'}" class="btn-sm" th:href="@{/moderador/aprobarSolicitud/__${profesional.id}__}"> Aprobar</a>
                         </td>
                     </tr>
                 </tbody>
