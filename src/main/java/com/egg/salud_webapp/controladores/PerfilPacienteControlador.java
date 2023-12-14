@@ -1,6 +1,7 @@
 package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.entidades.Paciente;
+import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.excepciones.MiException;
@@ -8,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.egg.salud_webapp.servicios.PacienteServicio;
+import com.egg.salud_webapp.servicios.ProfesionalServicio;
+
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
@@ -26,6 +30,8 @@ public class PerfilPacienteControlador {
 
     @Autowired
     private PacienteServicio pacienteServicio;
+    @Autowired
+    private ProfesionalServicio profesionalServicio;
 
     @GetMapping("/dashboard")
     public String dashboard() {
@@ -117,5 +123,11 @@ public class PerfilPacienteControlador {
 
             return "actualizarpaciente.html";
         }
+    }
+    @GetMapping("/profesionales")
+    public String TodosLosProfesioanlesActivos(ModelMap modelo) {
+        List<Profesional> profesionales = profesionalServicio.listarProfesionales();
+        modelo.put("profesionales", profesionales);
+        return "todos-los-profesionales.html";
     }
 }
