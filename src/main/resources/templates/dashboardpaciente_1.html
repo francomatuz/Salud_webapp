@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -109,7 +109,12 @@
                                         <td th:text="${turno.profesional.nombre}"></td>
                                         <td th:text="${turno.profesional.especialidad}"></td>
                                         <td><input type="hidden" th:name="idTurno" th:value="${turno.id}">
-                                         <a th:action="@{/turnos/cancelar-turno}" th:method="post"> <button type="submit">Cancelar</button></td></a>
+                                            <form th:action="@{/turnos/cancelar-turno}" th:method="post">
+                                                <td>   
+                                                    <input type="hidden" th:name="idTurno" th:value="${turno.id}">     
+                                                    <button type="submit">Cancelar</button>            
+                                                </td>                     
+                                            </form>
                                     </tr>
                                 </tbody>
                             </table>
