@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class FichaMedica {
@@ -26,6 +27,10 @@ public class FichaMedica {
   @ManyToOne
   @JoinColumn(name = "historia_clinica_id")
   private HistoriaClinica historiaClinica;
+  
+   @OneToOne
+   @JoinColumn(name = "profesional_id")
+   private Profesional profesional;
 
   public FichaMedica() {
   }
@@ -36,13 +41,15 @@ public class FichaMedica {
       String diagnostico,
       String tratamiento,
       String notas,
-      HistoriaClinica historiaClinica) {
+      HistoriaClinica historiaClinica,
+      Profesional profesional) {
     this.id = id;
     this.fecha = fecha;
     this.diagnostico = diagnostico;
     this.tratamiento = tratamiento;
     this.notas = notas;
     this.historiaClinica = historiaClinica;
+    this.profesional = profesional;
   }
 
   public Long getId() {
@@ -110,4 +117,13 @@ public class FichaMedica {
         historiaClinica +
         '}');
   }
+
+    public Profesional getProfesional() {
+        return profesional;
+    }
+
+    public void setProfesional(Profesional profesional) {
+        this.profesional = profesional;
+    }
+  
 }

@@ -3,6 +3,7 @@ package com.egg.salud_webapp.servicios;
 import com.egg.salud_webapp.entidades.FichaMedica;
 import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Paciente;
+import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.repositorios.FichaMedicaRepositorio;
 import com.egg.salud_webapp.repositorios.HistoriaClinicaRepositorio;
 import com.egg.salud_webapp.repositorios.PacienteRepositorio;
@@ -30,8 +31,10 @@ public class FichaMedicaServicio implements UserDetailsService {
 
   @Autowired
   private TurnoRepositorio turnoRepositorio;
+  @Autowired
+  private ProfesionalServicio profesionalServicio;
 
-  public void crearFichaMedica(Long Id, String diagnostico, String tratamiento, String notas) {
+  public void crearFichaMedica(Long Id, Long idProfesional, String diagnostico, String tratamiento, String notas) {
     // validar atributos
     FichaMedica fichaMedica = new FichaMedica();
 
@@ -42,11 +45,13 @@ public class FichaMedicaServicio implements UserDetailsService {
 
     // Recuperar la historia clínica asociada al paciente
     Optional<Paciente> pacienteOptional = pacienteRepositorio.findById(Id);
+    Profesional profesional = profesionalServicio.getById(idProfesional);
 
     if (pacienteOptional.isPresent()) {
       Paciente paciente = pacienteOptional.get();
 
       HistoriaClinica historiaClinica = paciente.getHistoriaClinica();
+      fichaMedica.setProfesional(profesional);
 
       if (historiaClinica != null) {
         // fichaMedica.setHistoriaClinica(historiaClinica);
@@ -73,6 +78,14 @@ public class FichaMedicaServicio implements UserDetailsService {
   public List<FichaMedica> listarTodasLasFichasMedicas() {
     return fichaMedicaRepositorio.findAll();
 
+  }
+  
+   public List<FichaMedica> listarFichasMedicasPorPaciente(Long idHistoriaClinica) {
+    return fichaMedicaRepositorio.findHistoriaClinica(idHistoriaClinica);
+  }
+   
+   public HistoriaClinica BuscarByPaciente(Long idPaciente) {
+    return historiaClinicaRepositorio.buscarPorPaciente(idPaciente);
   }
 
   @Override

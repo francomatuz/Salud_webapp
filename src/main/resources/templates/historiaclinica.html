@@ -88,7 +88,7 @@
                 <textarea id="notas" class="form-control mb-3" rows="5" placeholder="Notas" name="notas"></textarea>
                 <!-- Otros campos del formulario aquí -->
                 <input type="hidden" th:name="id" th:value="${paciente.id}" />
-                <input type="hidden" th:name="idTurno" th:value="${.id}" />
+                <input type="hidden" th:name="idProfesional" th:value="${session.usuariosession.id}" />
                 <button type="submit" class="btn btn-success btn-sm">Generar ficha medica</button>
               </div>
             </form>
@@ -107,24 +107,21 @@
         <thead>
           <tr>
             <th scope="col">Fecha</th>
-            <th scope="col">Motivo</th>
             <th scope="col">Profesional</th>
             <th scope="col">Especialidad</th>
-            <th scope="col">Diagnóstico</th>
-            <th scope="col">Detalles</th>
+            <th scope="col">Diagnostico</th>
+            <th scope="col">Tratamiento</th>
           </tr>
         </thead>
-        <!--    <tbody>
-                             Iterar sobre las historias clínicas del paciente 
-                            <tr th:each="ficha : ${paciente.fichaMedica}">
-                                <td scope="row" th:text="${ficha.fecha}"></td>
-                                <td scope="row" th:text="${ficha.diagnostico}"></td>
-                                <td scope="row" th:text="${ficha.tratamiento}"></td>
-                                <td scope="row">
-                                    <a th:href="${'/historia/' + historia.id}" class="btn btn-info">VER</a>
-                                </td>
+            <tbody>
+                            <tr th:each="fichaMedica : ${fichasMedicas}">
+                                <td scope="row" th:text="${fichaMedica.fecha}"></td>
+                                <td scope="row" th:text="${fichaMedica.profesional.nombre}"></td>
+                                <td scope="row" th:text="${fichaMedica.profesional.especialidad}"></td>
+                                <td scope="row" th:text="${fichaMedica.diagnostico}"></td>
+                                <td scope="row" th:text="${fichaMedica.tratamiento}"></td>
                             </tr>
-                        </tbody>-->
+                        </tbody>
       </table>
 
     </div>

@@ -95,6 +95,10 @@ public class TurnoServicio {
     public List<Turno> obtenerTurnosDisponiblesPorIdsProfesionales(List<Long> idsProfesionales) {
         return turnoRepositorio.findByProfesionalIdInAndDisponibleTrue(idsProfesionales);
     }
+    
+    public List<Turno> obtenerTurnosParaElProfesional(Long idProfesional) {
+        return turnoRepositorio.findByProfesionalAndIsCanceladoFalseAndIsFinalizadoFalse(idProfesional);
+    }
 
     @Transactional
     public void eliminarTurno(Long idTurno) throws MiException {

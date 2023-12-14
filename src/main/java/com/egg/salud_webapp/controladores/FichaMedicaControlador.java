@@ -1,5 +1,7 @@
 package com.egg.salud_webapp.controladores;
 
+import com.egg.salud_webapp.entidades.FichaMedica;
+import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.Turno;
@@ -50,9 +52,10 @@ public class FichaMedicaControlador {
     }
   }
 
-  @GetMapping("/paciente/{id}")
-  public String mostrarPaciente(@PathVariable Long id, ModelMap modelo) {
+  @GetMapping("/paciente/{id}/{idTurno}")
+  public String mostrarPaciente(@PathVariable Long id, @PathVariable  Long idTurno, ModelMap modelo) throws MiException {
     Paciente paciente = pacienteServicio.getById(id);
+    turnoServicio.marcarTurnoComoFinalizado(idTurno);
 
     if (paciente != null) {
       byte[] imagenBytes = paciente.getImagen().getContenido();
@@ -62,27 +65,41 @@ public class FichaMedicaControlador {
       modelo.addAttribute("imagenBase64", imagenBase64);
       // modelo.addAttribute("fechaNacimientoFormateada",
       // paciente.getFecha_nac().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-
+        HistoriaClinica historiaClinica = fichaMedicaServicio.BuscarByPaciente(paciente.getId());
+        System.out.println(paciente.getId());
+        System.out.println(historiaClinica.getId());
+        List<FichaMedica> fichasMedicas = fichaMedicaServicio.listarFichasMedicasPorPaciente(historiaClinica.getId());
+        modelo.put("fichasMedicas", fichasMedicas);
+      
+      
       return "historiaclinica.html"; // El nombre de la plantilla Thymeleaf
     } else {
       return "error404"; // Puedes crear una plantilla específica para errores si lo deseas
     }
   }
+  
+  
+  
+  
+    @PostMapping("/crear/{id}")
+    public String crearFichaMedica(@PathVariable Long id, @RequestParam Long idProfesional, @RequestParam String diagnostico,
+            @RequestParam String tratamiento, @RequestParam String notas, ModelMap modelo, HttpSession session)
+            throws MiException {
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        if (profesionalLogueado == null) {
 
-  @PostMapping("/crear/{id}")
-  public String crearFichaMedica(@PathVariable Long id, @RequestParam Long idTurno, @RequestParam String diagnostico,
-      @RequestParam String tratamiento, @RequestParam String notas, ModelMap modelo, HttpSession session)
-      throws MiException {
-    Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
-    if (profesionalLogueado == null) {
+            return "redirect:/login";
+        }
 
-      return "redirect:/login";
+        fichaMedicaServicio.crearFichaMedica(id, idProfesional,diagnostico, tratamiento, notas);
+
+        if (profesionalLogueado == null) {
+            return "redirect:/login";
+        }
+        List<Turno> turnosTomados = turnoServicio.obtenerTurnosParaElProfesional(profesionalLogueado.getId());
+        modelo.put("turnosTomados", turnosTomados);
+        modelo.put("Exito", "Ficha Medica creada");
+        return "redirect:/perfil2/dashboard2";
     }
-    fichaMedicaServicio.crearFichaMedica(id, diagnostico, tratamiento, notas);
-    turnoServicio.marcarTurnoComoFinalizado(idTurno);
-    modelo.put("Exito", "Ficha Medica creada");
-    return "redirect:/perfil2/dashboard2";
-
-  }
 
 }
