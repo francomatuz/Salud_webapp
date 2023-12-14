@@ -1,21 +1,58 @@
-.container-fluid {
-    position: relative;
-    width:100%;
-}
-
-::placeholder{
+/* Estilos generales */
+::placeholder {
     color: grey;
 }
 
-.boton i{
+/* Estilos para el carrusel */
+.carousel-item {
+    text-align: center;
+}
+
+/* Estilos para las tarjetas */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 0; /* Elimina el espacio entre tarjetas */
+}
+
+.card-img-top {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.card-text {
+    color: #666;
+}
+
+/* Estilos adicionales */
+.container-fluid {
+    position: relative;
+    width: 100%;
+}
+
+.boton i {
     color: white;
-    line-height:65px;
+    line-height: 65px;
     transition: all .7 ease;
 }
 
-.nombreUsuario{
-    display: inlineblock;
-    width:120px;
+.nombreUsuario {
+    display: inline-block;
+    width: 120px;
     color: #03045e;
 }
 
@@ -26,59 +63,12 @@
     transform: translate(-50%, -50%);
     text-align: center;
     color: white;
-    background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
-    padding: 10px 20px; /* Espaciado interior para el texto */
-    width:100%;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    width: 100%;
+    z-index: 1; /* Asegura que el overlay esté por encima de otras capas */
 }
+
 .text {
-    font-size: 30px; 
-    
- .card {
-    border: none;
-    border-radius: 0; /* Esquinas rectangulares */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    margin-bottom: 0; /* Elimina el espacio entre tarjetas */
-}
-
-/* Estilo para el fondo */
-.card-body {
-    background-color: #fff; /* Fondo blanco */
-}
-
-/* Estilo para el texto */
-.card-title, .card-text {
-    color: #ccc; /* Color de texto */
-}   
-    
-    
-}
-.carousel-item {
-    text-align: left;
-}
-
-.carousel-item .card {
-    width: 100%; /* Ancho de la tarjeta dentro del carrusel */
-    background-color: whitesmoke;
-}
-
-.carousel-item img {
-    max-width: 100px; /* Ancho máximo de la imagen de perfil */
-    height: auto;
-    border-radius: 50%; /* Hace que la imagen sea circular */
-    margin-right: 0px; /* Espacio entre la imagen y la biografía */
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-    width: auto; /* Ancho automático */
-    color: #ccc; /* Color de las flechas */
-    background-color: #ade8f4; /* Color de fondo de las flechas */
-}
-
-.carousel-control-prev {
-    left: -40px; /* Posición de la flecha de retroceso */
-}
-
-.carousel-control-next {
-    right: -40px; /* Posición de la flecha de avance */
+    font-size: 30px;
 }

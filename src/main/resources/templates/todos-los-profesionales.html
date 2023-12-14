@@ -1,66 +1,77 @@
-<!DOCTYPE html>
 <html lang="en">
  <head th:replace= "/fragments/head :: head" ></head>
-    <link href="/css/solicitudes.css" rel="stylesheet">   
+    <link href="/css/index.css" rel="stylesheet">   
 
     <body>
         <header>
             <nav th:replace= "/fragments/navbar :: nav" ></nav>
         </header>
-   
+        
+        <!-- Requiero de cami -->
+        <div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <form class="mb-3">
+                <div class="form-group">
+                    <label for="calificacion">Selecciona calificación:</label>
+                    <select id="especialidad" class="form-control">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>          
+                    </select>
+                </div>
+        </div>
+    </div>
+    </div>
+                    
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <form class="mb-3">
+                <div class="form-group">
+                    <label for="calificacion">Seleccione rango de precios:</label>
+                    <select id="especialidad" class="form-control">
+                        <option>$ 0 - $1000</option>
+                        <option>$1000 - $2000</option>
+                        <option>$2000 - $3000</option>
+                        <option>$3000 - $4000</option>          
+                    </select>
+                </div>
+        </div>
+    </div>
+</div>    
+        <br>
     <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Solicitudes pendientes de aprobación</h5>
+        <h5 class="card-title">Nuestro equipo de profesionales</h5>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Especialidad</th>
                          <th>Matricula</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
-                        <th>DNI</th>
-                        <th>Género</th>
-                        <th>Fecha de Nacimiento</th>
-                         <th>Dirección</th>
                          <th>Atención Virtual</th>
                         <th>Prestadores</th>
-                        <th>Correo Electrónico</th>
-                         <th>Estado</th>
-
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="profesional: ${Profesionales}">
-                        <td th:text="${profesional.id}"></td>
                         <td th:text="${profesional.especialidad}"></td>
                         <td th:text="${profesional.matricula}"></td>
                         <td th:text="${profesional.nombre}"></td>
                         <td th:text="${profesional.apellido}"></td>
-                        <td th:text="${profesional.dni}"></td>
-                        <td th:text="${profesional.genero}"></td>
-                        <td th:text="${profesional.fecha_nac}"></td>
-                        <td th:text="${profesional.atencionFisicaDireccion}"></td>
                         <td th:text="${profesional.atencionVirtual}"></td>
                         <td th:text="${profesional.prestadores}"></td>
-                        <td th:text="${profesional.email}"></td>
-                        <td th:text="${profesional.alta}"></td>
-                        
-                        <!-- Otros campos -->
-                        <td>
-                            <a class="btn-sm" th:href="@{/admin/aprobarSolicitud/__${profesional.id}__}"> Aprobar</a>
-                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
-    
-    
-               
+ 
     <footer th:replace="/fragments/footer :: footer"></footer>
 
     <!-- Scripts de Popper.js y Bootstrap -->

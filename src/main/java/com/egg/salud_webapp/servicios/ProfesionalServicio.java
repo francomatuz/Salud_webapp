@@ -55,7 +55,8 @@ public class ProfesionalServicio implements UserDetailsService {
             String[] prestadores, String nombre, String apellido, String dni,
             LocalDate fecha_nac,
             String email, String password, String password2, GeneroEnum genero) throws MiException {
-        validarAtributos(archivo, prestadores, nombre, apellido, email, dni, fecha_nac, password, password2, matricula /*precio*/);
+        validarAtributos(archivo, prestadores, nombre, apellido, email, dni, fecha_nac, password, password2,
+                matricula /* precio */);
 
         List<String> prestadoresList = convertirStringAListaDeObrasSociales(prestadores);
 
@@ -269,7 +270,8 @@ public class ProfesionalServicio implements UserDetailsService {
     }
 
     // validar los atributos de creación
-    private void validarAtributos(MultipartFile archivo, String[] prestadores, String nombre, String apellido, String email, String dni,
+    private void validarAtributos(MultipartFile archivo, String[] prestadores, String nombre, String apellido,
+            String email, String dni,
             LocalDate fecha_nac,
             String password, String password2, String matricula /* Double precio */)
             throws MiException {
@@ -435,8 +437,8 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional profesional = getById(id);
         List<Turno> turnosDisponibles = new ArrayList<>();
 
-        DayOfWeek[] diasLaborables = {DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
-            DayOfWeek.FRIDAY};
+        DayOfWeek[] diasLaborables = { DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
+                DayOfWeek.FRIDAY };
 
         for (LocalDate fecha = fechaInicio; !fecha.isAfter(fechaFin); fecha = fecha.plusDays(1)) {
             for (DayOfWeek diaLaborable : diasLaborables) {
@@ -487,5 +489,9 @@ public class ProfesionalServicio implements UserDetailsService {
         Profesional profesional = getById(id);
         profesional.setPrecio(precio);
         profesionalRepositorio.save(profesional);
+    }
+
+    public List<Profesional> listarProfesionalesActivos() {
+        return profesionalRepositorio.findAllActivos();
     }
 }

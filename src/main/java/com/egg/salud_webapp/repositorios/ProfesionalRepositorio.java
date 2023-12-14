@@ -61,5 +61,8 @@ public interface ProfesionalRepositorio extends JpaRepository<Profesional, Long>
     @Query("SELECT p.id FROM Profesional p WHERE p.especialidad = :especialidad")
     List<Long> findIdsByEspecialidad(@Param("especialidad") Especialidades especialidad);
 
+    @Query("SELECT p FROM Profesional p WHERE p.alta = 2")
+    public List<Profesional> findAllActivos();
+
     //Posibilidad de hacer filtros o busquedas combinadas
 }

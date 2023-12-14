@@ -264,4 +264,12 @@ public class PerfilProfesionalControlador {
             return "error.html";
         }
     }
+
+    @GetMapping("/profesionales")
+    public String TodosLosProfesioanlesActivos(ModelMap modelo) {
+        List<Profesional> profesionales = profesionalServicio.listarProfesionales();
+        modelo.put("profesionales", profesionales);
+        return "todos-los-profesionales.html";
+    }
+    
 }

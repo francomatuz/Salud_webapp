@@ -2,6 +2,7 @@ package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Turno;
+import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.excepciones.MiException;
@@ -31,27 +32,27 @@ public class PerfilPacienteControlador {
 
     @Autowired
     private PacienteServicio pacienteServicio;
-    @Autowired 
-   private TurnoServicio turnoServicio;
-   @Autowired 
-   private ProfesionalServicio profesionalServicio;
+    @Autowired
+    private TurnoServicio turnoServicio;
+    @Autowired
+    private ProfesionalServicio profesionalServicio;
 
-     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session,ModelMap modelo) {
+    @GetMapping("/dashboard")
+    public String dashboard(HttpSession session, ModelMap modelo) {
         Paciente pacienteLogueado = (Paciente) session.getAttribute("usuariosession");
         try {
             List<Turno> misTurnos = turnoServicio.obtenerTurnosTomadosPorPaciente(pacienteLogueado.getId());
             List<Turno> misTurnosFinalizados = pacienteServicio.obtenerTurnosFinalizados(pacienteLogueado.getId());
-            modelo.addAttribute("misTurnosFinalizados",misTurnosFinalizados);
+            modelo.addAttribute("misTurnosFinalizados", misTurnosFinalizados);
             modelo.addAttribute("misTurnos", misTurnos);
-            return "dashboardpaciente_1.html";   
+            return "dashboardpaciente_1.html";
         } catch (MiException ex) {
             modelo.addAttribute("error", "Error al intentar obtener los turnos tomados: " + ex.getMessage());
             return "error.html";
         }
     }
 
-    //ELIMINAR
+    // ELIMINAR
     @GetMapping("/eliminar")
     public String eliminar(HttpSession session, ModelMap modelo) throws MiException {
 
@@ -79,7 +80,8 @@ public class PerfilPacienteControlador {
 
         // Verificar si el usuario está logueado
         if (pacienteLogueado == null) {
-            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir al inicio de sesión
+            // Manejar el caso en el que el usuario no está logueado, por ejemplo, redirigir
+            // al inicio de sesión
             return "redirect:/login";
         }
 
@@ -91,7 +93,8 @@ public class PerfilPacienteControlador {
     }
 
     @PostMapping("/actualizar")
-    public String actualizarPerfil(@RequestParam MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido,
+    public String actualizarPerfil(@RequestParam MultipartFile archivo, @RequestParam String nombre,
+            @RequestParam String apellido,
             @RequestParam String email, @RequestParam String dni,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha_nac,
             @RequestParam ObraSocial obraSocial, @RequestParam GeneroEnum genero, ModelMap modelo, HttpSession session)
@@ -118,7 +121,7 @@ public class PerfilPacienteControlador {
             modelo.put("paciente", pacienteActualizado);
             modelo.put("exito", "Perfil actualizado exitosamente");
 
-            return "login.html"; //Se cierra sesión para poder actualizar los datos en el front
+            return "login.html"; // Se cierra sesión para poder actualizar los datos en el front
 
         } catch (MiException ex) {
             // Manejar excepciones
@@ -139,7 +142,8 @@ public class PerfilPacienteControlador {
     }
 
     @PostMapping("/calificar")
-    public String calificarTurno(@RequestParam Long idTurno, @RequestParam Long idProfesional, @RequestParam Integer calif, ModelMap modelo ) {
+    public String calificarTurno(@RequestParam Long idTurno, @RequestParam Long idProfesional,
+            @RequestParam Integer calif, ModelMap modelo) {
         try {
             turnoServicio.calificar(idTurno);
             System.out.println(idProfesional);
@@ -152,4 +156,10 @@ public class PerfilPacienteControlador {
         }
     }
 
+    @GetMapping("/profesionales")
+    public String TodosLosProfesionalesActivos(ModelMap modelo) {
+        List<Profesional> profesionales = profesionalServicio.listarProfesionales();
+        modelo.put("profesionales", profesionales);
+        return "todos-los-profesionales.html";
+    }
 }

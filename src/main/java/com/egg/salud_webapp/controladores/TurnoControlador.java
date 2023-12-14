@@ -88,8 +88,9 @@ public class TurnoControlador {
                 .obtenerTurnosDisponiblesPorProfesional(profesionalLogueado.getId());
         modelo.put("misTurnosDisponibles", misTurnosDisponibles);
         modelo.put("profesional", profesionalLogueado);
+        
 
-        return "misTurnos.html";
+        return "turnos-profesional.html";
     }
 
     @PostMapping("/eliminar-turno")
