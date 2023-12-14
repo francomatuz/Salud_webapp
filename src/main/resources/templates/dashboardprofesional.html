@@ -17,8 +17,7 @@
                     <div class="card-body" th:if="${session.usuariosession.alta == T(com.egg.salud_webapp.enumeraciones.SolicitudEnum).ACTIVO}">
                         <h5 class="card-title">Menú</h5>
                         <div class="btn-group-vertical">
-                            <button id="nuevoPaciente" class="btn btn-success btn-sm mb-2">Nuevo Paciente</button>
-                            <button id="pacienteExistente" class="btn btn-primary btn-sm mb-2">Paciente con Historia Clínica</button>
+                            <a th:href="@{/perfil2/generarTurnos}" class="btn btn-warning btn-sm mb-2">Generar Turnos</a>
                             <a th:href="@{/perfil2/actualizar}" class="btn btn-warning btn-sm mb-2">Editar Perfil</a>
                             <a th:href="@{/perfil2/darBaja}" class="btn btn-danger btn-sm mb-2">Dar Baja</a> 
                         </div>

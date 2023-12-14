@@ -18,9 +18,15 @@
                         <option value="GINECOLOGIA">Ginecología</option>
                         <option value="CLINICA">Clínica</option>
                         <option value="PEDIATRIA">Pediatría</option>
-                        <option value="CARDIOLOGIA">Cardiología</option>
-                        
+                        <option value="CARDIOLOGIA">Cardiología</option>          
                     </select>
+                    <br>
+                       <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="atencionVirtual" name="atencionVirtual"
+                            th:checked="${atencionVirtual}" />
+                        <label class="form-check-label" for="atencionVirtual">Solo turnos por atención virtual</label>
+                    </div>
+                    
                 </div>
                 <button type="submit" class="btn btn-primary">Filtrar</button>
             </form>
