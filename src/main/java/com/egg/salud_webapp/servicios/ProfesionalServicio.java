@@ -161,6 +161,7 @@ public class ProfesionalServicio implements UserDetailsService {
     public void darAlta(Long id) throws MiException {
         Profesional profesional = getById(id);
         profesional.setAlta(SolicitudEnum.SOLICITUD);
+        profesionalRepositorio.save(profesional);
     }
 
     public List<Profesional> listarProfesionalesSolicitud() {

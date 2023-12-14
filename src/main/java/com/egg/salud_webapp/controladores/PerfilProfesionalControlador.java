@@ -169,6 +169,15 @@ public class PerfilProfesionalControlador {
         return "dashboardprofesional.html";
     }
 
+    @GetMapping("/solicitarAlta")
+    public String solicitarAlta(HttpSession session, ModelMap modelo) throws MiException {
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        profesionalServicio.darAlta(profesionalLogueado.getId());
+        SecurityContextHolder.getContext().setAuthentication(null);
+
+        return "login.html";
+    }
+
     @GetMapping("/generar-turnos")
     public String mostrarFormularioGenerarTurnos(ModelMap modelo, HttpSession session) {
         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
