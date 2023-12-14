@@ -1,6 +1,7 @@
 package com.egg.salud_webapp.controladores;
 
 import com.egg.salud_webapp.entidades.Paciente;
+import com.egg.salud_webapp.entidades.Turno;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.excepciones.MiException;
@@ -8,7 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.egg.salud_webapp.servicios.PacienteServicio;
+import com.egg.salud_webapp.servicios.ProfesionalServicio;
+import com.egg.salud_webapp.servicios.TurnoServicio;
+
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
@@ -26,10 +31,24 @@ public class PerfilPacienteControlador {
 
     @Autowired
     private PacienteServicio pacienteServicio;
+    @Autowired 
+   private TurnoServicio turnoServicio;
+   @Autowired 
+   private ProfesionalServicio profesionalServicio;
 
-    @GetMapping("/dashboard")
-    public String dashboard() {
-        return "dashboardpaciente.html";
+     @GetMapping("/dashboard")
+    public String dashboard(HttpSession session,ModelMap modelo) {
+        Paciente pacienteLogueado = (Paciente) session.getAttribute("usuariosession");
+        try {
+            List<Turno> misTurnos = turnoServicio.obtenerTurnosTomadosPorPaciente(pacienteLogueado.getId());
+            List<Turno> misTurnosFinalizados = pacienteServicio.obtenerTurnosFinalizados(pacienteLogueado.getId());
+            modelo.addAttribute("misTurnosFinalizados",misTurnosFinalizados);
+            modelo.addAttribute("misTurnos", misTurnos);
+            return "dashboardpaciente_1.html";   
+        } catch (MiException ex) {
+            modelo.addAttribute("error", "Error al intentar obtener los turnos tomados: " + ex.getMessage());
+            return "error.html";
+        }
     }
 
     //ELIMINAR
@@ -118,4 +137,19 @@ public class PerfilPacienteControlador {
             return "actualizarpaciente.html";
         }
     }
+
+    @PostMapping("/calificar")
+    public String calificarTurno(@RequestParam Long idTurno, @RequestParam Long idProfesional, @RequestParam Integer calif, ModelMap modelo ) {
+        try {
+            turnoServicio.calificar(idTurno);
+            System.out.println(idProfesional);
+            profesionalServicio.calificacionProfesional(idProfesional, calif);
+            modelo.addAttribute("Turno calificado con éxito", true);
+            return "redirect:/perfil/dashboard";
+        } catch (MiException ex) {
+            modelo.addAttribute("error", "Error al intentar calificar el turno: " + ex.getMessage());
+            return "error.html";
+        }
+    }
+
 }

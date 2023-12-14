@@ -3,12 +3,15 @@ package com.egg.salud_webapp.servicios;
 import com.egg.salud_webapp.entidades.HistoriaClinica;
 import com.egg.salud_webapp.entidades.Imagen;
 import com.egg.salud_webapp.entidades.Paciente;
+import com.egg.salud_webapp.entidades.Turno;
 import com.egg.salud_webapp.enumeraciones.GeneroEnum;
 import com.egg.salud_webapp.enumeraciones.ObraSocial;
 import com.egg.salud_webapp.enumeraciones.Tipo;
 import com.egg.salud_webapp.enumeraciones.UsuarioEnum;
 import com.egg.salud_webapp.excepciones.MiException;
 import com.egg.salud_webapp.repositorios.PacienteRepositorio;
+import com.egg.salud_webapp.repositorios.TurnoRepositorio;
+
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,6 +38,8 @@ public class PacienteServicio implements UserDetailsService {
     private PacienteRepositorio pacienteRepositorio;
     @Autowired
     private ImagenServicio imagenServicio;
+    @Autowired
+    private TurnoRepositorio turnoRepositorio;
 
     @Transactional
     public void registrar(MultipartFile archivo, String nombre, String apellido, String email, String dni,
@@ -58,7 +63,7 @@ public class PacienteServicio implements UserDetailsService {
         Imagen imagen = imagenServicio.guardar(archivo, Tipo.PACIENTE);
         paciente.setImagen(imagen);
         HistoriaClinica historiaClinica = new HistoriaClinica();
-        
+
         historiaClinica.setPaciente(paciente);
         paciente.setHistoriaClinica(historiaClinica);
 
@@ -245,6 +250,8 @@ public class PacienteServicio implements UserDetailsService {
 
     }
 
-   
+    public List<Turno> obtenerTurnosFinalizados(Long idPaciente) {
+        return turnoRepositorio.findByPacienteAndFinalizadoTrue(idPaciente);
+    }
 
 }
