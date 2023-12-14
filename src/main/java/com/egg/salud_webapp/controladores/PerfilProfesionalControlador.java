@@ -152,8 +152,12 @@ public class PerfilProfesionalControlador {
     }
 
     @GetMapping("/dashboard2")
-     public String obtenerTurnosTomados(ModelMap modelo) {
-         List<Turno> turnosTomados = turnoServicio.obtenerTurnosTomados();
+     public String obtenerTurnosTomados(HttpSession session,ModelMap modelo) {
+         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        if (profesionalLogueado == null) {
+            return "redirect:/login";
+        }
+         List<Turno> turnosTomados = turnoServicio.obtenerTurnosParaElProfesional(profesionalLogueado.getId());
          modelo.put("turnosTomados", turnosTomados);
         return "dashboardprofesional.html";
     }

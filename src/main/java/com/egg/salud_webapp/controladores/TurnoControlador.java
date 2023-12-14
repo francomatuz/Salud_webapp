@@ -144,7 +144,7 @@ public class TurnoControlador {
         } catch (MiException ex) {
             modelo.addAttribute("error", "Error al intentar cancelar el turno: " + ex.getMessage());
         }
-        return "redirect:/turnos/mis-turnos-paciente";
+        return "redirect:/perfil/dashboard";
     }
 
     @PostMapping("/cancelar-profesional")

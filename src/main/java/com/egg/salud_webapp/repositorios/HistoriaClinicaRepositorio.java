@@ -11,5 +11,9 @@ public interface HistoriaClinicaRepositorio extends JpaRepository<HistoriaClinic
 
   @Query("SELECT hc FROM HistoriaClinica hc WHERE hc.id = :id")
   HistoriaClinica buscarPorId(@Param("id") Long id);
+  
+  @Query("SELECT hc FROM HistoriaClinica hc WHERE hc.paciente.id = :idPaciente")
+  HistoriaClinica buscarPorPaciente(@Param("idPaciente") Long idPaciente);
+  
 
 }

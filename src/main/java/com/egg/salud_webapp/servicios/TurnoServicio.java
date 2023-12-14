@@ -52,12 +52,6 @@ public class TurnoServicio {
                 .map(Enum::name)
                 .collect(Collectors.toList());
     }
-    // public List<Turno> obtenerTurnosDisponiblesPorEspecialidad(Especialidades
-    // especialidad) {
-    // return
-    // turnoRepositorio.findByProfesionalEspecialidadAndDisponibleTrue(especialidad);
-    // }
-
     @Transactional
     public void tomarTurno(Long idTurno, Long idPaciente) throws MiException { // Aca tenemos un metodo en el cual un
                                                                                // paciente "agenda" turnos y los guarda,
@@ -100,6 +94,10 @@ public class TurnoServicio {
 
     public List<Turno> obtenerTurnosDisponiblesPorIdsProfesionales(List<Long> idsProfesionales) {
         return turnoRepositorio.findByProfesionalIdInAndDisponibleTrue(idsProfesionales);
+    }
+    
+    public List<Turno> obtenerTurnosParaElProfesional(Long idProfesional) {
+        return turnoRepositorio.findByProfesionalAndIsCanceladoFalseAndIsFinalizadoFalse(idProfesional);
     }
 
     @Transactional
@@ -187,5 +185,21 @@ public class TurnoServicio {
         return turnoRepositorio.findByDisponiblefalse();
    
        }
+
+       @Transactional
+       public void calificar(Long turnoId) throws MiException {
+           Turno turno = getById(turnoId);
+       
+               if (turno != null && !turno.isIsCalificado()) {
+                   // Marcar el turno como cancelado
+                   turno.setIsCalificado(true);
+       
+                   // Guardar el turno actualizado en la base de datos
+                   turnoRepositorio.save(turno);
+               } else {
+                   // El turno no existe o ya está cancelado
+                   throw new MiException("No se puede calificar el turno.");
+               }
+           }
 
 }

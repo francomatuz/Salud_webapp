@@ -119,7 +119,7 @@
                                         <td th:text="${turno.fechaHora}"></td>
                                         <!--     <td th:text="${turno.paciente.nombre}"></td>-->
                                         <td>
-                                            <a th:href="@{'/fichamedica/paciente/' + ${turno.paciente.id}}">
+                                            <a th:href="@{'/fichamedica/paciente/' + ${turno.paciente.id} + '/' + ${turno.id}}">
                                                 <span th:text="${turno.paciente.nombre}"></span>
                                             </a>
                                         </td>
