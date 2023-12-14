@@ -59,11 +59,16 @@ public class AdminControlador {
 
     @GetMapping("/modificarRol/{id}")
     public String cambiarRol(@PathVariable Long id) {
-        pacienteServicio.cambiarRol(id);
-
-        return "redirect:/admin/usuarios";
+        profesionalServicio.cambiarRol(id);
+        return "redirect:/admin/profesionales";
     }
-
+    
+    @GetMapping("/modificarEstado/{id}")
+    public String cambiarEstado(@PathVariable Long id) {
+        profesionalServicio.cambiarEstado(id);
+        return "redirect:/admin/profesionales";
+    }
+    
     @GetMapping("/aprobarSolicitud/{id}")
     public String aprobarSolicitud(@PathVariable Long id, ModelMap modelo) {
         try {

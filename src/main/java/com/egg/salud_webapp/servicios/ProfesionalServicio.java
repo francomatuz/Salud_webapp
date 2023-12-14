@@ -1,6 +1,7 @@
 package com.egg.salud_webapp.servicios;
 
 import com.egg.salud_webapp.entidades.Imagen;
+import com.egg.salud_webapp.entidades.Paciente;
 import com.egg.salud_webapp.entidades.Profesional;
 import com.egg.salud_webapp.entidades.ProfesionalPrestadores;
 import com.egg.salud_webapp.entidades.Turno;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -163,6 +165,41 @@ public class ProfesionalServicio implements UserDetailsService {
         profesional.setAlta(SolicitudEnum.SOLICITUD);
     }
 
+    @Transactional
+    public void cambiarRol(Long id) {
+        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Profesional profesional = respuesta.get();
+
+            if (profesional.getRol().equals(UsuarioEnum.USER)) {
+
+                profesional.setRol(UsuarioEnum.MOD);
+
+            } else if (profesional.getRol().equals(UsuarioEnum.MOD)) {
+                profesional.setRol(UsuarioEnum.USER);
+            }
+        }
+    }
+    
+    @Transactional
+    public void cambiarEstado(Long id) {
+        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Profesional profesional = respuesta.get();
+
+            if (profesional.getAlta().equals(SolicitudEnum.ACTIVO)) {
+
+                profesional.setAlta(SolicitudEnum.INACTIVO);
+
+            } else if (profesional.getAlta().equals(SolicitudEnum.INACTIVO)) {
+                profesional.setAlta(SolicitudEnum.ACTIVO);
+            }
+        }
+    }
     public List<Profesional> listarProfesionalesSolicitud() {
         return profesionalRepositorio.buscarProfesionalesConSolicitud();
     }

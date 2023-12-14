@@ -124,24 +124,6 @@ public class PacienteServicio implements UserDetailsService {
         return pacienteRepositorio.buscarPorDni(dni);
     }
 
-    @Transactional
-    public void cambiarRol(Long id) {
-        Optional<Paciente> respuesta = pacienteRepositorio.findById(id);
-
-        if (respuesta.isPresent()) {
-
-            Paciente paciente = respuesta.get();
-
-            if (paciente.getRol().equals(UsuarioEnum.USER)) {
-
-                paciente.setRol(UsuarioEnum.ADMIN);
-
-            } else if (paciente.getRol().equals(UsuarioEnum.ADMIN)) {
-                paciente.setRol(UsuarioEnum.USER);
-            }
-        }
-    }
-
     private void validarAtributos(MultipartFile archivo, String nombre, String apellido, String email, String dni, LocalDate fecha_nac,
             String password, String password2) throws MiException {
 

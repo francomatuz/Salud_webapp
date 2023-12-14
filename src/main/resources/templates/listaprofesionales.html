@@ -65,6 +65,9 @@
                         <th>Prestadores</th>
                         <th>Correo Electrónico</th>
                          <th>Estado</th>
+                         <th>Cambiar estado</th>
+                         <th>Rol</th>
+                         <th>Cambiar rol</th>
 
                     </tr>
                 </thead>
@@ -82,7 +85,11 @@
                         <td th:text="${profesional.atencionVirtual}"></td>
                         <td th:text="${profesional.prestadores}"></td>
                         <td th:text="${profesional.email}"></td>
-                <a><td th:text="${profesional.alta}"></td></a>
+                        <td th:text="${profesional.alta}"></td>
+                        <td><a th:href="@{/admin/modificarEstado/__${profesional.id}__}">Cambiar</a></td>
+                        <td th:text="${profesional.rol}"></td>
+                        <td><a th:href="@{/admin/modificarRol/__${profesional.id}__}">Cambiar</a></td>
+                        
                     </tr>
                     <!-- Otras filas -->
                 </tbody>
