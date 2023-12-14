@@ -53,16 +53,19 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-4">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <label for="exampleInputEmail1" class="form-label">Valor de la consulta:</label>
-                                <span th:text="${session.usuariosession.precio}"</span>
-
-                            </div>
-                        </div>
+                    
+           
+  <!-- Sección de biografía -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <form th:action="@{/perfil2/biografia}" method="POST">
+                        <h5 class="card-title">Biografía</h5>
+                        <textarea  class="form-control mb-3" rows="5" placeholder="Escribe tu biografía aquí" id="biografia" name="biografia"></textarea>
+                        <button type="submit" class="btn btn-success btn-sm">Guardar Biografía</button>
+                        </form>
                     </div>
+                </div>
+
                     <div class="col-md-4">
                         <div class="card mb-3">
                             <div class="card-body">
@@ -76,6 +79,7 @@
                             </div>
                         </div>
                     </div>
+                    
 
                     <div class="card">
                         <div class="card-body">

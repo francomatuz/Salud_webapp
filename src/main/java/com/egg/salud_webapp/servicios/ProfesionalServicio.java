@@ -494,4 +494,9 @@ public class ProfesionalServicio implements UserDetailsService {
     public List<Profesional> listarProfesionalesActivos() {
         return profesionalRepositorio.findAllActivos();
     }
+    public void guardarBio(Long idProfesional, String biografia){
+        Profesional profesional = profesionalRepositorio.getById(idProfesional);
+        profesional.setBio(biografia);
+        profesionalRepositorio.save(profesional);
+    }
 }

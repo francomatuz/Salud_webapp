@@ -255,8 +255,10 @@ public class PerfilProfesionalControlador {
     public String settearPrecioConsulta(HttpSession session, @RequestParam Double precio, ModelMap modelo) throws MiException {
         Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
         try {
+            List<Turno> turnosTomados = turnoServicio.obtenerTurnosParaElProfesional(profesionalLogueado.getId());
+            modelo.put("turnosTomados", turnosTomados);
             profesionalServicio.settearPrecioConsulta(precio, profesionalLogueado.getId());
-            return "dashboardprofesional.html";
+            return "redirect:/perfil2/dashboard2";
         } catch (MiException ex) {
             Logger.getLogger(PerfilProfesionalControlador.class.getName()).log(Level.SEVERE, null, ex);
             modelo.put("Error", ex.getMessage());
@@ -271,5 +273,16 @@ public class PerfilProfesionalControlador {
         modelo.put("profesionales", profesionales);
         return "todos-los-profesionales.html";
     }
+            @PostMapping("/biografia")
+    public String guardarBiografia(HttpSession session, String biografia, ModelMap modelo) throws MiException {
+        Profesional profesionalLogueado = (Profesional) session.getAttribute("usuariosession");
+        if (profesionalLogueado == null) {
+            return "redirect:/login";
+        }
+         List<Turno> turnosTomados = turnoServicio.obtenerTurnosParaElProfesional(profesionalLogueado.getId());
+         modelo.put("turnosTomados", turnosTomados);
+        profesionalServicio.guardarBio(profesionalLogueado.getId(), biografia);
+        return "redirect:/perfil2/dashboard2"; 
+        }
     
 }
