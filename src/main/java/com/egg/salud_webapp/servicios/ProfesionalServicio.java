@@ -439,4 +439,8 @@ public class ProfesionalServicio implements UserDetailsService {
         profesionalRepositorio.save(profesional);
     }
 
+
+    public List<Profesional> listarProfesionalesActivos() {
+        return profesionalRepositorio.findAllActivos();
+    }
 }
