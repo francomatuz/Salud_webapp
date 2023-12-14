@@ -24,23 +24,30 @@ public class TurnoControlador {
     @Autowired
     private TurnoServicio turnoServicio;
 
-    @GetMapping("/disponibles") // para que los pacientes puedan tomar
-    public String mostrarTurnosDisponibles(@RequestParam(name = "especialidad", required = false) String especialidad,
-            ModelMap modelo) {
+ @GetMapping("/disponibles")  // FALTA AGREGAR QUE SI NO SELECCIONA ESPECIALIDAD DEBE SELECCIONARLA
+    public String mostrarTurnosDisponibles(
+        @RequestParam(name = "especialidad", required = false) String especialidad,
+        @RequestParam(name = "atencionVirtual", defaultValue = "false") boolean atencionVirtual,
+        ModelMap modelo
+    ) {
         List<Turno> turnosDisponibles;
-
+    
         if (especialidad != null) {
-            turnosDisponibles = turnoServicio.obtenerTurnosDisponiblesPorEspecialidad(especialidad);
+            turnosDisponibles = atencionVirtual ?
+                turnoServicio.obtenerTurnosDisponiblesYAtencionVirtual(especialidad) :
+                turnoServicio.obtenerTurnosDisponiblesPorEspecialidad(especialidad);
         } else {
-            turnosDisponibles = turnoServicio.obtenerTurnosDisponibles();
+            turnosDisponibles = atencionVirtual ?
+                turnoServicio.obtenerTurnosDisponiblesYAtencionVirtual(especialidad) :
+                turnoServicio.obtenerTurnosDisponibles();
         }
-
+    
         List<String> especialidades = turnoServicio.obtenerEspecialidadesDisponibles();
         modelo.put("especialidades", especialidades);
-
+    
         // Agregar la lista filtrada al modelo
         modelo.put("turnosDisponibles", turnosDisponibles);
-
+    
         return "turnosDisponibles.html";
     }
 
